@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class 10 Chemistry – Metals and Non-metals | Interactive</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0f172a;color:#e2e8f0;font-family:'Segoe UI',Arial,sans-serif;font-size:22px;overflow:hidden;width:100vw;height:100vh;}
+.scene{display:none;width:100%;height:100vh;padding:30px 50px 100px;flex-direction:column;align-items:center;overflow-y:auto;}
+.scene.active{display:flex;}
+h1{font-size:52px;color:#fbbf24;margin-bottom:12px;text-align:center;line-height:1.2;}
+h2{font-size:40px;color:#38bdf8;margin-bottom:16px;text-align:center;}
+h3{font-size:28px;color:#a78bfa;margin-bottom:10px;}
+.tag{font-size:18px;color:#64748b;text-align:center;margin-bottom:20px;letter-spacing:0.5px;}
+.intro{font-size:24px;color:#e2e8f0;text-align:center;max-width:950px;line-height:1.6;margin:12px auto;}
+
+/* Nav bar */
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(15,23,42,0.97);border-top:2px solid #1e293b;padding:14px 50px;display:flex;align-items:center;justify-content:space-between;z-index:100;}
+.btn{background:#2563eb;color:#fff;border:none;padding:13px 30px;font-size:22px;border-radius:10px;cursor:pointer;font-weight:bold;transition:background 0.15s;min-width:110px;}
+.btn:hover{background:#1d4ed8;}
+.btn:disabled{background:#1e293b;color:#475569;cursor:not-allowed;}
+.btn-green{background:#059669;}
+.btn-green:hover{background:#047857;}
+.btn-amber{background:#d97706;}
+.btn-amber:hover{background:#b45309;}
+.btn-reset{background:#1e293b;color:#94a3b8;border:1px solid #334155;padding:10px 20px;font-size:18px;border-radius:8px;cursor:pointer;}
+.btn-reset:hover{background:#334155;color:#e2e8f0;}
+.nav-title{font-size:24px;color:#38bdf8;font-weight:bold;max-width:350px;text-align:center;}
+.nav-counter{font-size:22px;color:#64748b;font-weight:bold;}
+.fullscreen-btn{position:fixed;top:16px;right:16px;background:rgba(30,41,59,0.85);border:1px solid #334155;color:#94a3b8;padding:10px 16px;font-size:18px;border-radius:8px;cursor:pointer;z-index:200;}
+.fullscreen-btn:hover{color:#e2e8f0;background:#1e293b;}
+
+/* Tables */
+.ptable{width:100%;max-width:1050px;border-collapse:collapse;margin:16px auto;font-size:21px;}
+.ptable th{padding:14px 20px;font-size:24px;border-bottom:3px solid #1e293b;}
+.ptable th.mh{background:#1e3a5f;color:#fbbf24;}
+.ptable th.ph{background:#0f172a;color:#94a3b8;}
+.ptable th.nh{background:#0f291a;color:#86efac;}
+.ptable td{padding:13px 20px;border-bottom:1px solid #1e293b;text-align:center;}
+.ptable tr:nth-child(even) td{background:rgba(255,255,255,0.025);}
+.mc{color:#fbbf24;}.pc{color:#64748b;font-weight:600;}.nc{color:#86efac;}
+
+/* Cards & grids */
+.card{background:#1e293b;border-radius:12px;padding:22px;border:1px solid #334155;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:1060px;margin:0 auto;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;max-width:1100px;margin:0 auto;}
+.hbox{background:#1e3a5f;border-left:6px solid #3b82f6;padding:18px 26px;border-radius:8px;margin:14px auto;max-width:950px;font-size:23px;line-height:1.5;}
+.hbox.green{background:#064e3b;border-color:#10b981;}
+.hbox.amber{background:#451a03;border-color:#f59e0b;}
+.hbox.red{background:#450a0a;border-color:#ef4444;}
+.hbox.purple{background:#2e1065;border-color:#a78bfa;}
+.formula{font-family:'Courier New',monospace;font-size:28px;color:#fbbf24;background:#1e293b;padding:10px 22px;border-radius:8px;text-align:center;margin:10px auto;display:block;max-width:820px;}
+
+/* Step reveal */
+.step{display:none;animation:fadeUp 0.35s ease;}
+.step.on{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.step-indicator{font-size:22px;color:#38bdf8;margin-bottom:10px;text-align:center;}
+
+/* Reactivity series */
+.rs-wrap{display:flex;gap:40px;align-items:flex-start;justify-content:center;flex-wrap:wrap;margin:10px auto;}
+.rs-col{display:flex;flex-direction:column;gap:5px;min-width:480px;}
+.rs-item{display:flex;align-items:center;gap:16px;padding:9px 20px;border-radius:7px;}
+.rs-sym{font-size:26px;font-weight:bold;width:55px;text-align:center;}
+.rs-name{font-size:21px;flex:1;}
+.rs-note{font-size:17px;color:#94a3b8;flex:2;text-align:right;}
+
+/* Quiz */
+.q-text{font-size:28px;color:#fbbf24;margin-bottom:18px;text-align:center;line-height:1.4;}
+.q-opts{display:flex;flex-direction:column;gap:13px;max-width:820px;margin:0 auto;}
+.q-opt{background:#1e293b;border:2px solid #334155;border-radius:10px;padding:15px 26px;font-size:23px;cursor:pointer;transition:all 0.15s;text-align:left;}
+.q-opt:hover{border-color:#38bdf8;background:#1e3a5f;}
+.q-opt.correct{background:#064e3b;border-color:#34d399;color:#34d399;}
+.q-opt.wrong{background:#450a0a;border-color:#f87171;color:#f87171;}
+.q-exp{font-size:21px;color:#86efac;margin:14px auto 0;padding:15px 22px;background:#064e3b;border-radius:10px;display:none;max-width:820px;}
+
+.sc{width:100%;max-width:1200px;margin:0 auto;}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:1100px;margin:0 auto;}
+</style>
+</head>
+<body>
+
+<button class="fullscreen-btn" onclick="toggleFS()">⛶ Fullscreen</button>
+
+<!-- ═══ SCENE 1: TITLE ═══ -->
+<div class="scene active" id="s1">
+<div class="sc" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;">
+  <div class="tag">Class 10 Chemistry · NCERT Chapter 3 · Karnataka KTBS Edition</div>
+  <h1>⚙️ Metals and Non-metals</h1>
+  <p class="intro">Properties, reactions, ionic bonding, extraction from ores, corrosion — with real examples from Karnataka and India.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin:28px auto;max-width:1050px;">
+    <div style="background:#1e3a5f;border-radius:12px;padding:18px;text-align:center;border:1px solid #3b82f6;">
+      <div style="font-size:38px;">🔧</div>
+      <div style="font-size:19px;color:#fbbf24;margin-top:6px;">Physical<br>Properties</div>
+    </div>
+    <div style="background:#0f291a;border-radius:12px;padding:18px;text-align:center;border:1px solid #10b981;">
+      <div style="font-size:38px;">⚗️</div>
+      <div style="font-size:19px;color:#86efac;margin-top:6px;">Chemical<br>Reactions</div>
+    </div>
+    <div style="background:#2e1065;border-radius:12px;padding:18px;text-align:center;border:1px solid #a78bfa;">
+      <div style="font-size:38px;">🔗</div>
+      <div style="font-size:19px;color:#c4b5fd;margin-top:6px;">Ionic<br>Bonding</div>
+    </div>
+    <div style="background:#451a03;border-radius:12px;padding:18px;text-align:center;border:1px solid #f59e0b;">
+      <div style="font-size:38px;">⛏️</div>
+      <div style="font-size:19px;color:#fcd34d;margin-top:6px;">Extraction<br>of Metals</div>
+    </div>
+    <div style="background:#450a0a;border-radius:12px;padding:18px;text-align:center;border:1px solid #ef4444;">
+      <div style="font-size:38px;">🦀</div>
+      <div style="font-size:19px;color:#fca5a5;margin-top:6px;">Corrosion &amp;<br>Alloys</div>
+    </div>
+  </div>
+
+  <svg width="820" height="110" viewBox="0 0 820 110">
+    <rect x="5" y="10" width="75" height="75" rx="8" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+    <text x="42" y="42" text-anchor="middle" fill="#fbbf24" font-size="22" font-weight="bold">Na</text>
+    <text x="42" y="62" text-anchor="middle" fill="#94a3b8" font-size="13">Sodium</text>
+    <text x="42" y="78" text-anchor="middle" fill="#475569" font-size="11">Metal</text>
+
+    <rect x="90" y="10" width="75" height="75" rx="8" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+    <text x="127" y="42" text-anchor="middle" fill="#fbbf24" font-size="22" font-weight="bold">Fe</text>
+    <text x="127" y="62" text-anchor="middle" fill="#94a3b8" font-size="13">Iron</text>
+    <text x="127" y="78" text-anchor="middle" fill="#475569" font-size="11">Metal</text>
+
+    <rect x="175" y="10" width="75" height="75" rx="8" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+    <text x="212" y="42" text-anchor="middle" fill="#fbbf24" font-size="22" font-weight="bold">Cu</text>
+    <text x="212" y="62" text-anchor="middle" fill="#94a3b8" font-size="13">Copper</text>
+    <text x="212" y="78" text-anchor="middle" fill="#475569" font-size="11">Metal</text>
+
+    <rect x="260" y="10" width="75" height="75" rx="8" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+    <text x="297" y="42" text-anchor="middle" fill="#fbbf24" font-size="22" font-weight="bold">Al</text>
+    <text x="297" y="62" text-anchor="middle" fill="#94a3b8" font-size="13">Aluminium</text>
+    <text x="297" y="78" text-anchor="middle" fill="#475569" font-size="11">Metal</text>
+
+    <rect x="345" y="10" width="75" height="75" rx="8" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+    <text x="382" y="42" text-anchor="middle" fill="#fbbf24" font-size="22" font-weight="bold">Au</text>
+    <text x="382" y="62" text-anchor="middle" fill="#94a3b8" font-size="13">Gold</text>
+    <text x="382" y="78" text-anchor="middle" fill="#475569" font-size="11">Metal</text>
+
+    <line x1="435" y1="5" x2="435" y2="105" stroke="#334155" stroke-width="2" stroke-dasharray="5,4"/>
+    <text x="435" y="98" text-anchor="middle" fill="#475569" font-size="13">vs</text>
+
+    <rect x="445" y="10" width="75" height="75" rx="8" fill="#0f291a" stroke="#10b981" stroke-width="2"/>
+    <text x="482" y="42" text-anchor="middle" fill="#86efac" font-size="22" font-weight="bold">C</text>
+    <text x="482" y="62" text-anchor="middle" fill="#94a3b8" font-size="13">Carbon</text>
+    <text x="482" y="78" text-anchor="middle" fill="#475569" font-size="11">Non-metal</text>
+
+    <rect x="530" y="10" width="75" height="75" rx="8" fill="#0f291a" stroke="#10b981" stroke-width="2"/>
+    <text x="567" y="42" text-anchor="middle" fill="#86efac" font-size="22" font-weight="bold">S</text>
+    <text x="567" y="62" text-anchor="middle" fill="#94a3b8" font-size="13">Sulphur</text>
+    <text x="567" y="78" text-anchor="middle" fill="#475569" font-size="11">Non-metal</text>
+
+    <rect x="615" y="10" width="75" height="75" rx="8" fill="#0f291a" stroke="#10b981" stroke-width="2"/>
+    <text x="652" y="42" text-anchor="middle" fill="#86efac" font-size="22" font-weight="bold">O</text>
+    <text x="652" y="62" text-anchor="middle" fill="#94a3b8" font-size="13">Oxygen</text>
+    <text x="652" y="78" text-anchor="middle" fill="#475569" font-size="11">Non-metal</text>
+
+    <rect x="700" y="10" width="75" height="75" rx="8" fill="#0f291a" stroke="#10b981" stroke-width="2"/>
+    <text x="737" y="42" text-anchor="middle" fill="#86efac" font-size="22" font-weight="bold">Cl</text>
+    <text x="737" y="62" text-anchor="middle" fill="#94a3b8" font-size="13">Chlorine</text>
+    <text x="737" y="78" text-anchor="middle" fill="#475569" font-size="11">Non-metal</text>
+  </svg>
+  <p style="font-size:20px;color:#475569;margin-top:18px;">Press <strong style="color:#38bdf8;">Next ▶</strong> or use ← → arrow keys to navigate · Press <strong style="color:#38bdf8;">F</strong> for fullscreen</p>
+</div>
+</div>
+
+<!-- ═══ SCENE 2: PHYSICAL PROPERTIES ═══ -->
+<div class="scene" id="s2">
+<div class="sc">
+  <h2>Physical Properties: Metals vs Non-metals</h2>
+  <div class="tag">NCERT Class 10 · Chapter 3 · Section 3.1</div>
+  <table class="ptable">
+    <thead>
+      <tr>
+        <th class="ph">Property</th>
+        <th class="mh">⚙️ Metals</th>
+        <th class="nh">🌿 Non-metals</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="pc">Lustre (shine)</td><td class="mc">Shiny / lustrous surface</td><td class="nc">Dull, no lustre</td></tr>
+      <tr><td class="pc">Hardness</td><td class="mc">Generally hard</td><td class="nc">Generally soft</td></tr>
+      <tr><td class="pc">Malleability</td><td class="mc">✅ Can be beaten into sheets</td><td class="nc">❌ Brittle (crumbles)</td></tr>
+      <tr><td class="pc">Ductility</td><td class="mc">✅ Can be drawn into wires</td><td class="nc">❌ Cannot be drawn</td></tr>
+      <tr><td class="pc">Heat &amp; Electricity</td><td class="mc">Good conductor</td><td class="nc">Poor conductor (insulator)</td></tr>
+      <tr><td class="pc">Sonority</td><td class="mc">Ringing sound when struck</td><td class="nc">Dull sound, no ring</td></tr>
+      <tr><td class="pc">State (room temp)</td><td class="mc">Solid (except Hg — liquid)</td><td class="nc">Solid / liquid / gas</td></tr>
+      <tr><td class="pc">Melting / Boiling pts</td><td class="mc">Generally high</td><td class="nc">Generally low</td></tr>
+    </tbody>
+  </table>
+  <div class="hbox amber">
+    ⚠️ <strong>Exceptions to remember:</strong> Na &amp; K → soft metals (cut with knife) · Hg → liquid metal · Iodine (I₂) → lustrous non-metal · Graphite (C) → conducts electricity · Diamond (C) → hardest known substance · Sulphur &amp; Phosphorus → non-conductors
+  </div>
+</div>
+</div>
+
+<!-- ═══ SCENE 3: CHEMICAL PROPERTIES OVERVIEW ═══ -->
+<div class="scene" id="s3">
+<div class="sc">
+  <h2>Chemical Properties of Metals</h2>
+  <div class="tag">NCERT Class 10 · Chapter 3 · Section 3.2</div>
+  <p class="intro" style="margin-bottom:20px;">Metals react with oxygen, water, acids, and salt solutions. Reactivity depends on the metal's position in the <strong style="color:#fbbf24;">reactivity series</strong>.</p>
+
+  <div class="grid2">
+    <div class="card" style="border-color:#3b82f6;">
+      <h3 style="color:#38bdf8;">1️⃣ With Oxygen</h3>
+      <div style="font-size:21px;margin-top:6px;color:#94a3b8;">Metal + O₂ → Metal Oxide (basic)</div>
+      <code class="formula" style="font-size:23px;margin:8px auto;">4Na + O₂ → 2Na₂O</code>
+      <code class="formula" style="font-size:23px;margin:4px auto;">2Cu + O₂ → 2CuO</code>
+      <code class="formula" style="font-size:23px;margin:4px auto;">2Mg + O₂ → 2MgO</code>
+    </div>
+    <div class="card" style="border-color:#10b981;">
+      <h3 style="color:#86efac;">2️⃣ With Water</h3>
+      <div style="font-size:21px;margin-top:6px;color:#94a3b8;">Metal + H₂O → Metal hydroxide + H₂↑</div>
+      <code class="formula" style="font-size:23px;margin:8px auto;">2Na + 2H₂O → 2NaOH + H₂↑</code>
+      <code class="formula" style="font-size:23px;margin:4px auto;">Ca + 2H₂O → Ca(OH)₂ + H₂↑</code>
+      <code class="formula" style="font-size:23px;margin:4px auto;">3Fe + 4H₂O → Fe₃O₄ + 4H₂↑</code>
+    </div>
+    <div class="card" style="border-color:#a78bfa;">
+      <h3 style="color:#c4b5fd;">3️⃣ With Dilute Acids</h3>
+      <div style="font-size:21px;margin-top:6px;color:#94a3b8;">Metal + Acid → Salt + H₂↑ (hydrogen burns with pop)</div>
+      <code class="formula" style="font-size:23px;margin:8px auto;">Zn + H₂SO₄ → ZnSO₄ + H₂↑</code>
+      <code class="formula" style="font-size:23px;margin:4px auto;">Fe + 2HCl → FeCl₂ + H₂↑</code>
+      <code class="formula" style="font-size:23px;margin:4px auto;">Mg + 2HCl → MgCl₂ + H₂↑</code>
+    </div>
+    <div class="card" style="border-color:#f59e0b;">
+      <h3 style="color:#fbbf24;">4️⃣ With Salt Solutions</h3>
+      <div style="font-size:21px;margin-top:6px;color:#94a3b8;">More reactive metal displaces less reactive metal</div>
+      <code class="formula" style="font-size:23px;margin:8px auto;">Fe + CuSO₄ → FeSO₄ + Cu↓</code>
+      <code class="formula" style="font-size:23px;margin:4px auto;">Zn + CuSO₄ → ZnSO₄ + Cu↓</code>
+      <div style="font-size:19px;color:#94a3b8;margin-top:6px;">Blue CuSO₄ solution turns green (FeSO₄); red Cu deposits on iron nail</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ SCENE 4: REACTION ANIMATION (Mg + O₂) ═══ -->
+<div class="scene" id="s4">
+<div class="sc">
+  <h2>Reaction with Oxygen — Step by Step</h2>
+  <div class="tag">Magnesium burning in air · Activity 3.1 (NCERT)</div>
+
+  <div id="rxn-container">
+    <div class="step on" id="r1">
+      <div class="hbox" style="text-align:center;">
+        <strong style="font-size:27px;">Magnesium ribbon burns in air with a dazzling white flame 🔥</strong>
+        <div style="font-size:21px;color:#94a3b8;margin-top:6px;">White ash (MgO powder) is formed · The flame is so bright it can damage eyes</div>
+      </div>
+      <svg width="720" height="200" viewBox="0 0 720 200" style="display:block;margin:0 auto;">
+        <rect x="290" y="95" width="140" height="14" rx="4" fill="#d1d5db" stroke="#94a3b8" stroke-width="2"/>
+        <text x="360" y="88" text-anchor="middle" fill="#e2e8f0" font-size="20" font-weight="bold">Mg ribbon</text>
+        <ellipse cx="360" cy="70" rx="18" ry="28" fill="#fbbf24" opacity="0.85"/>
+        <ellipse cx="360" cy="60" rx="10" ry="18" fill="white" opacity="0.9"/>
+        <ellipse cx="360" cy="52" rx="6" ry="10" fill="#e0f2fe" opacity="0.8"/>
+        <circle cx="170" cy="100" r="14" fill="none" stroke="#ef4444" stroke-width="2.5"/>
+        <text x="170" y="105" text-anchor="middle" fill="#ef4444" font-size="15" font-weight="bold">O₂</text>
+        <circle cx="530" cy="80" r="14" fill="none" stroke="#ef4444" stroke-width="2.5"/>
+        <text x="530" y="85" text-anchor="middle" fill="#ef4444" font-size="15" font-weight="bold">O₂</text>
+        <text x="360" y="170" text-anchor="middle" fill="#94a3b8" font-size="19">Mg reacts with O₂ in the air — bright white flame</text>
+      </svg>
+    </div>
+
+    <div class="step" id="r2">
+      <div class="hbox" style="text-align:center;"><strong style="font-size:26px;">Balanced equation</strong></div>
+      <code class="formula" style="font-size:38px;margin:18px auto;">2Mg + O₂ → 2MgO</code>
+      <div style="display:flex;justify-content:center;gap:40px;margin:18px auto;font-size:22px;flex-wrap:wrap;">
+        <div style="text-align:center;color:#fbbf24;">2Mg<br><span style="color:#64748b;font-size:17px;">Magnesium<br>(grey solid)</span></div>
+        <div style="color:#e2e8f0;font-size:38px;padding-top:8px;">+</div>
+        <div style="text-align:center;color:#ef4444;">O₂<br><span style="color:#64748b;font-size:17px;">Oxygen<br>(gas)</span></div>
+        <div style="color:#e2e8f0;font-size:38px;padding-top:8px;">→</div>
+        <div style="text-align:center;color:#86efac;">2MgO<br><span style="color:#64748b;font-size:17px;">Magnesium Oxide<br>(white powder)</span></div>
+      </div>
+    </div>
+
+    <div class="step" id="r3">
+      <div class="hbox green" style="text-align:center;">
+        <strong style="font-size:26px;">MgO + water → Mg(OH)₂ — this is a BASE</strong><br>
+        <span style="font-size:21px;">Moist red litmus turns blue · Metal oxides are <strong>basic oxides</strong></span>
+      </div>
+      <code class="formula" style="font-size:28px;">MgO + H₂O → Mg(OH)₂ (Magnesium hydroxide)</code>
+      <div class="hbox amber" style="margin-top:16px;">
+        <strong>Key Rule:</strong> Metal oxides → <span style="color:#86efac;">basic</span> · Non-metal oxides (CO₂, SO₂, NO₂) → <span style="color:#f87171;">acidic</span>
+        <br>Exception: ZnO and Al₂O₃ are <strong style="color:#fbbf24;">amphoteric</strong> — react with both acids and bases
+      </div>
+      <svg width="650" height="120" viewBox="0 0 650 120" style="display:block;margin:10px auto;">
+        <rect x="10" y="35" width="170" height="50" rx="8" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+        <text x="95" y="56" text-anchor="middle" fill="#fbbf24" font-size="17" font-weight="bold">Metal Oxide</text>
+        <text x="95" y="75" text-anchor="middle" fill="#94a3b8" font-size="14">(Na₂O, CaO, MgO)</text>
+        <line x1="185" y1="60" x2="240" y2="60" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arr)"/>
+        <text x="212" y="52" text-anchor="middle" fill="#64748b" font-size="13">+ H₂O</text>
+        <rect x="245" y="35" width="150" height="50" rx="8" fill="#064e3b" stroke="#10b981" stroke-width="2"/>
+        <text x="320" y="56" text-anchor="middle" fill="#86efac" font-size="17" font-weight="bold">Metal Hydroxide</text>
+        <text x="320" y="74" text-anchor="middle" fill="#94a3b8" font-size="14">(BASE)</text>
+        <line x1="400" y1="60" x2="460" y2="60" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6,4"/>
+        <text x="430" y="52" text-anchor="middle" fill="#64748b" font-size="13">turns</text>
+        <rect x="465" y="35" width="170" height="50" rx="8" fill="#2e1065" stroke="#a78bfa" stroke-width="2"/>
+        <text x="550" y="56" text-anchor="middle" fill="#c4b5fd" font-size="17" font-weight="bold">Litmus BLUE</text>
+        <text x="550" y="74" text-anchor="middle" fill="#94a3b8" font-size="14">(confirms base)</text>
+        <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#38bdf8"/></marker></defs>
+      </svg>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:14px;">
+    <div class="step-indicator" id="rxn-ind">Step 1 of 3</div>
+    <button class="btn btn-green" id="rxn-btn" onclick="nextRxn()">Next Step →</button>
+  </div>
+</div>
+</div>
+
+<!-- ═══ SCENE 5: REACTIVITY SERIES ═══ -->
+<div class="scene" id="s5">
+<div class="sc">
+  <h2>The Reactivity Series of Metals</h2>
+  <div class="tag">Activity Series · NCERT Class 10 Chapter 3</div>
+  <div class="rs-wrap">
+    <div>
+      <div style="font-size:19px;color:#64748b;text-align:center;margin-bottom:6px;">↑ MOST REACTIVE</div>
+      <div class="rs-col">
+        <div class="rs-item" style="background:#7f1d1d;"><span class="rs-sym" style="color:#fca5a5;">K</span><span class="rs-name" style="color:#fca5a5;">Potassium</span><span class="rs-note">Reacts violently with cold water</span></div>
+        <div class="rs-item" style="background:#7f1d1d;"><span class="rs-sym" style="color:#fca5a5;">Na</span><span class="rs-name" style="color:#fca5a5;">Sodium</span><span class="rs-note">Reacts vigorously with cold water</span></div>
+        <div class="rs-item" style="background:#92400e;"><span class="rs-sym" style="color:#fcd34d;">Ca</span><span class="rs-name" style="color:#fcd34d;">Calcium</span><span class="rs-note">Reacts slowly with cold water</span></div>
+        <div class="rs-item" style="background:#92400e;"><span class="rs-sym" style="color:#fcd34d;">Mg</span><span class="rs-name" style="color:#fcd34d;">Magnesium</span><span class="rs-note">Reacts with hot water / steam</span></div>
+        <div class="rs-item" style="background:#713f12;"><span class="rs-sym" style="color:#fde68a;">Al</span><span class="rs-name" style="color:#fde68a;">Aluminium</span><span class="rs-note">Reacts with steam, acids</span></div>
+        <div class="rs-item" style="background:#713f12;"><span class="rs-sym" style="color:#fde68a;">Zn</span><span class="rs-name" style="color:#fde68a;">Zinc</span><span class="rs-note">Reacts with steam, dilute acids</span></div>
+        <div class="rs-item" style="background:#166534;"><span class="rs-sym" style="color:#86efac;">Fe</span><span class="rs-name" style="color:#86efac;">Iron</span><span class="rs-note">Reacts with steam (slow)</span></div>
+        <div class="rs-item" style="background:#166534;"><span class="rs-sym" style="color:#86efac;">Pb</span><span class="rs-name" style="color:#86efac;">Lead</span><span class="rs-note">Does not react with water</span></div>
+        <div class="rs-item" style="background:#1e3a5f;"><span class="rs-sym" style="color:#93c5fd;">Cu</span><span class="rs-name" style="color:#93c5fd;">Copper</span><span class="rs-note">No reaction with dilute acids</span></div>
+        <div class="rs-item" style="background:#1e1b4b;"><span class="rs-sym" style="color:#c4b5fd;">Hg</span><span class="rs-name" style="color:#c4b5fd;">Mercury</span><span class="rs-note">Very low reactivity</span></div>
+        <div class="rs-item" style="background:#1e293b;border:1px solid #334155;"><span class="rs-sym" style="color:#e2e8f0;">Ag</span><span class="rs-name" style="color:#e2e8f0;">Silver</span><span class="rs-note">Does not react; tarnishes (Ag₂S)</span></div>
+        <div class="rs-item" style="background:#1e293b;border:1px solid #334155;"><span class="rs-sym" style="color:#e2e8f0;">Au</span><span class="rs-name" style="color:#e2e8f0;">Gold</span><span class="rs-note">Found free in nature; no corrosion</span></div>
+        <div class="rs-item" style="background:#1e293b;border:1px solid #334155;"><span class="rs-sym" style="color:#e2e8f0;">Pt</span><span class="rs-name" style="color:#e2e8f0;">Platinum</span><span class="rs-note">Extremely unreactive</span></div>
+      </div>
+      <div style="font-size:19px;color:#64748b;text-align:center;margin-top:6px;">↓ LEAST REACTIVE</div>
+    </div>
+
+    <div style="max-width:320px;display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <h3 style="color:#fbbf24;font-size:22px;">Why it matters</h3>
+        <div style="font-size:19px;margin-top:8px;line-height:1.7;">
+          ✅ More reactive metal <strong>displaces</strong> less reactive metal from salt solution<br>
+          ✅ Determines how metals are <strong>extracted</strong> from ores<br>
+          ✅ Predicts which metals corrode faster
+        </div>
+      </div>
+      <div class="hbox amber" style="font-size:20px;">
+        <strong>Memory Aid (K Na Ca Mg Al Zn Fe Pb Cu Hg Ag Au Pt):</strong><br><br>
+        <em>"<strong>K</strong>ind <strong>Na</strong>na <strong>Ca</strong>lled <strong>Mg</strong>r <strong>Al</strong>i · <strong>Zn</strong>c <strong>Fe</strong>lt <strong>Pb</strong>roud · <strong>Cu</strong>te <strong>Hg</strong>s <strong>Ag</strong>ain <strong>Au</strong>tomatic <strong>Pt</strong>y"</em>
+      </div>
+      <div class="card" style="border-color:#3b82f6;">
+        <h3 style="color:#38bdf8;font-size:22px;">Displacement Example</h3>
+        <div style="font-size:19px;margin-top:6px;line-height:1.7;">
+          Iron nail in blue CuSO₄ solution:<br>
+          Fe + CuSO₄ → FeSO₄ + Cu<br>
+          Blue → green · Red Cu deposits on nail
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ SCENE 6: NON-METALS CHEMICAL PROPERTIES ═══ -->
+<div class="scene" id="s6">
+<div class="sc">
+  <h2>Chemical Properties of Non-metals</h2>
+  <div class="tag">NCERT Class 10 · Chapter 3 · Section 3.3</div>
+  <div class="hbox" style="margin-bottom:18px;">
+    <strong style="font-size:25px;">Non-metal oxides are generally <span style="color:#ef4444;">acidic</span> · Non-metals do NOT react with dilute acids</strong>
+  </div>
+  <div class="grid2">
+    <div class="card" style="border-color:#ef4444;">
+      <h3 style="color:#f87171;">With Oxygen → Acidic Oxides</h3>
+      <code class="formula" style="font-size:22px;margin:8px auto;">C + O₂ → CO₂</code>
+      <code class="formula" style="font-size:22px;margin:4px auto;">S + O₂ → SO₂</code>
+      <code class="formula" style="font-size:22px;margin:4px auto;">4P + 5O₂ → 2P₂O₅</code>
+      <div style="font-size:19px;color:#f87171;margin-top:8px;">CO₂ + H₂O → H₂CO₃ (carbonic acid) → turns blue litmus red</div>
+    </div>
+    <div class="card" style="border-color:#94a3b8;">
+      <h3 style="color:#e2e8f0;">With Water</h3>
+      <div style="font-size:21px;margin-top:8px;color:#e2e8f0;line-height:1.6;">
+        Most non-metals do NOT react with water directly.<br><br>
+        <strong>Exception — Chlorine:</strong>
+      </div>
+      <code class="formula" style="font-size:22px;margin:8px auto;">Cl₂ + H₂O → HCl + HOCl</code>
+      <div style="font-size:19px;color:#94a3b8;">Chlorine water is acidic</div>
+    </div>
+    <div class="card" style="border-color:#64748b;">
+      <h3 style="color:#94a3b8;">With Dilute Acids</h3>
+      <div style="font-size:21px;margin-top:8px;color:#e2e8f0;line-height:1.6;">
+        Generally, non-metals do <strong style="color:#f87171;">NOT</strong> react with dilute acids.<br><br>
+        They cannot displace hydrogen from acids (unlike metals).
+      </div>
+    </div>
+    <div class="card" style="border-color:#fbbf24;">
+      <h3 style="color:#fbbf24;">With Metals → Ionic Compounds</h3>
+      <code class="formula" style="font-size:22px;margin:8px auto;">2Na + Cl₂ → 2NaCl</code>
+      <code class="formula" style="font-size:22px;margin:4px auto;">Mg + Cl₂ → MgCl₂</code>
+      <code class="formula" style="font-size:22px;margin:4px auto;">2Fe + 3Cl₂ → 2FeCl₃</code>
+      <div style="font-size:19px;color:#94a3b8;margin-top:6px;">Electron transfer → ionic bonding</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ SCENE 7: IONIC BONDING ═══ -->
+<div class="scene" id="s7">
+<div class="sc">
+  <h2>How Metals &amp; Non-metals React — Ionic Bond</h2>
+  <div class="tag">NaCl Formation · NCERT Class 10 Chapter 3 · Section 3.4</div>
+
+  <div id="ion-container">
+    <div class="step on" id="i1">
+      <p class="intro" style="margin-bottom:14px;">Na has <strong style="color:#fbbf24;">1</strong> outer electron. Cl needs <strong style="color:#86efac;">1</strong> more. Transfer happens →</p>
+      <svg width="780" height="240" viewBox="0 0 780 240" style="display:block;margin:0 auto;">
+        <!-- Na nucleus -->
+        <circle cx="190" cy="120" r="28" fill="#1e3a5f" stroke="#3b82f6" stroke-width="3"/>
+        <text x="190" y="126" text-anchor="middle" fill="#fbbf24" font-size="20" font-weight="bold">Na</text>
+        <!-- Na inner shell -->
+        <circle cx="190" cy="120" r="52" fill="none" stroke="#1e3a5f" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <!-- Na outer shell -->
+        <circle cx="190" cy="120" r="78" fill="none" stroke="#475569" stroke-width="1.5"/>
+        <!-- Na lone electron -->
+        <circle cx="190" cy="38" r="10" fill="#fbbf24" stroke="#fbbf24"/>
+        <text x="190" y="43" text-anchor="middle" fill="#0f172a" font-size="12" font-weight="bold">e⁻</text>
+        <text x="190" y="218" text-anchor="middle" fill="#fbbf24" font-size="19">Sodium (2,8,1)</text>
+
+        <!-- Arrow -->
+        <path d="M295 110 Q390 60 490 110" stroke="#38bdf8" stroke-width="3" fill="none" marker-end="url(#arr2)"/>
+        <text x="390" y="70" text-anchor="middle" fill="#38bdf8" font-size="18">e⁻ transfer</text>
+
+        <!-- Cl nucleus -->
+        <circle cx="590" cy="120" r="28" fill="#0f291a" stroke="#10b981" stroke-width="3"/>
+        <text x="590" y="126" text-anchor="middle" fill="#86efac" font-size="20" font-weight="bold">Cl</text>
+        <!-- Cl shells -->
+        <circle cx="590" cy="120" r="52" fill="none" stroke="#0f291a" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <circle cx="590" cy="120" r="78" fill="none" stroke="#475569" stroke-width="1.5"/>
+        <!-- Cl 7 outer electrons (one gap shown) -->
+        <circle cx="590" cy="38" r="9" fill="#86efac"/>
+        <circle cx="643" cy="58" r="9" fill="#86efac"/>
+        <circle cx="667" cy="120" r="9" fill="#86efac"/>
+        <circle cx="643" cy="181" r="9" fill="#86efac"/>
+        <circle cx="590" cy="201" r="9" fill="#86efac"/>
+        <circle cx="537" cy="181" r="9" fill="#86efac"/>
+        <circle cx="513" cy="120" r="9" fill="#86efac"/>
+        <!-- Empty spot (needs 1 more) -->
+        <circle cx="537" cy="58" r="10" fill="none" stroke="#86efac" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="537" y="63" text-anchor="middle" fill="#86efac" font-size="13">?</text>
+        <text x="590" y="218" text-anchor="middle" fill="#86efac" font-size="19">Chlorine (2,8,7)</text>
+
+        <defs>
+          <marker id="arr2" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
+            <path d="M0,0 L0,7 L9,3.5 z" fill="#38bdf8"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="step" id="i2">
+      <div class="hbox" style="text-align:center;">
+        <strong style="font-size:26px;">Na loses 1 electron → <span style="color:#fbbf24;">Na⁺</span> (positive ion / cation)</strong><br>
+        <strong style="font-size:26px;">Cl gains 1 electron → <span style="color:#86efac;">Cl⁻</span> (negative ion / anion)</strong>
+      </div>
+      <svg width="760" height="200" viewBox="0 0 760 200" style="display:block;margin:10px auto;">
+        <circle cx="190" cy="100" r="55" fill="#1e3a5f" stroke="#fbbf24" stroke-width="3"/>
+        <text x="190" y="106" text-anchor="middle" fill="#fbbf24" font-size="28" font-weight="bold">Na⁺</text>
+        <text x="190" y="172" text-anchor="middle" fill="#fbbf24" font-size="20">2,8 → stable!</text>
+        <text x="190" y="193" text-anchor="middle" fill="#64748b" font-size="16">Cation (+)</text>
+
+        <text x="380" y="108" text-anchor="middle" fill="#e2e8f0" font-size="48">+</text>
+        <text x="380" y="140" text-anchor="middle" fill="#64748b" font-size="16">electrostatic</text>
+        <text x="380" y="157" text-anchor="middle" fill="#64748b" font-size="16">attraction</text>
+
+        <circle cx="570" cy="100" r="65" fill="#0f291a" stroke="#86efac" stroke-width="3"/>
+        <text x="570" y="106" text-anchor="middle" fill="#86efac" font-size="28" font-weight="bold">Cl⁻</text>
+        <text x="570" y="175" text-anchor="middle" fill="#86efac" font-size="20">2,8,8 → stable!</text>
+        <text x="570" y="195" text-anchor="middle" fill="#64748b" font-size="16">Anion (−)</text>
+      </svg>
+    </div>
+
+    <div class="step" id="i3">
+      <div class="hbox green" style="text-align:center;">
+        <strong style="font-size:26px;">Na⁺ and Cl⁻ attract each other → NaCl (sodium chloride = common table salt)</strong>
+      </div>
+      <code class="formula" style="font-size:36px;margin:16px auto;">Na + Cl → Na⁺Cl⁻ (NaCl)</code>
+      <div class="grid2" style="margin-top:16px;">
+        <div class="card">
+          <h3 style="color:#86efac;font-size:22px;">Properties of Ionic Compounds</h3>
+          <ul style="font-size:20px;margin-top:8px;padding-left:20px;line-height:1.9;color:#e2e8f0;">
+            <li>High melting and boiling points</li>
+            <li>Solid at room temperature</li>
+            <li>Conduct electricity when <em>dissolved in water</em> or <em>melted</em></li>
+            <li>Do NOT conduct in solid state</li>
+            <li>Generally soluble in water</li>
+          </ul>
+        </div>
+        <div class="card" style="border-color:#fbbf24;">
+          <h3 style="color:#fbbf24;font-size:22px;">Other Examples</h3>
+          <div style="font-size:20px;margin-top:8px;line-height:1.9;">
+            <strong style="color:#fbbf24;">MgCl₂</strong> — Mg²⁺ + 2Cl⁻<br>
+            <strong style="color:#fbbf24;">CaCl₂</strong> — Ca²⁺ + 2Cl⁻<br>
+            <strong style="color:#fbbf24;">Al₂O₃</strong> — 2Al³⁺ + 3O²⁻<br>
+            <span style="color:#64748b;font-size:17px;">Metals form cations · Non-metals form anions</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:14px;">
+    <div class="step-indicator" id="ion-ind">Step 1 of 3</div>
+    <button class="btn btn-green" id="ion-btn" onclick="nextIon()">Next Step →</button>
+  </div>
+</div>
+</div>
+
+<!-- ═══ SCENE 8: OCCURRENCE & EXTRACTION ═══ -->
+<div class="scene" id="s8">
+<div class="sc">
+  <h2>Occurrence and Extraction of Metals</h2>
+  <div class="tag">NCERT Class 10 · Chapter 3 · Section 3.5</div>
+  <div class="hbox" style="margin-bottom:18px;text-align:center;">
+    <strong style="font-size:24px;">Mineral → Ore → Metal (after removing Gangue)</strong><br>
+    <span style="font-size:20px;color:#94a3b8;">Mineral: naturally occurring compound · Ore: mineral from which metal can be <em>profitably</em> extracted · Gangue: impurities in ore</span>
+  </div>
+  <div class="grid3">
+    <div class="card" style="border-color:#ef4444;">
+      <div style="font-size:22px;font-weight:bold;color:#f87171;margin-bottom:10px;">🔴 High Reactivity<br><span style="font-size:17px;color:#94a3b8;">K, Na, Ca, Mg, Al</span></div>
+      <div style="font-size:20px;line-height:1.7;color:#e2e8f0;">
+        <strong style="color:#f87171;">Method: Electrolytic Reduction</strong><br><br>
+        Too reactive to be reduced by carbon.<br><br>
+        Al₂O₃ → electrolysis of molten Al₂O₃ (Hall–Héroult process)<br><br>
+        <span style="color:#64748b;">NaCl → electrolysis of molten NaCl</span>
+      </div>
+    </div>
+    <div class="card" style="border-color:#fbbf24;">
+      <div style="font-size:22px;font-weight:bold;color:#fbbf24;margin-bottom:10px;">🟡 Medium Reactivity<br><span style="font-size:17px;color:#94a3b8;">Zn, Fe, Pb, Ni</span></div>
+      <div style="font-size:20px;line-height:1.7;color:#e2e8f0;">
+        <strong style="color:#fbbf24;">Method: Reduction with Carbon</strong><br><br>
+        <code style="font-size:17px;">ZnO + C → Zn + CO</code><br>
+        <code style="font-size:17px;">Fe₂O₃ + 3CO → 2Fe + 3CO₂</code><br><br>
+        Iron extracted in a <strong>blast furnace</strong> using coke (C) and limestone
+      </div>
+    </div>
+    <div class="card" style="border-color:#86efac;">
+      <div style="font-size:22px;font-weight:bold;color:#86efac;margin-bottom:10px;">🟢 Low Reactivity<br><span style="font-size:17px;color:#94a3b8;">Cu, Hg, Au, Ag</span></div>
+      <div style="font-size:20px;line-height:1.7;color:#e2e8f0;">
+        <strong style="color:#86efac;">Method: Found free OR simple heating</strong><br><br>
+        2HgS + 3O₂ → 2HgO + 2SO₂<br>
+        2HgO → 2Hg + O₂<br><br>
+        <strong>Gold</strong> found as free metal in river beds — Karnataka &amp; AP rivers
+      </div>
+    </div>
+  </div>
+  <div class="hbox purple" style="margin-top:18px;text-align:center;">
+    <strong style="font-size:24px;">Refining — Electrolytic Refining (for Cu, Zn, Sn, Ni, Ag, Au)</strong><br>
+    <span style="font-size:20px;">Impure metal = <span style="color:#f87171;">Anode</span> · Pure metal = <span style="color:#86efac;">Cathode</span> · Metal salt solution = Electrolyte</span><br>
+    <span style="font-size:20px;color:#94a3b8;">Current flows → impure metal dissolves from anode → pure metal deposits on cathode</span>
+  </div>
+
+  <svg width="500" height="150" viewBox="0 0 500 150" style="display:block;margin:14px auto;">
+    <!-- Electrolytic cell -->
+    <rect x="80" y="20" width="340" height="110" rx="10" fill="none" stroke="#475569" stroke-width="2"/>
+    <!-- Liquid -->
+    <rect x="81" y="80" width="338" height="49" rx="0" fill="#1e3a5f" opacity="0.5"/>
+    <text x="250" y="113" text-anchor="middle" fill="#93c5fd" font-size="16">CuSO₄ solution (electrolyte)</text>
+    <!-- Anode -->
+    <rect x="110" y="30" width="30" height="95" rx="4" fill="#92400e" stroke="#fbbf24" stroke-width="2"/>
+    <text x="125" y="22" text-anchor="middle" fill="#fbbf24" font-size="15" font-weight="bold">Anode (−)</text>
+    <text x="125" y="140" text-anchor="middle" fill="#f87171" font-size="14">Impure Cu</text>
+    <!-- Cathode -->
+    <rect x="360" y="30" width="30" height="95" rx="4" fill="#166534" stroke="#86efac" stroke-width="2"/>
+    <text x="375" y="22" text-anchor="middle" fill="#86efac" font-size="15" font-weight="bold">Cathode (+)</text>
+    <text x="375" y="140" text-anchor="middle" fill="#86efac" font-size="14">Pure Cu</text>
+    <!-- Arrow -->
+    <path d="M145 55 L360 55" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr3)"/>
+    <text x="252" y="48" text-anchor="middle" fill="#38bdf8" font-size="14">Cu²⁺ ions migrate</text>
+    <defs><marker id="arr3" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#38bdf8"/></marker></defs>
+  </svg>
+</div>
+</div>
+
+<!-- ═══ SCENE 9: CORROSION & ALLOYS ═══ -->
+<div class="scene" id="s9">
+<div class="sc">
+  <h2>Corrosion and Its Prevention</h2>
+  <div class="tag">NCERT Class 10 · Chapter 3 · Section 3.6</div>
+  <div class="two">
+    <div>
+      <div class="hbox amber">
+        <strong style="font-size:25px;">Corrosion</strong><br>
+        <span style="font-size:21px;">When a metal is slowly eaten away / deteriorated by reaction with moisture, oxygen, or other substances in its environment.</span>
+      </div>
+      <div class="card" style="margin-top:18px;border-color:#ef4444;">
+        <h3 style="color:#f87171;">Rusting of Iron</h3>
+        <code class="formula" style="font-size:20px;margin:10px auto;">4Fe + 3O₂ + xH₂O → 2Fe₂O₃·xH₂O</code>
+        <div style="font-size:19px;margin-top:8px;line-height:1.7;color:#e2e8f0;">
+          Fe₂O₃·xH₂O = <strong style="color:#f87171;">Rust</strong> (hydrated iron oxide) = reddish-brown<br><br>
+          Both <strong>oxygen</strong> AND <strong>moisture</strong> are needed for rusting.<br>
+          Proof: dry iron does not rust; water without O₂ does not rust iron.
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <h3 style="color:#fbbf24;">Other Types of Corrosion</h3>
+        <div style="font-size:19px;margin-top:8px;line-height:1.8;">
+          🪙 <strong>Silver tarnish:</strong> Ag + H₂S → Ag₂S (black)<br>
+          🟢 <strong>Copper patina:</strong> Cu → Cu(OH)₂·CuCO₃ (green)<br>
+          ⚪ <strong>Aluminium:</strong> Al₂O₃ layer forms → protects (self-healing)
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="border-color:#10b981;margin-bottom:16px;">
+        <h3 style="color:#86efac;">Prevention of Corrosion</h3>
+        <div style="font-size:20px;margin-top:10px;line-height:1.9;">
+          1️⃣ <strong style="color:#fbbf24;">Painting</strong> — iron gates, bridges, buildings<br>
+          2️⃣ <strong style="color:#fbbf24;">Galvanising</strong> — coat iron with zinc (Zn bucket, roofing)<br>
+          3️⃣ <strong style="color:#fbbf24;">Electroplating</strong> — thin layer of non-reactive metal<br>
+          4️⃣ <strong style="color:#fbbf24;">Oiling / Greasing</strong> — machines, tools<br>
+          5️⃣ <strong style="color:#fbbf24;">Alloying</strong> — mix metals to prevent corrosion
+        </div>
+      </div>
+      <div class="card" style="border-color:#38bdf8;">
+        <h3 style="color:#38bdf8;">Alloys</h3>
+        <table style="font-size:19px;width:100%;border-collapse:collapse;margin-top:10px;">
+          <tr style="border-bottom:1px solid #1e293b;">
+            <th style="padding:7px;color:#fbbf24;text-align:left;">Alloy</th>
+            <th style="padding:7px;color:#fbbf24;text-align:left;">Composition</th>
+            <th style="padding:7px;color:#fbbf24;text-align:left;">Use</th>
+          </tr>
+          <tr style="border-bottom:1px solid #0f172a;">
+            <td style="padding:7px;">Brass</td><td style="padding:7px;">Cu + Zn</td><td style="padding:7px;">Utensils, bells, fixtures</td>
+          </tr>
+          <tr style="border-bottom:1px solid #0f172a;">
+            <td style="padding:7px;">Bronze</td><td style="padding:7px;">Cu + Sn</td><td style="padding:7px;">Coins, medals, statues</td>
+          </tr>
+          <tr style="border-bottom:1px solid #0f172a;">
+            <td style="padding:7px;">Steel</td><td style="padding:7px;">Fe + C</td><td style="padding:7px;">Construction, tools</td>
+          </tr>
+          <tr style="border-bottom:1px solid #0f172a;">
+            <td style="padding:7px;">Stainless Steel</td><td style="padding:7px;">Fe + Cr + Ni</td><td style="padding:7px;">Surgical tools, kitchen</td>
+          </tr>
+          <tr>
+            <td style="padding:7px;">Amalgam</td><td style="padding:7px;">Hg + other</td><td style="padding:7px;">Dental fillings</td>
+          </tr>
+        </table>
+        <div style="font-size:18px;color:#94a3b8;margin-top:8px;">Alloys have lower conductivity and higher hardness than pure metals · Pure gold (24K) is too soft for jewellery → alloyed with Ag/Cu</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ SCENE 10: INDIAN CONTEXT ═══ -->
+<div class="scene" id="s10">
+<div class="sc">
+  <h2>🇮🇳 Metals in Indian Daily Life</h2>
+  <div class="tag">Real-world examples from Karnataka &amp; India</div>
+  <div class="grid3" style="margin-top:16px;">
+    <div class="card" style="border-color:#fbbf24;text-align:center;">
+      <div style="font-size:46px;">💍</div>
+      <h3 style="color:#fbbf24;margin-top:8px;">Gold Jewellery</h3>
+      <div style="font-size:19px;margin-top:8px;color:#e2e8f0;line-height:1.6;">Gold is least reactive → does not corrode → stays shiny for centuries.<br><br>22K gold (91.7% Au + Cu/Ag) — alloyed for strength for bangles and necklaces.</div>
+    </div>
+    <div class="card" style="border-color:#86efac;text-align:center;">
+      <div style="font-size:46px;">🍲</div>
+      <h3 style="color:#86efac;margin-top:8px;">Aluminium Vessels</h3>
+      <div style="font-size:19px;margin-top:8px;color:#e2e8f0;line-height:1.6;">Pressure cookers, tiffin boxes — Al is light, good conductor, low cost.<br><br>Thin Al₂O₃ layer naturally protects the surface (self-healing oxide coat).</div>
+    </div>
+    <div class="card" style="border-color:#93c5fd;text-align:center;">
+      <div style="font-size:46px;">⚡</div>
+      <h3 style="color:#93c5fd;margin-top:8px;">Copper Wiring</h3>
+      <div style="font-size:19px;margin-top:8px;color:#e2e8f0;line-height:1.6;">Copper is highly ductile and best conductor among common metals → used for all electrical wiring in homes, factories, transformers.</div>
+    </div>
+    <div class="card" style="border-color:#fcd34d;text-align:center;">
+      <div style="font-size:46px;">⛏️</div>
+      <h3 style="color:#fcd34d;margin-top:8px;">NMDC Iron Ore (Karnataka)</h3>
+      <div style="font-size:19px;margin-top:8px;color:#e2e8f0;line-height:1.6;">Bellary-Hospet region has one of India's largest iron ore reserves.<br><br>Haematite (Fe₂O₃) — ore of iron — extracted in blast furnaces → steel.</div>
+    </div>
+    <div class="card" style="border-color:#a78bfa;text-align:center;">
+      <div style="font-size:46px;">🎆</div>
+      <h3 style="color:#a78bfa;margin-top:8px;">Diwali Fireworks</h3>
+      <div style="font-size:19px;margin-top:8px;color:#e2e8f0;line-height:1.6;">Colours from metal salts burning:<br>🔴 Sr compounds = red<br>🟢 Ba compounds = green<br>⚪ Mg / Al burning = white</div>
+    </div>
+    <div class="card" style="border-color:#f87171;text-align:center;">
+      <div style="font-size:46px;">🌉</div>
+      <h3 style="color:#f87171;margin-top:8px;">Iron Bridges (Rusting!)</h3>
+      <div style="font-size:19px;margin-top:8px;color:#e2e8f0;line-height:1.6;">Coastal bridges near Mangaluru, Goa need regular anti-rust painting — salty sea air accelerates rusting by providing electrolytes.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ SCENE 11: SUMMARY ═══ -->
+<div class="scene" id="s11">
+<div class="sc">
+  <h2>Chapter Summary</h2>
+  <div class="tag">NCERT Class 10 Chemistry · Chapter 3 · Click to reveal each point</div>
+
+  <div id="sum-container" style="max-width:950px;margin:0 auto;">
+    <div class="step on" id="sm1">
+      <div class="hbox"><strong style="font-size:24px;color:#fbbf24;">1. Physical Properties</strong><br>
+      <span style="font-size:21px;">Metals: lustrous, hard, malleable, ductile, good conductors, sonorous. Non-metals: dull, brittle, poor conductors. Exceptions: Na/K soft · Hg liquid · I₂ lustrous · graphite conducts.</span></div>
+    </div>
+    <div class="step" id="sm2">
+      <div class="hbox green"><strong style="font-size:24px;color:#86efac;">2. Chemical Properties of Metals</strong><br>
+      <span style="font-size:21px;">React with O₂ → basic oxides · H₂O → hydroxide + H₂ · dilute acids → salt + H₂ · salt solutions → displacement. Cu, Au, Pt have very low reactivity.</span></div>
+    </div>
+    <div class="step" id="sm3">
+      <div class="hbox" style="background:#713f12;border-color:#f59e0b;"><strong style="font-size:24px;color:#fcd34d;">3. Reactivity Series</strong><br>
+      <span style="font-size:21px;">K &gt; Na &gt; Ca &gt; Mg &gt; Al &gt; Zn &gt; Fe &gt; Pb &gt; Cu &gt; Hg &gt; Ag &gt; Au &gt; Pt. More reactive displaces less reactive from salt solution. Determines extraction method.</span></div>
+    </div>
+    <div class="step" id="sm4">
+      <div class="hbox purple"><strong style="font-size:24px;color:#c4b5fd;">4. Ionic Bond Formation</strong><br>
+      <span style="font-size:21px;">Metals lose electrons → cations. Non-metals gain electrons → anions. NaCl: Na loses 1e⁻ → Na⁺; Cl gains 1e⁻ → Cl⁻. Ionic compounds: high MP, conduct when dissolved.</span></div>
+    </div>
+    <div class="step" id="sm5">
+      <div class="hbox amber"><strong style="font-size:24px;color:#fbbf24;">5. Extraction of Metals</strong><br>
+      <span style="font-size:21px;">High reactivity: electrolytic reduction (Al). Medium: carbon reduction (Fe in blast furnace). Low: found free or by heating (Cu, Hg, Au). Refining: electrolytic refining.</span></div>
+    </div>
+    <div class="step" id="sm6">
+      <div class="hbox red"><strong style="font-size:24px;color:#fca5a5;">6. Corrosion &amp; Alloys</strong><br>
+      <span style="font-size:21px;">Rusting: Fe + O₂ + H₂O → Fe₂O₃·xH₂O. Prevention: painting, galvanising, alloying, oiling. Alloys: brass (Cu+Zn), bronze (Cu+Sn), steel (Fe+C), stainless steel (Fe+Cr+Ni).</span></div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:16px;">
+    <div class="step-indicator" id="sum-ind">Point 1 of 6</div>
+    <button class="btn btn-green" id="sum-btn" onclick="nextSum()">Next Point ▶</button>
+  </div>
+</div>
+</div>
+
+<!-- ═══ SCENE 12: QUIZ ═══ -->
+<div class="scene" id="s12">
+<div class="sc">
+  <h2>🧠 Quick Quiz — Metals &amp; Non-metals</h2>
+  <div class="tag">Class 10 Chemistry · Chapter 3 · Click an option to answer</div>
+
+  <div id="quiz-wrap">
+    <div class="quiz-slide" id="q1" style="display:block;">
+      <p class="q-text">Q1. Which property is characteristic of non-metals but NOT metals?</p>
+      <div class="q-opts">
+        <div class="q-opt" onclick="ans(this,false,'q1')">A. Malleability</div>
+        <div class="q-opt" onclick="ans(this,false,'q1')">B. Ductility</div>
+        <div class="q-opt" onclick="ans(this,true,'q1')">C. Brittleness</div>
+        <div class="q-opt" onclick="ans(this,false,'q1')">D. Sonority</div>
+      </div>
+      <div class="q-exp" id="e-q1">✅ Non-metals are brittle — sulphur, phosphorus crumble when hammered. Malleability, ductility, sonority are metal properties.</div>
+    </div>
+    <div class="quiz-slide" id="q2" style="display:none;">
+      <p class="q-text">Q2. An iron nail is placed in copper sulphate solution. What is observed?</p>
+      <div class="q-opts">
+        <div class="q-opt" onclick="ans(this,false,'q2')">A. No change; iron does not react with salts</div>
+        <div class="q-opt" onclick="ans(this,true,'q2')">B. Iron displaces copper; blue solution turns greenish; copper deposits on nail</div>
+        <div class="q-opt" onclick="ans(this,false,'q2')">C. Copper displaces iron; solution turns dark blue</div>
+        <div class="q-opt" onclick="ans(this,false,'q2')">D. Both metals dissolve; solution becomes colourless</div>
+      </div>
+      <div class="q-exp" id="e-q2">✅ Fe + CuSO₄ → FeSO₄ + Cu. Fe is more reactive than Cu (higher in reactivity series) → displaces Cu. Blue solution (CuSO₄) turns light green (FeSO₄). Red copper metal deposits on iron nail.</div>
+    </div>
+    <div class="quiz-slide" id="q3" style="display:none;">
+      <p class="q-text">Q3. Aluminium cannot be extracted by reducing its oxide with carbon because —</p>
+      <div class="q-opts">
+        <div class="q-opt" onclick="ans(this,false,'q3')">A. Al₂O₃ does not contain Al</div>
+        <div class="q-opt" onclick="ans(this,true,'q3')">B. Al is more reactive than carbon and cannot be displaced by it</div>
+        <div class="q-opt" onclick="ans(this,false,'q3')">C. Carbon reacts with aluminium to form a compound</div>
+        <div class="q-opt" onclick="ans(this,false,'q3')">D. Al₂O₃ has a very low melting point</div>
+      </div>
+      <div class="q-exp" id="e-q3">✅ A metal can be displaced from its oxide only by a more reactive element. Aluminium (Al) is more reactive than carbon (C), so C cannot reduce Al₂O₃. Electrolytic reduction is used instead.</div>
+    </div>
+    <div class="quiz-slide" id="q4" style="display:none;">
+      <p class="q-text">Q4. In NaCl formation, which electron transfer and ions are formed correctly?</p>
+      <div class="q-opts">
+        <div class="q-opt" onclick="ans(this,false,'q4')">A. Na gains 1 electron → Na⁻; Cl loses 1 electron → Cl⁺</div>
+        <div class="q-opt" onclick="ans(this,true,'q4')">B. Na loses 1 electron → Na⁺; Cl gains 1 electron → Cl⁻</div>
+        <div class="q-opt" onclick="ans(this,false,'q4')">C. Both Na and Cl share electrons equally</div>
+        <div class="q-opt" onclick="ans(this,false,'q4')">D. Na loses 2 electrons → Na²⁺; Cl gains 2 electrons → Cl²⁻</div>
+      </div>
+      <div class="q-exp" id="e-q4">✅ Metals (Na) LOSE electrons → form positive ions (cations). Non-metals (Cl) GAIN electrons → form negative ions (anions). Na (2,8,1) loses 1e⁻ → Na⁺ (2,8). Cl (2,8,7) gains 1e⁻ → Cl⁻ (2,8,8). Both achieve noble gas configuration.</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:20px;">
+    <div id="q-info" style="color:#64748b;font-size:22px;margin-bottom:12px;">Question 1 of 4</div>
+    <button class="btn btn-amber" id="q-next" style="display:none;" onclick="nextQ()">Next Question →</button>
+  </div>
+</div>
+</div>
+
+<!-- NAVIGATION BAR -->
+<div class="nav-bar">
+  <button class="btn" id="prev-btn" onclick="go(-1)" disabled>◀ Prev</button>
+  <button class="btn-reset" onclick="resetAll()">⟳ Reset</button>
+  <div class="nav-title" id="nav-title">Introduction</div>
+  <div class="nav-counter" id="nav-ctr">1 / 12</div>
+  <button class="btn" id="next-btn" onclick="go(1)">Next ▶</button>
+</div>
+
+<script>
+const scenes = [
+  {id:'s1', title:'Introduction'},
+  {id:'s2', title:'Physical Properties'},
+  {id:'s3', title:'Chemical Properties'},
+  {id:'s4', title:'Reaction with O₂'},
+  {id:'s5', title:'Reactivity Series'},
+  {id:'s6', title:'Non-metals'},
+  {id:'s7', title:'Ionic Bonding'},
+  {id:'s8', title:'Extraction'},
+  {id:'s9', title:'Corrosion & Alloys'},
+  {id:'s10', title:'Indian Context'},
+  {id:'s11', title:'Summary'},
+  {id:'s12', title:'Quiz'}
+];
+let cur = 0;
+
+function showScene(n){
+  document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));
+  document.getElementById(scenes[n].id).classList.add('active');
+  document.getElementById('nav-title').textContent = scenes[n].title;
+  document.getElementById('nav-ctr').textContent = (n+1)+' / '+scenes.length;
+  document.getElementById('prev-btn').disabled = (n===0);
+  document.getElementById('next-btn').disabled = (n===scenes.length-1);
+  cur=n;
+}
+function go(d){if(cur+d>=0&&cur+d<scenes.length)showScene(cur+d);}
+
+// Rxn steps
+let rxnN=1;
+function nextRxn(){
+  if(rxnN<3){
+    rxnN++;
+    document.querySelectorAll('[id^="r"]').forEach(e=>{if(/^r\d$/.test(e.id))e.classList.remove('on');});
+    document.getElementById('r'+rxnN).classList.add('on');
+    document.getElementById('rxn-ind').textContent='Step '+rxnN+' of 3';
+    if(rxnN===3)document.getElementById('rxn-btn').disabled=true;
+  }
+}
+// Ion steps
+let ionN=1;
+function nextIon(){
+  if(ionN<3){
+    ionN++;
+    document.querySelectorAll('[id^="i"]').forEach(e=>{if(/^i\d$/.test(e.id))e.classList.remove('on');});
+    document.getElementById('i'+ionN).classList.add('on');
+    document.getElementById('ion-ind').textContent='Step '+ionN+' of 3';
+    if(ionN===3)document.getElementById('ion-btn').disabled=true;
+  }
+}
+// Summary steps
+let sumN=1;
+function nextSum(){
+  if(sumN<6){
+    sumN++;
+    document.getElementById('sm'+sumN).classList.add('on');
+    document.getElementById('sum-ind').textContent='Point '+sumN+' of 6';
+    if(sumN===6)document.getElementById('sum-btn').disabled=true;
+  }
+}
+// Quiz
+let qN=1;
+function ans(btn,correct,qid){
+  document.querySelectorAll('#'+qid+' .q-opt').forEach(o=>o.onclick=null);
+  btn.classList.add(correct?'correct':'wrong');
+  document.getElementById('e-'+qid).style.display='block';
+  document.getElementById('q-next').style.display = qN<4?'inline-block':'none';
+  if(qN>=4) document.getElementById('q-info').textContent='🎉 Quiz Complete!';
+}
+function nextQ(){
+  document.getElementById('q'+qN).style.display='none';
+  qN++;
+  document.getElementById('q'+qN).style.display='block';
+  document.getElementById('q-info').textContent='Question '+qN+' of 4';
+  document.getElementById('q-next').style.display='none';
+}
+
+function resetAll(){
+  rxnN=1; ionN=1; sumN=1; qN=1;
+  document.querySelectorAll('.step').forEach(e=>e.classList.remove('on'));
+  ['r1','i1','sm1'].forEach(id=>{let el=document.getElementById(id);if(el)el.classList.add('on');});
+  ['rxn-btn','ion-btn','sum-btn'].forEach(id=>{let el=document.getElementById(id);if(el)el.disabled=false;});
+  document.getElementById('rxn-ind').textContent='Step 1 of 3';
+  document.getElementById('ion-ind').textContent='Step 1 of 3';
+  document.getElementById('sum-ind').textContent='Point 1 of 6';
+  document.querySelectorAll('.quiz-slide').forEach(e=>e.style.display='none');
+  document.getElementById('q1').style.display='block';
+  document.getElementById('q-info').textContent='Question 1 of 4';
+  document.getElementById('q-next').style.display='none';
+  document.querySelectorAll('.q-opt').forEach(o=>{
+    o.classList.remove('correct','wrong');
+    let qid=o.closest('.quiz-slide').id;
+    let correct=o.textContent.startsWith('C')||o.textContent.includes('displaces')
+      ||o.textContent.includes('more reactive')
+      ||o.textContent.includes('loses 1 electron → Na⁺');
+  });
+  document.querySelectorAll('.q-exp').forEach(e=>e.style.display='none');
+  // Re-wire quiz clicks
+  wireQuiz();
+  showScene(0);
+}
+function wireQuiz(){
+  document.querySelectorAll('#q1 .q-opt').forEach((o,i)=>{o.onclick=()=>ans(o,i===2,'q1');});
+  document.querySelectorAll('#q2 .q-opt').forEach((o,i)=>{o.onclick=()=>ans(o,i===1,'q2');});
+  document.querySelectorAll('#q3 .q-opt').forEach((o,i)=>{o.onclick=()=>ans(o,i===1,'q3');});
+  document.querySelectorAll('#q4 .q-opt').forEach((o,i)=>{o.onclick=()=>ans(o,i===1,'q4');});
+}
+function toggleFS(){
+  if(!document.fullscreenElement)document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')go(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')go(-1);
+  if(e.key==='f'||e.key==='F')toggleFS();
+});
+</script>
+</body>
+</html>

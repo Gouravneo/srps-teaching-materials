@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Class 10 Chemistry – Metals & Non-metals | Lab Simulations</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0a0f1e;color:#e2e8f0;font-family:'Segoe UI',Arial,sans-serif;overflow:hidden;width:100vw;height:100vh;user-select:none;}
+
+/* ── SCENE SYSTEM ── */
+.scene{display:none;width:100vw;height:100vh;flex-direction:column;}
+.scene.active{display:flex;}
+
+/* ── HOME ── */
+#home{align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 30%,#0f2044,#0a0f1e);}
+.home-title{font-size:48px;color:#fbbf24;font-weight:bold;text-align:center;margin-bottom:8px;}
+.home-sub{font-size:22px;color:#64748b;margin-bottom:36px;text-align:center;}
+.exp-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;max-width:1200px;}
+.exp-card{background:rgba(30,41,59,0.8);border:2px solid #1e293b;border-radius:14px;padding:24px 16px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.exp-card:hover{transform:translateY(-5px);border-color:#38bdf8;background:rgba(30,58,95,0.9);}
+.exp-icon{font-size:52px;margin-bottom:12px;}
+.exp-title{font-size:19px;color:#38bdf8;font-weight:bold;margin-bottom:6px;}
+.exp-desc{font-size:15px;color:#64748b;line-height:1.4;}
+
+/* ── SIMULATION LAYOUT ── */
+.sim-wrap{display:flex;flex:1;overflow:hidden;}
+.sim-canvas-area{flex:1;position:relative;display:flex;align-items:center;justify-content:center;}
+.sim-canvas-area canvas{display:block;}
+.sim-panel{width:360px;background:#0d1527;border-left:1px solid #1e293b;display:flex;flex-direction:column;padding:20px;overflow-y:auto;}
+
+/* ── SIM HEADER ── */
+.sim-header{background:#0d1527;border-bottom:1px solid #1e293b;padding:12px 24px;display:flex;align-items:center;gap:16px;}
+.back-btn{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:8px 16px;font-size:17px;border-radius:7px;cursor:pointer;}
+.back-btn:hover{color:#e2e8f0;background:#334155;}
+.sim-name{font-size:26px;color:#38bdf8;font-weight:bold;}
+.sim-chapter{font-size:16px;color:#475569;margin-left:auto;}
+
+/* ── PANEL ELEMENTS ── */
+.panel-title{font-size:20px;color:#fbbf24;font-weight:bold;margin-bottom:10px;margin-top:16px;}
+.panel-title:first-child{margin-top:0;}
+.metal-btn{width:100%;padding:10px 14px;border-radius:8px;border:2px solid transparent;font-size:18px;cursor:pointer;margin-bottom:7px;text-align:left;font-weight:bold;transition:all 0.15s;}
+.metal-btn:hover{filter:brightness(1.2);}
+.metal-btn.selected{border-color:#ffffff;box-shadow:0 0 8px rgba(255,255,255,0.3);}
+.action-btn{width:100%;padding:12px;border-radius:9px;border:none;font-size:19px;font-weight:bold;cursor:pointer;margin-top:8px;transition:all 0.15s;}
+.action-btn:hover{filter:brightness(1.1);}
+.action-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.action-btn.green{background:#059669;color:#fff;}
+.action-btn.red{background:#dc2626;color:#fff;}
+.action-btn.blue{background:#2563eb;color:#fff;}
+.action-btn.amber{background:#d97706;color:#fff;}
+.action-btn.reset{background:#1e293b;color:#94a3b8;border:1px solid #334155;}
+
+.eq-box{background:#1e293b;border-radius:8px;padding:12px 14px;margin:8px 0;font-family:'Courier New',monospace;font-size:17px;color:#fbbf24;border-left:3px solid #fbbf24;line-height:1.5;}
+.obs-box{background:#071a10;border-radius:8px;padding:12px 14px;margin:8px 0;font-size:17px;color:#86efac;border-left:3px solid #10b981;line-height:1.5;}
+.info-box{background:#1e3a5f;border-radius:8px;padding:12px 14px;margin:8px 0;font-size:16px;color:#93c5fd;line-height:1.6;}
+.warn-box{background:#451a03;border-radius:8px;padding:10px 14px;margin:8px 0;font-size:16px;color:#fcd34d;border-left:3px solid #f59e0b;}
+.hidden{display:none;}
+
+/* ── SLIDER ── */
+.slider-wrap{margin:10px 0;}
+.slider-wrap label{font-size:17px;color:#94a3b8;display:block;margin-bottom:4px;}
+input[type=range]{width:100%;height:6px;border-radius:3px;background:#1e293b;outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{width:20px;height:20px;border-radius:50%;background:#38bdf8;cursor:pointer;-webkit-appearance:none;}
+
+/* ── FULLSCREEN BTN ── */
+.fs-btn{position:fixed;top:12px;right:12px;background:rgba(30,41,59,0.85);border:1px solid #334155;color:#64748b;padding:8px 14px;font-size:16px;border-radius:7px;cursor:pointer;z-index:999;}
+.fs-btn:hover{color:#e2e8f0;}
+
+/* ── STATUS DOT ── */
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;}
+</style>
+</head>
+<body>
+<button class="fs-btn" onclick="toggleFS()">⛶</button>
+
+<!-- ═══════════════════════════ HOME ═══════════════════════════ -->
+<div class="scene active" id="home">
+  <div class="home-title">🔬 Chemistry Lab Simulations</div>
+  <div class="home-sub">Class 10 · NCERT Chapter 3 · Metals and Non-metals · Karnataka KTBS</div>
+  <div class="exp-grid">
+    <div class="exp-card" onclick="startSim('sim1')">
+      <div class="exp-icon">⚗️</div>
+      <div class="exp-title">Metal + Acid Lab</div>
+      <div class="exp-desc">Drop 8 different metals into HCl — watch bubbles, dissolving, explosions by reactivity</div>
+    </div>
+    <div class="exp-card" onclick="startSim('sim2')">
+      <div class="exp-icon">🪙</div>
+      <div class="exp-title">Displacement Reaction</div>
+      <div class="exp-desc">Dip Fe nail in CuSO₄ — solution turns green, copper deposits on nail in real time</div>
+    </div>
+    <div class="exp-card" onclick="startSim('sim3')">
+      <div class="exp-icon">⚛️</div>
+      <div class="exp-title">Ionic Bond — NaCl</div>
+      <div class="exp-desc">Watch the electron fly from Na to Cl, ions form, and the ionic bond snap together</div>
+    </div>
+    <div class="exp-card" onclick="startSim('sim4')">
+      <div class="exp-icon">🔥</div>
+      <div class="exp-title">Mg Burning in Air</div>
+      <div class="exp-desc">Light magnesium ribbon — see the dazzling white flame and MgO smoke particles</div>
+    </div>
+    <div class="exp-card" onclick="startSim('sim5')">
+      <div class="exp-icon">🦀</div>
+      <div class="exp-title">Rusting Experiment</div>
+      <div class="exp-desc">3 test tubes, drag the time slider — watch rust form only where O₂ + moisture meet</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ SIM 1: METAL + HCl ═══════════════════════════ -->
+<div class="scene" id="sim1">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <span class="sim-name">⚗️ Metal + HCl Reactivity Lab</span>
+    <span class="sim-chapter">NCERT Activity 3.2 · Reactivity Series</span>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c1" width="820" height="560"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">Choose a Metal</div>
+      <button class="metal-btn" style="background:#7f1d1d;color:#fca5a5;" onclick="selectMetal('K','Potassium','#fca5a5',5,'2K + 2HCl → 2KCl + H₂↑','EXPLOSIVE — violent reaction, burns with lilac flame! Na/K stored in kerosene.',true)">K — Potassium</button>
+      <button class="metal-btn" style="background:#7f1d1d;color:#fca5a5;" onclick="selectMetal('Na','Sodium','#fca5a5',4.5,'2Na + 2HCl → 2NaCl + H₂↑','Very vigorous reaction. Na melts into ball, floats, hisses violently.',true)">Na — Sodium</button>
+      <button class="metal-btn" style="background:#92400e;color:#fcd34d;" onclick="selectMetal('Mg','Magnesium','#fcd34d',3.5,'Mg + 2HCl → MgCl₂ + H₂↑','Rapid reaction — bubbles vigorously, Mg ribbon dissolves quickly.',false)">Mg — Magnesium</button>
+      <button class="metal-btn" style="background:#92400e;color:#fcd34d;" onclick="selectMetal('Al','Aluminium','#fcd34d',3,'2Al + 6HCl → 2AlCl₃ + 3H₂↑','Moderate reaction — aluminium dissolves, steady H₂ bubbles.',false)">Al — Aluminium</button>
+      <button class="metal-btn" style="background:#713f12;color:#fde68a;" onclick="selectMetal('Zn','Zinc','#fde68a',2.5,'Zn + H₂SO₄ → ZnSO₄ + H₂↑','Moderate reaction — zinc piece slowly dissolves.',false)">Zn — Zinc</button>
+      <button class="metal-btn" style="background:#166534;color:#86efac;" onclick="selectMetal('Fe','Iron','#86efac',1.8,'Fe + 2HCl → FeCl₂ + H₂↑','Slow reaction — iron reacts slowly with dilute HCl.',false)">Fe — Iron</button>
+      <button class="metal-btn" style="background:#1e3a5f;color:#93c5fd;" onclick="selectMetal('Cu','Copper','#93c5fd',0,'Cu + HCl → No reaction','Copper does NOT react with dilute HCl — below H in reactivity series.',false)">Cu — Copper</button>
+      <button class="metal-btn" style="background:#1e293b;color:#94a3b8;" onclick="selectMetal('Au','Gold','#e2e8f0',0,'Au + HCl → No reaction','Gold does NOT react — least reactive metal. Used in jewellery for this reason.',false)">Au — Gold</button>
+      <button class="action-btn green" id="btn-add" onclick="addMetalToAcid()" disabled>Add to HCl →</button>
+      <button class="action-btn reset" onclick="resetSim1()">↺ Reset</button>
+      <div id="eq1" class="eq-box hidden"></div>
+      <div id="obs1" class="obs-box hidden"></div>
+      <div class="info-box" style="margin-top:12px;">💡 H₂ gas burns with a <strong>pop sound</strong> — burning splint test. Metals above H in reactivity series react; below H (Cu, Au) do not.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ SIM 2: DISPLACEMENT ═══════════════════════════ -->
+<div class="scene" id="sim2">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <span class="sim-name">🪙 Displacement Reaction — Fe + CuSO₄</span>
+    <span class="sim-chapter">NCERT Activity 3.4 · Reactivity Series</span>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c2" width="820" height="560"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">Experiment Steps</div>
+      <div class="info-box">Beaker contains <strong>blue CuSO₄ solution</strong>. Fe is more reactive than Cu — it will displace Cu from solution.</div>
+      <button class="action-btn green" id="btn-dip" onclick="dipNail()">Dip Fe nail into solution</button>
+      <div class="slider-wrap" id="time-wrap" style="display:none;">
+        <label>Time: <span id="time-val">0</span> min (drag to speed up)</label>
+        <input type="range" id="time-slider" min="0" max="20" value="0" oninput="setDisplacementTime(this.value)">
+      </div>
+      <button class="action-btn reset" onclick="resetSim2()">↺ Reset</button>
+      <div id="eq2" class="eq-box hidden">Fe + CuSO₄ → FeSO₄ + Cu</div>
+      <div id="obs2" class="obs-box hidden"></div>
+      <div class="info-box" style="margin-top:8px;">Try also:<br><strong style="color:#fbbf24;">Zn + CuSO₄ → ZnSO₄ + Cu</strong><br><strong style="color:#f87171;">Cu + FeSO₄ → No reaction</strong><br><span style="font-size:15px;">(Cu less reactive than Fe)</span></div>
+      <div class="warn-box">⚠️ The solution colour change from blue → green proves the reaction has occurred (FeSO₄ is green/pale).</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ SIM 3: IONIC BOND ═══════════════════════════ -->
+<div class="scene" id="sim3">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <span class="sim-name">⚛️ Ionic Bond Formation — NaCl</span>
+    <span class="sim-chapter">NCERT Section 3.4 · Bonding</span>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c3" width="820" height="560"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">Follow the Steps</div>
+      <div class="info-box" id="ion-info-box">Na has <strong style="color:#fbbf24;">1</strong> outer electron (2,8,1). Cl needs <strong style="color:#86efac;">1</strong> more electron (2,8,7).<br><br>Click the button to transfer the electron.</div>
+      <button class="action-btn amber" id="btn-transfer" onclick="transferElectron()">⚡ Transfer Electron</button>
+      <button class="action-btn blue" id="btn-attract" onclick="attractIons()" disabled>🔗 Form Ionic Bond</button>
+      <button class="action-btn reset" onclick="resetSim3()">↺ Reset</button>
+      <div id="eq3" class="eq-box hidden"></div>
+      <div id="obs3" class="obs-box hidden"></div>
+      <div class="info-box" style="margin-top:10px;font-size:15px;">
+        <strong>Rule:</strong> Metals LOSE electrons → cations (+)<br>
+        Non-metals GAIN electrons → anions (−)<br><br>
+        <strong>Why?</strong> To achieve stable noble gas configuration (8 outer electrons = octet)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ SIM 4: MG BURNING ═══════════════════════════ -->
+<div class="scene" id="sim4">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <span class="sim-name">🔥 Magnesium Burning in Air</span>
+    <span class="sim-chapter">NCERT Activity 3.1 · Metal + Oxygen</span>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c4" width="820" height="560"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">Experiment Controls</div>
+      <div class="info-box">Mg ribbon held in tongs over a Bunsen burner. <strong>Warning: never look directly at the flame</strong> — it can damage eyes.</div>
+      <button class="action-btn amber" id="btn-ignite" onclick="igniteMg()">🔥 Ignite Bunsen Burner</button>
+      <button class="action-btn red" id="btn-burn" onclick="burnMg()" disabled>Hold Mg in flame</button>
+      <button class="action-btn reset" onclick="resetSim4()">↺ Reset</button>
+      <div id="eq4" class="eq-box hidden"></div>
+      <div id="obs4" class="obs-box hidden"></div>
+      <div class="info-box" style="margin-top:10px;">
+        <strong style="color:#fbbf24;">Products:</strong><br>
+        🔥 Bright white/dazzling flame<br>
+        ⚪ White powder (MgO)<br>
+        The white MgO is a <strong>basic oxide</strong> — dissolves in water to form Mg(OH)₂
+      </div>
+      <div class="warn-box">⚠️ MgO + H₂O → Mg(OH)₂ (base)<br>Turns red litmus paper BLUE</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ SIM 5: RUSTING ═══════════════════════════ -->
+<div class="scene" id="sim5">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <span class="sim-name">🦀 Rusting Experiment — Conditions for Corrosion</span>
+    <span class="sim-chapter">NCERT Activity 3.9 · Corrosion</span>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c5" width="820" height="560"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">Experiment Setup</div>
+      <div class="info-box">Three test tubes with iron nails. Watch what happens over time. Which conditions cause rusting?</div>
+      <div style="background:#1e293b;border-radius:8px;padding:12px;margin:8px 0;font-size:16px;line-height:1.8;">
+        <div><span class="dot" style="background:#3b82f6;"></span><strong style="color:#38bdf8;">Tube A:</strong> Iron nail + Dry air (cotton stopper — keeps moisture out)</div>
+        <div style="margin-top:6px;"><span class="dot" style="background:#10b981;"></span><strong style="color:#86efac;">Tube B:</strong> Iron nail + Boiled water (sealed — O₂ removed)</div>
+        <div style="margin-top:6px;"><span class="dot" style="background:#ef4444;"></span><strong style="color:#f87171;">Tube C:</strong> Iron nail + Normal water + Air (both O₂ and moisture present)</div>
+      </div>
+      <div class="slider-wrap">
+        <label>Time: <span id="rust-days">0</span> days</label>
+        <input type="range" id="rust-slider" min="0" max="10" value="0" oninput="setRustTime(this.value)">
+      </div>
+      <button class="action-btn reset" onclick="resetSim5()">↺ Reset (0 days)</button>
+      <div id="obs5" class="obs-box hidden"></div>
+      <div class="eq-box">4Fe + 3O₂ + xH₂O → 2Fe₂O₃·xH₂O<br><span style="color:#94a3b8;font-size:14px;">(Rust = hydrated iron oxide)</span></div>
+      <div class="warn-box">⚠️ Conclusion: Rusting needs <strong>BOTH</strong> oxygen AND moisture. Either alone is not enough.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ JAVASCRIPT ═══════════════════════════ -->
+<script>
+/* ─── GLOBAL ─── */
+function toggleFS(){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
+function goHome(){stopAll();document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));document.getElementById('home').classList.add('active');}
+function startSim(id){document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');initSim(id);}
+document.addEventListener('keydown',e=>{if(e.key==='f'||e.key==='F')toggleFS();if(e.key==='Escape')goHome();});
+
+let animId = null;
+function stopAll(){if(animId){cancelAnimationFrame(animId);animId=null;}}
+
+/* ─── PARTICLE BASE ─── */
+class Particle{
+  constructor(x,y){this.x=x;this.y=y;this.alive=true;}
+  isDead(){return!this.alive;}
+}
+
+/* ─── BUBBLE ─── */
+class Bubble extends Particle{
+  constructor(x,y,speed){
+    super(x,y);
+    this.vx=(Math.random()-0.5)*0.6;
+    this.vy=-(speed*(0.6+Math.random()*0.8));
+    this.r=2+Math.random()*4;
+    this.alpha=0.8;
+    this.wobble=Math.random()*Math.PI*2;
+    this.wobbleSpeed=0.04+Math.random()*0.04;
+    this.killY=0;
+  }
+  update(){
+    this.wobble+=this.wobbleSpeed;
+    this.x+=Math.sin(this.wobble)*0.7+this.vx;
+    this.y+=this.vy;
+    if(this.y<this.killY)this.alpha-=0.08;
+    if(this.alpha<=0)this.alive=false;
+  }
+  draw(ctx){
+    ctx.save();ctx.globalAlpha=this.alpha;
+    ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.strokeStyle='rgba(180,230,255,0.9)';ctx.lineWidth=1.2;ctx.stroke();
+    ctx.fillStyle='rgba(180,230,255,0.15)';ctx.fill();
+    ctx.restore();
+  }
+}
+
+/* ─── FLAME PARTICLE ─── */
+class FlameP extends Particle{
+  constructor(x,y,color){
+    super(x,y);
+    this.vx=(Math.random()-0.5)*1.5;
+    this.vy=-(1.5+Math.random()*3);
+    this.life=1.0;
+    this.r=4+Math.random()*10;
+    this.color=color||'255,180,0';
+  }
+  update(){this.x+=this.vx;this.y+=this.vy;this.vy*=0.97;this.life-=0.025;this.r*=0.97;if(this.life<=0)this.alive=false;}
+  draw(ctx){
+    ctx.save();ctx.globalAlpha=this.life*0.9;
+    ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${this.color},${this.life})`;ctx.fill();
+    ctx.restore();
+  }
+}
+
+/* ─── SPARK ─── */
+class Spark extends Particle{
+  constructor(x,y){
+    super(x,y);
+    const a=Math.random()*Math.PI*2;
+    const s=2+Math.random()*5;
+    this.vx=Math.cos(a)*s;this.vy=Math.sin(a)*s-2;
+    this.life=1.0;this.gravity=0.12;
+    this.trail=[];
+  }
+  update(){
+    this.trail.push({x:this.x,y:this.y});
+    if(this.trail.length>8)this.trail.shift();
+    this.vx*=0.96;this.vy+=this.gravity;
+    this.x+=this.vx;this.y+=this.vy;
+    this.life-=0.03;
+    if(this.life<=0)this.alive=false;
+  }
+  draw(ctx){
+    ctx.save();
+    for(let i=0;i<this.trail.length-1;i++){
+      const t=this.trail[i],n=this.trail[i+1];
+      ctx.beginPath();ctx.moveTo(t.x,t.y);ctx.lineTo(n.x,n.y);
+      ctx.strokeStyle=`rgba(255,200,50,${(i/this.trail.length)*this.life})`;
+      ctx.lineWidth=1.5;ctx.stroke();
+    }
+    ctx.globalAlpha=this.life;
+    ctx.beginPath();ctx.arc(this.x,this.y,1.5,0,Math.PI*2);
+    ctx.fillStyle='#fff';ctx.fill();
+    ctx.restore();
+  }
+}
+
+/* ─── SMOKE ─── */
+class Smoke extends Particle{
+  constructor(x,y){
+    super(x,y);
+    this.vx=(Math.random()-0.5)*0.8;
+    this.vy=-(0.4+Math.random()*0.8);
+    this.r=3+Math.random()*6;
+    this.life=0.6+Math.random()*0.4;
+    this.growRate=0.3+Math.random()*0.3;
+  }
+  update(){this.x+=this.vx;this.y+=this.vy;this.r+=this.growRate;this.life-=0.008;if(this.life<=0)this.alive=false;}
+  draw(ctx){
+    ctx.save();ctx.globalAlpha=this.life*0.4;
+    ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(240,240,240,1)';ctx.fill();
+    ctx.restore();
+  }
+}
+
+/* ─── COPPER DEPOSIT PARTICLE ─── */
+class CopperDot extends Particle{
+  constructor(x,y){
+    super(x,y);
+    this.alpha=1;
+    this.size=2+Math.random()*3;
+    this.finalY=y+Math.random()*4-2;
+    this.vy=0.5+Math.random()*1;
+  }
+  update(){if(this.y<this.finalY){this.y+=this.vy;}else{this.y=this.finalY;}}
+  draw(ctx){
+    ctx.save();ctx.globalAlpha=this.alpha;
+    ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctx.fillStyle='#b45309';ctx.fill();
+    ctx.restore();
+  }
+}
+
+/* ══════════════════════════════════════════════
+   SIM 1 — METAL + ACID
+══════════════════════════════════════════════ */
+let s1={metal:null,speed:0,reacting:false,explodes:false,particles:[],metalY:0,metalAlpha:1,metalSize:40,time:0,done:false};
+
+function selectMetal(sym,name,col,speed,eq,obs,explodes){
+  s1.metal={sym,name,col,speed,eq,obs};s1.explodes=explodes;s1.speed=speed;
+  document.querySelectorAll('.metal-btn').forEach(b=>{b.classList.remove('selected');if(b.textContent.startsWith(sym+' '))b.classList.add('selected');});
+  document.getElementById('btn-add').disabled=false;
+  document.getElementById('eq1').classList.add('hidden');
+  document.getElementById('obs1').classList.add('hidden');
+}
+
+function addMetalToAcid(){
+  if(!s1.metal||s1.reacting)return;
+  s1.reacting=true;s1.metalY=0;s1.metalAlpha=1;s1.metalSize=40;s1.time=0;s1.done=false;
+  s1.particles=[];
+  document.getElementById('btn-add').disabled=true;
+  document.getElementById('eq1').textContent=s1.metal.eq;document.getElementById('eq1').classList.remove('hidden');
+  document.getElementById('obs1').textContent=s1.metal.obs;document.getElementById('obs1').classList.remove('hidden');
+}
+
+function resetSim1(){
+  s1={metal:null,speed:0,reacting:false,explodes:false,particles:[],metalY:0,metalAlpha:1,metalSize:40,time:0,done:false};
+  document.querySelectorAll('.metal-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('btn-add').disabled=true;
+  document.getElementById('eq1').classList.add('hidden');
+  document.getElementById('obs1').classList.add('hidden');
+  drawSim1();
+}
+
+function drawSim1(){
+  const canvas=document.getElementById('c1'),ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  /* background gradient */
+  const bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#0f172a');bg.addColorStop(1,'#0a0f1e');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+
+  /* lab bench */
+  ctx.fillStyle='#1e293b';ctx.fillRect(0,H-60,W,60);
+  ctx.fillStyle='#334155';ctx.fillRect(0,H-62,W,3);
+
+  /* label */
+  ctx.fillStyle='rgba(100,116,139,0.6)';ctx.font='16px Segoe UI';
+  ctx.fillText('Dilute Hydrochloric Acid (HCl)',W/2-130,H-20);
+
+  /* -- draw 4 test tubes spaced out -- */
+  const tubes=[{x:160,label:'Mg',col:'#fcd34d'},{x:310,label:'Fe',col:'#86efac'},{x:460,label:'Cu',col:'#93c5fd'},{x:610,label:'Zn',col:'#fde68a'}];
+
+  /* Main big test tube in center for selected metal */
+  const TW=100,TH=280,TX=W/2-50,TY=H-340;
+  /* tube shadow */
+  ctx.shadowColor='rgba(56,189,248,0.2)';ctx.shadowBlur=20;
+  /* tube body */
+  ctx.beginPath();ctx.roundRect(TX,TY,TW,TH,0,0,50,50);
+  ctx.fillStyle='rgba(20,40,70,0.8)';ctx.fill();
+  ctx.strokeStyle='rgba(100,180,255,0.4)';ctx.lineWidth=2;ctx.stroke();
+  ctx.shadowBlur=0;
+
+  /* liquid level */
+  const liquidTop=TY+60,liquidBot=TY+TH-10;
+
+  /* HCl liquid */
+  ctx.beginPath();
+  ctx.roundRect(TX+2,liquidTop,TW-4,liquidBot-liquidTop,0,0,48,48);
+  ctx.fillStyle='rgba(147,197,253,0.12)';ctx.fill();
+  /* liquid surface shimmer */
+  ctx.beginPath();ctx.moveTo(TX+2,liquidTop);ctx.lineTo(TX+TW-2,liquidTop);
+  ctx.strokeStyle='rgba(147,197,253,0.4)';ctx.lineWidth=2;ctx.stroke();
+
+  /* tube highlight */
+  ctx.beginPath();ctx.moveTo(TX+8,TY+10);ctx.lineTo(TX+8,TY+TH-20);
+  ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=6;ctx.stroke();
+
+  /* tube label */
+  ctx.fillStyle='#94a3b8';ctx.font='bold 17px Segoe UI';ctx.textAlign='center';
+  ctx.fillText('HCl',TX+TW/2,TY-10);
+
+  /* metal chunk */
+  if(s1.metal){
+    const mx=TX+TW/2,my=liquidTop-10+Math.min(80,s1.metalY);
+    ctx.save();ctx.globalAlpha=s1.metalAlpha;
+    const sz=s1.metalSize;
+    /* metal shape */
+    ctx.beginPath();
+    if(s1.metal.sym==='Mg'||s1.metal.sym==='Al'){
+      /* ribbon/strip */
+      ctx.fillStyle=s1.metal.col;
+      ctx.fillRect(mx-6,my-sz/2,12,sz);
+      ctx.strokeStyle='rgba(255,255,255,0.3)';ctx.lineWidth=1;ctx.stroke();
+    } else {
+      ctx.roundRect(mx-sz/2,my-sz/2,sz,sz,6);
+      ctx.fillStyle=s1.metal.col;ctx.fill();
+      ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1.5;ctx.stroke();
+    }
+    ctx.fillStyle='rgba(255,255,255,0.15)';
+    if(s1.metal.sym==='Mg'||s1.metal.sym==='Al'){ctx.fillRect(mx-3,my-sz/2,4,sz);}
+    else{ctx.roundRect(mx-sz/2+4,my-sz/2+4,10,10,2);ctx.fill();}
+    ctx.font=`bold ${Math.max(10,sz*0.4)}px Segoe UI`;ctx.fillStyle='rgba(0,0,0,0.7)';
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(s1.metal.sym,mx,my);
+    ctx.restore();
+  }
+
+  /* particles */
+  s1.particles.forEach(p=>{if(p.isDead){}else p.draw(ctx);});
+
+  /* flash for explosive metals */
+  if(s1.explodes&&s1.reacting&&s1.time<8){
+    const fl=ctx.createRadialGradient(TX+TW/2,liquidTop,0,TX+TW/2,liquidTop,60+s1.time*5);
+    fl.addColorStop(0,`rgba(255,200,100,${0.4-s1.time*0.05})`);
+    fl.addColorStop(1,'rgba(255,100,0,0)');
+    ctx.fillStyle=fl;ctx.fillRect(0,0,W,H);
+  }
+
+  /* instruction text if no metal selected */
+  if(!s1.metal){
+    ctx.fillStyle='rgba(100,116,139,0.5)';ctx.font='20px Segoe UI';ctx.textAlign='center';
+    ctx.fillText('← Select a metal from the panel',W/2,H/2);
+  }
+
+  ctx.textAlign='left';
+}
+
+function updateSim1(){
+  if(!s1.reacting||s1.done)return;
+  s1.time++;
+  const liquidTop=document.getElementById('c1').height-340+60;
+  const liquidBot=document.getElementById('c1').height-340+280-10;
+  const mx=410;
+
+  /* metal drops in */
+  if(s1.metalY<60)s1.metalY+=3;
+
+  if(s1.speed>0){
+    /* bubbles */
+    const rate=Math.ceil(s1.speed*0.8);
+    for(let i=0;i<rate;i++){
+      if(Math.random()<0.7){
+        const b=new Bubble(mx+(Math.random()-0.5)*40,liquidBot-5,s1.speed);
+        b.killY=liquidTop;
+        s1.particles.push(b);
+      }
+    }
+    /* sparks/flames for explosive */
+    if(s1.explodes&&s1.time<60){
+      for(let i=0;i<4;i++)s1.particles.push(new Spark(mx+(Math.random()-0.5)*60,liquidTop));
+      s1.particles.push(new FlameP(mx+(Math.random()-0.5)*30,liquidTop,'255,100,0'));
+    }
+    /* dissolve metal */
+    s1.metalSize=Math.max(0,40-s1.time*s1.speed*0.15);
+    if(s1.metalSize<3)s1.metalAlpha-=0.05;
+    if(s1.metalAlpha<=0)s1.done=true;
+  } else {
+    /* no reaction — shake briefly */
+    if(s1.time<20){s1.metalY=60+Math.sin(s1.time*0.8)*3;}
+    if(s1.time>40)s1.done=true;
+  }
+
+  s1.particles=s1.particles.filter(p=>!p.isDead());
+}
+
+/* ══════════════════════════════════════════════
+   SIM 2 — DISPLACEMENT
+══════════════════════════════════════════════ */
+let s2={dipped:false,time:0,copperDots:[],nailY:-120,running:false};
+
+function dipNail(){
+  s2.dipped=true;s2.running=true;
+  document.getElementById('btn-dip').disabled=true;
+  document.getElementById('time-wrap').style.display='block';
+  document.getElementById('eq2').classList.remove('hidden');
+}
+
+function setDisplacementTime(val){
+  s2.time=parseInt(val);
+  document.getElementById('time-val').textContent=val;
+  document.getElementById('obs2').classList.remove('hidden');
+  const pct=s2.time/20;
+  if(pct<0.1)document.getElementById('obs2').textContent='No visible change yet...';
+  else if(pct<0.4)document.getElementById('obs2').textContent='Solution starting to turn lighter blue. Small reddish spots appearing on nail.';
+  else if(pct<0.7)document.getElementById('obs2').textContent='Solution turning green (FeSO₄ forming). Clear copper deposits visible on iron nail!';
+  else document.getElementById('obs2').textContent='Solution is light green. Nail is coated with red-brown copper metal. Reaction nearly complete.';
+}
+
+function resetSim2(){
+  s2={dipped:false,time:0,copperDots:[],nailY:-120,running:false};
+  document.getElementById('btn-dip').disabled=false;
+  document.getElementById('time-wrap').style.display='none';
+  document.getElementById('eq2').classList.add('hidden');
+  document.getElementById('obs2').classList.add('hidden');
+  document.getElementById('time-slider').value=0;
+  document.getElementById('time-val').textContent='0';
+}
+
+function lerpColor(c1,c2,t){
+  const r1=parseInt(c1.slice(1,3),16),g1=parseInt(c1.slice(3,5),16),b1=parseInt(c1.slice(5,7),16);
+  const r2=parseInt(c2.slice(1,3),16),g2=parseInt(c2.slice(3,5),16),b2=parseInt(c2.slice(5,7),16);
+  const r=Math.round(r1+(r2-r1)*t),g=Math.round(g1+(g2-g1)*t),b=Math.round(b1+(b2-b1)*t);
+  return `rgb(${r},${g},${b})`;
+}
+
+function drawSim2(){
+  const canvas=document.getElementById('c2'),ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#0f172a');bg.addColorStop(1,'#0a0f1e');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  /* bench */
+  ctx.fillStyle='#1e293b';ctx.fillRect(0,H-60,W,60);
+  ctx.fillStyle='#334155';ctx.fillRect(0,H-62,W,3);
+
+  /* beaker */
+  const BX=W/2-110,BY=H-340,BW=220,BH=240;
+  /* beaker body */
+  ctx.beginPath();
+  ctx.moveTo(BX,BY);ctx.lineTo(BX,BY+BH-20);
+  ctx.quadraticCurveTo(BX,BY+BH,BX+20,BY+BH);
+  ctx.lineTo(BX+BW-20,BY+BH);
+  ctx.quadraticCurveTo(BX+BW,BY+BH,BX+BW,BY+BH-20);
+  ctx.lineTo(BX+BW,BY);
+  ctx.strokeStyle='rgba(100,180,255,0.5)';ctx.lineWidth=3;ctx.stroke();
+  /* beaker spout */
+  ctx.beginPath();ctx.moveTo(BX+BW-20,BY);ctx.lineTo(BX+BW+10,BY-10);
+  ctx.strokeStyle='rgba(100,180,255,0.4)';ctx.lineWidth=3;ctx.stroke();
+
+  /* liquid — color interpolates from blue to green */
+  const pct=s2.time/20;
+  const liquidColor=lerpColor('#1e4a8f','#1a5c2a',pct);
+  const liquidAlpha=0.7+pct*0.1;
+  const liqTop=BY+40,liqBot=BY+BH-6;
+  ctx.beginPath();
+  ctx.moveTo(BX+3,liqTop);ctx.lineTo(BX+BW-3,liqTop);
+  ctx.lineTo(BX+BW-3,liqBot-18);
+  ctx.quadraticCurveTo(BX+BW-3,liqBot-2,BX+BW-21,liqBot-2);
+  ctx.lineTo(BX+21,liqBot-2);
+  ctx.quadraticCurveTo(BX+3,liqBot-2,BX+3,liqBot-18);
+  ctx.closePath();
+  ctx.fillStyle=liquidColor;ctx.globalAlpha=liquidAlpha;ctx.fill();ctx.globalAlpha=1;
+
+  /* liquid surface shimmer */
+  ctx.beginPath();ctx.moveTo(BX+3,liqTop);ctx.lineTo(BX+BW-3,liqTop);
+  ctx.strokeStyle=`rgba(${pct<0.5?'100,150,255':'100,200,120'},0.5)`;ctx.lineWidth=2;ctx.stroke();
+
+  /* CuSO4 label */
+  ctx.fillStyle='rgba(100,116,139,0.7)';ctx.font='16px Segoe UI';ctx.textAlign='center';
+  if(pct<0.3)ctx.fillText('CuSO₄ solution (blue)',W/2,BY+BH+20);
+  else if(pct<0.7)ctx.fillText('Colour changing → green (FeSO₄)',W/2,BY+BH+20);
+  else ctx.fillText('FeSO₄ solution (green/pale)',W/2,BY+BH+20);
+
+  /* iron nail */
+  if(s2.dipped){
+    const nailX=W/2;
+    const nailTop=BY-80;
+    const nailBot=liqTop+(liqBot-liqTop)*0.7;
+    /* nail shaft */
+    ctx.fillStyle='#94a3b8';
+    ctx.fillRect(nailX-4,nailTop,8,nailBot-nailTop);
+    /* nail point */
+    ctx.beginPath();ctx.moveTo(nailX-4,nailBot);ctx.lineTo(nailX+4,nailBot);ctx.lineTo(nailX,nailBot+20);ctx.closePath();
+    ctx.fillStyle='#94a3b8';ctx.fill();
+    /* nail head */
+    ctx.beginPath();ctx.arc(nailX,nailTop-5,10,0,Math.PI*2);
+    ctx.fillStyle='#64748b';ctx.fill();
+
+    /* copper deposits on nail — more as time passes */
+    const numDeposits=Math.floor(pct*60);
+    for(let i=0;i<numDeposits;i++){
+      const seed=i*137.5;
+      const dy=((seed%100)/100)*(nailBot-nailTop-20);
+      const side=(i%2)*2-1;
+      const dx=side*(4+((seed*7)%6));
+      ctx.beginPath();ctx.arc(nailX+dx,nailTop+dy,1.5+(i%3),0,Math.PI*2);
+      ctx.fillStyle=`rgba(${120+i%40},${60+i%20},0,0.85)`;ctx.fill();
+    }
+    /* copper layer thickening */
+    if(pct>0.3){
+      ctx.globalAlpha=(pct-0.3)*0.6;
+      ctx.fillStyle='#92400e';
+      ctx.fillRect(nailX-6,nailTop+10,12,nailBot-nailTop-20);
+      ctx.globalAlpha=1;
+    }
+    /* label */
+    ctx.fillStyle='#94a3b8';ctx.font='15px Segoe UI';ctx.textAlign='left';
+    ctx.fillText('Fe nail',nailX+16,nailTop+20);
+    if(pct>0.2){ctx.fillStyle='#92400e';ctx.fillText('Cu depositing →',nailX+16,nailTop+50);}
+  } else {
+    /* nail hovering above */
+    ctx.fillStyle='#64748b';ctx.font='18px Segoe UI';ctx.textAlign='center';
+    ctx.fillText('Click "Dip Fe nail" to start →',W/2,H/2);
+  }
+  ctx.textAlign='left';
+}
+
+/* ══════════════════════════════════════════════
+   SIM 3 — IONIC BOND
+══════════════════════════════════════════════ */
+let s3={phase:0,electronX:0,electronY:0,electronTarget:{x:0,y:0},transferring:false,attracting:false,naX:220,clX:600,ionFormed:false,bondFormed:false,angle:0,time:0};
+let eAnim=null;
+
+function transferElectron(){
+  if(s3.phase!==0)return;
+  s3.phase=1;s3.transferring=true;
+  document.getElementById('btn-transfer').disabled=true;
+  document.getElementById('eq3').textContent='Na (2,8,1) → Na⁺ + e⁻';
+  document.getElementById('eq3').classList.remove('hidden');
+  document.getElementById('obs3').textContent='Electron leaves Na outermost shell...';
+  document.getElementById('obs3').classList.remove('hidden');
+}
+
+function attractIons(){
+  if(s3.phase!==2)return;
+  s3.phase=3;s3.attracting=true;
+  document.getElementById('btn-attract').disabled=true;
+  document.getElementById('eq3').textContent='Na⁺ + Cl⁻ → NaCl (ionic compound)';
+  document.getElementById('obs3').textContent='Opposite charges attract — ionic bond forms!';
+}
+
+function resetSim3(){
+  s3={phase:0,electronX:0,electronY:0,electronTarget:{x:0,y:0},transferring:false,attracting:false,naX:220,clX:600,ionFormed:false,bondFormed:false,angle:0,time:0};
+  document.getElementById('btn-transfer').disabled=false;
+  document.getElementById('btn-attract').disabled=true;
+  document.getElementById('eq3').classList.add('hidden');
+  document.getElementById('obs3').classList.add('hidden');
+  document.getElementById('ion-info-box').textContent='Na has 1 outer electron (2,8,1). Cl needs 1 more electron (2,8,7). Click the button to transfer the electron.';
+}
+
+function drawAtom(ctx,cx,cy,symbol,shells,color,label,showGap,gapIdx){
+  const radii=[22,40,60,82];
+  /* nucleus */
+  const grad=ctx.createRadialGradient(cx,cy,0,cx,cy,22);
+  grad.addColorStop(0,color);grad.addColorStop(1,'rgba(0,0,0,0.5)');
+  ctx.beginPath();ctx.arc(cx,cy,22,0,Math.PI*2);ctx.fillStyle=grad;ctx.fill();
+  ctx.font='bold 18px Segoe UI';ctx.fillStyle='rgba(0,0,0,0.8)';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(symbol,cx,cy);
+
+  /* shells */
+  shells.forEach((count,si)=>{
+    const r=radii[si];
+    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(100,116,139,0.3)`;ctx.lineWidth=1;ctx.stroke();
+    const total=showGap&&si===shells.length-1?count+1:count;
+    for(let i=0;i<total;i++){
+      const skip=showGap&&si===shells.length-1&&i===gapIdx;
+      const angle=(2*Math.PI*i/total)-Math.PI/2;
+      const ex=cx+Math.cos(angle)*r,ey=cy+Math.sin(angle)*r;
+      if(skip){
+        ctx.beginPath();ctx.arc(ex,ey,5,0,Math.PI*2);
+        ctx.strokeStyle=`rgba(${color.match(/\d+/g).join(',')},0.5)`;ctx.lineWidth=1.5;ctx.setLineDash([2,2]);ctx.stroke();ctx.setLineDash([]);
+      } else {
+        ctx.beginPath();ctx.arc(ex,ey,5,0,Math.PI*2);
+        ctx.fillStyle=color;ctx.fill();
+        ctx.strokeStyle='rgba(255,255,255,0.3)';ctx.lineWidth=1;ctx.stroke();
+      }
+    }
+  });
+
+  /* label */
+  ctx.font='15px Segoe UI';ctx.fillStyle='#94a3b8';ctx.textAlign='center';ctx.textBaseline='top';
+  ctx.fillText(label,cx,cy+radii[shells.length-1]+8);
+}
+
+function drawSim3(){
+  const canvas=document.getElementById('c3'),ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#120a2e');bg.addColorStop(1,'#0a0f1e');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  ctx.textBaseline='alphabetic';
+
+  const ph=s3.phase,cx=W/2,cy=H/2-20;
+  const naX=s3.naX,clX=s3.clX;
+
+  if(ph<3){
+    /* Na atom */
+    const naShells=ph>=1?[2,8]:[2,8,1];
+    const naLabel=ph>=1?'Na⁺ (2,8)':'Na (2,8,1)';
+    const naColor=ph>=1?'rgba(251,191,36,1)':'rgba(251,191,36,0.8)';
+    drawAtom(ctx,naX,cy,'Na',naShells,naColor,naLabel,false,0);
+    if(ph>=1){
+      ctx.font='bold 22px Segoe UI';ctx.fillStyle='#fbbf24';ctx.textAlign='center';
+      ctx.fillText('Na⁺',naX,cy-90);
+      ctx.font='16px Segoe UI';ctx.fillStyle='#64748b';
+      ctx.fillText('Positive ion (cation)',naX,cy-68);
+    }
+
+    /* Cl atom */
+    const clShells=ph>=2?[2,8,8]:[2,8,7];
+    const clLabel=ph>=2?'Cl⁻ (2,8,8)':'Cl (2,8,7)';
+    const clColor=ph>=2?'rgba(134,239,172,1)':'rgba(134,239,172,0.8)';
+    drawAtom(ctx,clX,cy,'Cl',clShells,clColor,clLabel,ph<2,0);
+    if(ph>=2){
+      ctx.font='bold 22px Segoe UI';ctx.fillStyle='#86efac';ctx.textAlign='center';
+      ctx.fillText('Cl⁻',clX,cy-90);
+      ctx.font='16px Segoe UI';ctx.fillStyle='#64748b';
+      ctx.fillText('Negative ion (anion)',clX,cy-68);
+    }
+
+    /* flying electron */
+    if(ph===1&&s3.transferring){
+      ctx.beginPath();ctx.arc(s3.electronX,s3.electronY,7,0,Math.PI*2);
+      ctx.fillStyle='#fbbf24';ctx.fill();
+      ctx.strokeStyle='rgba(255,255,255,0.5)';ctx.lineWidth=1.5;ctx.stroke();
+      ctx.font='bold 10px Segoe UI';ctx.fillStyle='#0f172a';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText('e⁻',s3.electronX,s3.electronY);
+      ctx.textBaseline='alphabetic';
+    }
+
+    /* electric field lines when ions formed */
+    if(ph===2){
+      for(let a=0;a<6;a++){
+        const ang=a*Math.PI/3;
+        ctx.beginPath();ctx.moveTo(naX+70*Math.cos(ang),cy+70*Math.sin(ang));
+        ctx.lineTo(clX-70*Math.cos(ang),cy-70*Math.sin(ang));
+        ctx.strokeStyle='rgba(147,197,253,0.15)';ctx.lineWidth=1.5;ctx.stroke();
+      }
+      ctx.font='18px Segoe UI';ctx.fillStyle='#38bdf8';ctx.textAlign='center';
+      ctx.fillText('← electrostatic attraction →',cx,cy+110);
+      document.getElementById('btn-attract').disabled=false;
+      document.getElementById('obs3').textContent='Na⁺ and Cl⁻ formed! They attract each other. Click "Form Ionic Bond".';
+    }
+  }
+
+  /* phase 3: ions coming together */
+  if(ph===3){
+    const progress=Math.min(1,(s3.time-0)/60);
+    const gap=280*(1-progress)+60;
+    const nax=cx-gap/2,clx=cx+gap/2;
+    drawAtom(ctx,nax,cy,'Na',[2,8],'rgba(251,191,36,1)','Na⁺',false,0);
+    drawAtom(ctx,clx,cy,'Cl',[2,8,8],'rgba(134,239,172,1)','Cl⁻',false,0);
+    if(progress>0.9){
+      ctx.font='bold 28px Segoe UI';ctx.fillStyle='#fbbf24';ctx.textAlign='center';
+      ctx.fillText('NaCl formed!',cx,cy-100);
+      ctx.font='20px Segoe UI';ctx.fillStyle='#86efac';
+      ctx.fillText('Ionic bond — electrostatic attraction',cx,cy-72);
+      /* glow */
+      const glow=ctx.createRadialGradient(cx,cy,0,cx,cy,100);
+      glow.addColorStop(0,'rgba(251,191,36,0.15)');
+      glow.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=glow;ctx.fillRect(cx-120,cy-120,240,240);
+      document.getElementById('eq3').textContent='Na + Cl → NaCl (sodium chloride — table salt)';
+      document.getElementById('obs3').textContent='✅ Ionic bond formed! NaCl crystal lattice. High melting point, conducts when dissolved in water.';
+    }
+  }
+  ctx.textAlign='left';ctx.textBaseline='alphabetic';
+}
+
+function updateSim3(){
+  const canvas=document.getElementById('c3');
+  const naX=s3.naX,cy=canvas.height/2-20;
+  const clX=s3.clX;
+  /* electron start pos: outermost orbit of Na (r≈82, angle=-90°) */
+  if(s3.phase===1&&s3.transferring){
+    if(s3.electronX===0){s3.electronX=naX;s3.electronY=cy-82;}
+    const tx=clX,ty=cy-82;
+    s3.electronX+=(tx-s3.electronX)*0.05;
+    s3.electronY+=(ty-s3.electronY)*0.05;
+    if(Math.abs(s3.electronX-tx)<5){
+      s3.phase=2;s3.transferring=false;
+      document.getElementById('obs3').textContent='Electron reached Cl! Na⁺ and Cl⁻ formed.';
+    }
+  }
+  if(s3.phase===3){
+    s3.time++;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   SIM 4 — MG BURNING
+══════════════════════════════════════════════ */
+let s4={burnerLit:false,mgIgnited:false,particles:[],mgoParticles:[],burnTime:0,ribbonLen:120,phase:0};
+
+function igniteMg(){
+  s4.burnerLit=true;s4.phase=1;
+  document.getElementById('btn-ignite').disabled=true;
+  document.getElementById('btn-burn').disabled=false;
+  document.getElementById('obs4').textContent='Bunsen burner lit. Hold the Mg ribbon in the flame.';
+  document.getElementById('obs4').classList.remove('hidden');
+}
+
+function burnMg(){
+  s4.mgIgnited=true;s4.phase=2;
+  document.getElementById('btn-burn').disabled=true;
+  document.getElementById('eq4').textContent='2Mg + O₂ → 2MgO';
+  document.getElementById('eq4').classList.remove('hidden');
+  document.getElementById('obs4').textContent='🔥 Bright white dazzling flame! White MgO powder forms.';
+}
+
+function resetSim4(){
+  s4={burnerLit:false,mgIgnited:false,particles:[],mgoParticles:[],burnTime:0,ribbonLen:120,phase:0};
+  document.getElementById('btn-ignite').disabled=false;
+  document.getElementById('btn-burn').disabled=true;
+  document.getElementById('eq4').classList.add('hidden');
+  document.getElementById('obs4').classList.add('hidden');
+}
+
+function drawSim4(){
+  const canvas=document.getElementById('c4'),ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#0f0a00');bg.addColorStop(1,'#0a0f1e');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  /* bench */
+  ctx.fillStyle='#1e293b';ctx.fillRect(0,H-60,W,60);
+  ctx.fillStyle='#334155';ctx.fillRect(0,H-62,W,3);
+
+  /* label: O2 molecules in air */
+  for(let i=0;i<6;i++){
+    const ox=100+i*110,oy=80+Math.sin(i*1.3)*30;
+    ctx.beginPath();ctx.arc(ox,oy,12,0,Math.PI*2);
+    ctx.strokeStyle='rgba(239,68,68,0.3)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle='rgba(239,68,68,0.2)';ctx.fill();
+    ctx.font='13px Segoe UI';ctx.fillStyle='rgba(239,68,68,0.5)';ctx.textAlign='center';
+    ctx.fillText('O₂',ox,oy+4.5);
+  }
+  ctx.fillStyle='rgba(100,116,139,0.3)';ctx.font='15px Segoe UI';ctx.textAlign='left';
+  ctx.fillText('O₂ in air',30,30);
+
+  /* Bunsen burner */
+  const bx=W/2,bby=H-60;
+  /* base */
+  ctx.fillStyle='#334155';ctx.fillRect(bx-40,bby-20,80,20);
+  /* barrel */
+  ctx.fillStyle='#475569';ctx.fillRect(bx-16,bby-120,32,100);
+  /* air hole */
+  ctx.fillStyle='#1e293b';ctx.fillRect(bx-16,bby-80,8,16);
+  /* collar */
+  ctx.fillStyle='#64748b';ctx.fillRect(bx-20,bby-125,40,10);
+
+  /* burner flame */
+  if(s4.burnerLit){
+    for(let layer=0;layer<3;layer++){
+      const fh=40+layer*15;
+      const fw=18-layer*4;
+      const colors=['rgba(0,150,255,0.6)','rgba(100,180,255,0.5)','rgba(150,200,255,0.4)'];
+      ctx.beginPath();
+      ctx.moveTo(bx-fw,bby-125);
+      ctx.quadraticCurveTo(bx-fw,bby-125-fh,bx,bby-130-fh);
+      ctx.quadraticCurveTo(bx+fw,bby-125-fh,bx+fw,bby-125);
+      ctx.fillStyle=colors[layer];ctx.fill();
+    }
+  }
+
+  /* tongs + Mg ribbon */
+  const tongY=s4.phase>=2?H-280:H-320;
+  /* tong arms */
+  ctx.strokeStyle='#64748b';ctx.lineWidth=4;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(bx-30,tongY-100);ctx.lineTo(bx-8,tongY+20);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(bx+30,tongY-100);ctx.lineTo(bx+8,tongY+20);ctx.stroke();
+  ctx.lineWidth=2;
+
+  /* Mg ribbon */
+  if(s4.ribbonLen>5){
+    ctx.fillStyle='#d1d5db';
+    ctx.fillRect(bx-5,tongY-s4.ribbonLen,10,s4.ribbonLen);
+    /* shine */
+    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.fillRect(bx-2,tongY-s4.ribbonLen,3,s4.ribbonLen);
+    ctx.font='15px Segoe UI';ctx.fillStyle='#94a3b8';ctx.textAlign='center';
+    ctx.fillText('Mg ribbon',bx+50,tongY-s4.ribbonLen/2);
+    ctx.textAlign='left';
+  }
+
+  /* MG BURNING PARTICLES */
+  if(s4.mgIgnited){
+    /* white flash glow */
+    if(s4.burnTime<30){
+      const glow=ctx.createRadialGradient(bx,tongY,0,bx,tongY,100+s4.burnTime*3);
+      glow.addColorStop(0,`rgba(255,255,255,${0.4-s4.burnTime*0.012})`);
+      glow.addColorStop(0.4,`rgba(255,220,100,${0.3-s4.burnTime*0.008})`);
+      glow.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=glow;ctx.fillRect(bx-200,tongY-200,400,300);
+    }
+  }
+
+  /* particles */
+  s4.particles.forEach(p=>p.draw(ctx));
+  s4.mgoParticles.forEach(p=>p.draw(ctx));
+
+  /* labels */
+  if(s4.phase>=2&&s4.burnTime>20){
+    ctx.fillStyle='rgba(148,163,184,0.7)';ctx.font='16px Segoe UI';ctx.textAlign='center';
+    ctx.fillText('White MgO powder settling →',bx,H-80);
+    ctx.textAlign='left';
+  }
+
+  if(!s4.burnerLit){
+    ctx.fillStyle='rgba(100,116,139,0.4)';ctx.font='20px Segoe UI';ctx.textAlign='center';
+    ctx.fillText('← Click "Ignite Bunsen Burner" to start',W/2,H/2+30);ctx.textAlign='left';
+  }
+}
+
+function updateSim4(){
+  if(!s4.burnerLit)return;
+  const canvas=document.getElementById('c4');
+  const W=canvas.width,H=canvas.height;
+  const bx=W/2,tongY=s4.phase>=2?H-280:H-320;
+
+  /* burner idle flame particles */
+  if(s4.burnerLit&&!s4.mgIgnited&&Math.random()<0.3){
+    s4.particles.push(new FlameP(bx+(Math.random()-0.5)*12,H-165,'0,100,255'));
+  }
+
+  if(s4.mgIgnited){
+    s4.burnTime++;
+    s4.ribbonLen=Math.max(0,120-s4.burnTime*0.8);
+
+    /* white hot flame particles */
+    for(let i=0;i<8;i++){
+      const p=new FlameP(bx+(Math.random()-0.5)*25,tongY,'255,255,220');
+      p.vy=-(3+Math.random()*4);p.r=6+Math.random()*12;p.life=0.9;
+      s4.particles.push(p);
+    }
+    /* yellow outer flame */
+    for(let i=0;i<4;i++){
+      s4.particles.push(new FlameP(bx+(Math.random()-0.5)*35,tongY,'255,180,0'));
+    }
+    /* sparks */
+    if(s4.burnTime<80&&Math.random()<0.5)s4.particles.push(new Spark(bx+(Math.random()-0.5)*30,tongY));
+
+    /* MgO smoke/particles */
+    if(Math.random()<0.6){
+      const sm=new Smoke(bx+(Math.random()-0.5)*40,tongY-20);
+      sm.vx=(Math.random()-0.5)*2;sm.vy=-(0.3+Math.random()*0.5);
+      s4.mgoParticles.push(sm);
+    }
+    /* white MgO dots falling down */
+    if(Math.random()<0.3){
+      const dot={x:bx+(Math.random()-0.5)*80,y:tongY-40,vy:-1+Math.random()*3,vx:(Math.random()-0.5)*2,r:2+Math.random()*3,alpha:0.9,alive:true,
+        update(){this.y+=this.vy;this.vy+=0.05;this.x+=this.vx;if(this.y>H-60)this.alive=false;},
+        draw(c){c.save();c.globalAlpha=this.alpha;c.beginPath();c.arc(this.x,this.y,this.r,0,Math.PI*2);c.fillStyle='#e2e8f0';c.fill();c.restore();}
+      };
+      s4.mgoParticles.push(dot);
+    }
+    if(s4.burnTime>100){
+      document.getElementById('obs4').textContent='Mg completely burnt! White MgO ash remains. 2Mg + O₂ → 2MgO ✅';
+    }
+  }
+  s4.particles=s4.particles.filter(p=>!p.isDead());
+  s4.mgoParticles=s4.mgoParticles.filter(p=>p.alive!==false&&!p.isDead?.());
+}
+
+/* ══════════════════════════════════════════════
+   SIM 5 — RUSTING
+══════════════════════════════════════════════ */
+let s5={days:0};
+function setRustTime(val){
+  s5.days=parseInt(val);
+  document.getElementById('rust-days').textContent=val;
+  const obs=document.getElementById('obs5');
+  obs.classList.remove('hidden');
+  if(s5.days===0) obs.textContent='Day 0: All nails look the same — shiny iron.';
+  else if(s5.days<3) obs.textContent='Day '+s5.days+': Tube C nail starting to show slight discolouration. A and B still clean.';
+  else if(s5.days<6) obs.textContent='Day '+s5.days+': Tube C shows clear rust spots. Tubes A and B still completely rust-free.';
+  else if(s5.days<9) obs.textContent='Day '+s5.days+': Tube C nail heavily rusted (reddish-brown). A and B unchanged.';
+  else obs.textContent='Day '+s5.days+': Tube C nail severely rusted. A (dry) and B (no O₂) — still NO rust at all! Conclusion: Both O₂ AND H₂O needed.';
+  drawSim5();
+}
+function resetSim5(){s5.days=0;document.getElementById('rust-slider').value=0;document.getElementById('rust-days').textContent=0;document.getElementById('obs5').classList.add('hidden');drawSim5();}
+
+function drawNailWithRust(ctx,cx,cy,rustPct,tubeColor){
+  /* nail */
+  ctx.fillStyle='#94a3b8';
+  ctx.fillRect(cx-6,cy-70,12,140);
+  ctx.beginPath();ctx.moveTo(cx-6,cy+70);ctx.lineTo(cx+6,cy+70);ctx.lineTo(cx,cy+95);ctx.closePath();
+  ctx.fillStyle='#94a3b8';ctx.fill();
+  ctx.beginPath();ctx.arc(cx,cy-75,12,0,Math.PI*2);ctx.fillStyle='#64748b';ctx.fill();
+
+  if(rustPct>0){
+    /* rust overlay */
+    const rustStrength=Math.min(1,rustPct);
+    const segments=Math.floor(rustPct*12);
+    for(let i=0;i<segments;i++){
+      const seed=i*37;
+      const ry=cy-60+((seed%140));
+      const rx=cx+(((seed*7)%12)-6);
+      const rr=3+((seed*3)%6);
+      ctx.beginPath();ctx.arc(rx,ry,rr,0,Math.PI*2);
+      const r=Math.round(160+rustStrength*50),g=Math.round(40+rustStrength*20),b=0;
+      ctx.fillStyle=`rgba(${r},${g},${b},${0.7+rustStrength*0.3})`;ctx.fill();
+    }
+    /* overall tint */
+    ctx.globalAlpha=rustStrength*0.5;
+    ctx.fillStyle='#7f1d1d';
+    ctx.fillRect(cx-6,cy-70,12,140);
+    ctx.globalAlpha=1;
+  }
+}
+
+function drawSim5(){
+  const canvas=document.getElementById('c5'),ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#0f172a');bg.addColorStop(1,'#0a0f1e');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#1e293b';ctx.fillRect(0,H-60,W,60);
+  ctx.fillStyle='#334155';ctx.fillRect(0,H-62,W,3);
+
+  const tubes=[
+    {x:W*0.2,label:'Tube A',sublabel:'Dry air (no moisture)',col:'#38bdf8',waterH:0,sealed:'dry',rustF:0},
+    {x:W*0.5,label:'Tube B',sublabel:'Boiled water (no O₂)',col:'#86efac',waterH:120,sealed:'water',rustF:0},
+    {x:W*0.8,label:'Tube C',sublabel:'Water + Air (both!)',col:'#f87171',waterH:80,sealed:'open',rustF:Math.min(1,s5.days/8)},
+  ];
+
+  tubes.forEach(t=>{
+    const tx=t.x,ty=H-350;
+    const TW=100,TH=260;
+
+    /* tube shadow glow */
+    ctx.shadowColor=t.col;ctx.shadowBlur=12;
+    /* tube body */
+    ctx.beginPath();
+    ctx.moveTo(tx-TW/2,ty);ctx.lineTo(tx-TW/2,ty+TH-24);
+    ctx.quadraticCurveTo(tx-TW/2,ty+TH,tx,ty+TH+10);
+    ctx.quadraticCurveTo(tx+TW/2,ty+TH,tx+TW/2,ty+TH-24);
+    ctx.lineTo(tx+TW/2,ty);
+    ctx.strokeStyle=`rgba(${t.col.match(/\d+/g)||'100,180,255'},0.5)`;ctx.lineWidth=3;ctx.stroke();
+    ctx.shadowBlur=0;
+
+    /* highlight */
+    ctx.beginPath();ctx.moveTo(tx-TW/2+6,ty+10);ctx.lineTo(tx-TW/2+6,ty+TH-30);
+    ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=8;ctx.stroke();
+
+    /* water / dry air fill */
+    if(t.waterH>0){
+      const liqTop=ty+TH-10-t.waterH;
+      ctx.beginPath();
+      ctx.moveTo(tx-TW/2+2,liqTop);ctx.lineTo(tx+TW/2-2,liqTop);
+      ctx.lineTo(tx+TW/2-2,ty+TH-10);
+      ctx.quadraticCurveTo(tx+TW/2-2,ty+TH-2,tx+2,ty+TH+6);
+      ctx.quadraticCurveTo(tx-TW/2+2,ty+TH-2,tx-TW/2+2,ty+TH-10);
+      ctx.closePath();
+      ctx.fillStyle='rgba(30,60,100,0.5)';ctx.fill();
+      ctx.beginPath();ctx.moveTo(tx-TW/2+2,liqTop);ctx.lineTo(tx+TW/2-2,liqTop);
+      ctx.strokeStyle='rgba(147,197,253,0.4)';ctx.lineWidth=1.5;ctx.stroke();
+    }
+
+    /* stopper/cotton for tube A */
+    if(t.sealed==='dry'){
+      ctx.fillStyle='rgba(240,220,180,0.5)';
+      ctx.fillRect(tx-TW/2,ty-10,TW,16);
+      ctx.font='13px Segoe UI';ctx.fillStyle='rgba(200,180,140,0.7)';ctx.textAlign='center';
+      ctx.fillText('cotton',tx,ty-14+10);
+    }
+    /* sealed cap for tube B */
+    if(t.sealed==='water'){
+      ctx.fillStyle='#1e293b';ctx.fillRect(tx-TW/2,ty-12,TW,14);
+      ctx.strokeStyle='rgba(100,116,139,0.5)';ctx.lineWidth=2;ctx.strokeRect(tx-TW/2,ty-12,TW,14);
+      ctx.font='13px Segoe UI';ctx.fillStyle='rgba(100,116,139,0.7)';ctx.textAlign='center';
+      ctx.fillText('sealed',tx,ty-14+10);
+    }
+
+    /* nail with rust */
+    drawNailWithRust(ctx,tx,(ty+ty+TH)/2-10,t.rustF,t.col);
+
+    /* label */
+    ctx.font='bold 18px Segoe UI';ctx.fillStyle=t.col;ctx.textAlign='center';
+    ctx.fillText(t.label,tx,ty-22);
+    ctx.font='14px Segoe UI';ctx.fillStyle='#64748b';
+    ctx.fillText(t.sublabel,tx,ty-5);
+
+    /* result label */
+    if(s5.days>0){
+      if(t.rustF>0.05){
+        ctx.font='bold 16px Segoe UI';ctx.fillStyle='#f87171';
+        ctx.fillText('⚠️ RUSTING!',tx,ty+TH+30);
+      } else {
+        ctx.font='bold 16px Segoe UI';ctx.fillStyle='#86efac';
+        ctx.fillText('✅ No rust',tx,ty+TH+30);
+      }
+    }
+  });
+
+  /* day counter */
+  ctx.font='bold 24px Segoe UI';ctx.fillStyle='#fbbf24';ctx.textAlign='center';
+  ctx.fillText('Day '+s5.days,W/2,40);
+  ctx.textAlign='left';
+}
+
+/* ══════════════════════════════════════════════
+   MAIN LOOP
+══════════════════════════════════════════════ */
+function initSim(id){
+  stopAll();
+  if(id==='sim1'){resetSim1();loop1();}
+  else if(id==='sim2'){resetSim2();drawSim2();}
+  else if(id==='sim3'){resetSim3();loop3();}
+  else if(id==='sim4'){resetSim4();loop4();}
+  else if(id==='sim5'){resetSim5();}
+}
+
+function loop1(){
+  updateSim1();drawSim1();animId=requestAnimationFrame(loop1);
+}
+function loop3(){
+  updateSim3();drawSim3();animId=requestAnimationFrame(loop3);
+}
+function loop4(){
+  updateSim4();drawSim4();animId=requestAnimationFrame(loop4);
+}
+</script>
+</body>
+</html>
