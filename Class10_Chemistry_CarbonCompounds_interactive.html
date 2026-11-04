@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Class 10 | Carbon and Its Compounds | Interactive</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{background:#0a0f1e;color:#e2e8f0;font-family:'Segoe UI',Arial,sans-serif;display:flex;flex-direction:column;}
+/* NAV */
+.navbar{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;background:linear-gradient(135deg,#1e3a8a,#1e1b4b);border-bottom:2px solid #3730a3;flex-shrink:0;}
+.nav-title{font-size:17px;font-weight:bold;color:#fff;}
+.nav-sub{font-size:12px;color:#818cf8;margin-top:2px;}
+.scene-tabs{display:flex;gap:6px;flex-wrap:wrap;}
+.stab{padding:7px 14px;border-radius:20px;border:1.5px solid #1e293b;background:#0d1527;color:#475569;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.stab:hover{border-color:#334155;color:#94a3b8;}
+.stab.active{background:#059669;border-color:#34d399;color:#fff;}
+.stab.done{border-color:#1e4035;color:#34d399;}
+.fsbtn{background:rgba(30,41,59,0.8);border:1px solid #334155;color:#64748b;padding:7px 14px;font-size:13px;border-radius:7px;cursor:pointer;}
+/* MAIN */
+.main{flex:1;display:flex;overflow:hidden;}
+.content{flex:1;overflow-y:auto;padding:36px 56px;scrollbar-width:thin;scrollbar-color:#334155 transparent;}
+/* SIDEBAR */
+.sidebar{width:0;overflow:hidden;background:#0d1527;border-left:1.5px solid #1e293b;transition:width 0.3s;display:flex;flex-direction:column;flex-shrink:0;}
+.sidebar.open{width:360px;}
+.sb-head{display:flex;align-items:center;padding:16px 18px;border-bottom:1px solid #1e293b;background:linear-gradient(135deg,rgba(16,185,129,0.1),transparent);gap:10px;}
+.sb-emoji{font-size:30px;}
+.sb-title{font-size:18px;font-weight:bold;color:#34d399;flex:1;}
+.sb-close{background:none;border:none;color:#64748b;width:30px;height:30px;cursor:pointer;font-size:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.sb-close:hover{background:rgba(248,113,113,0.15);color:#f87171;}
+.sb-body{flex:1;overflow-y:auto;padding:18px;scrollbar-width:thin;scrollbar-color:#334155 transparent;font-size:15px;color:#cbd5e1;line-height:1.75;}
+/* SCENE */
+.scene{display:none;}
+.scene.active{display:block;}
+.scene-title{font-size:40px;font-weight:bold;color:#fff;margin-bottom:6px;}
+.scene-title em{color:#34d399;font-style:normal;}
+.scene-sub{font-size:17px;color:#64748b;margin-bottom:28px;}
+/* CONCEPT LINKS */
+.c{color:#34d399;border-bottom:2px dashed #34d399;cursor:pointer;font-weight:600;padding:0 2px;}
+.c:hover{background:rgba(52,211,153,0.1);border-radius:3px;}
+/* CARDS */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;}
+.card{background:#0d1527;border:1.5px solid #1e293b;border-radius:14px;padding:22px;transition:all 0.2s;cursor:pointer;position:relative;}
+.card:hover{border-color:#334155;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.4);}
+.card.revealed{border-color:rgba(52,211,153,0.4);background:rgba(5,150,105,0.06);}
+.card-icon{font-size:38px;margin-bottom:10px;}
+.card-title{font-size:18px;font-weight:bold;color:#e2e8f0;margin-bottom:8px;}
+.card-body{font-size:16px;color:#cbd5e1;line-height:1.65;}
+.card-hidden{display:none;margin-top:12px;padding-top:12px;border-top:1px solid #1e293b;}
+.card.revealed .card-hidden{display:block;}
+.click-hint{position:absolute;top:14px;right:14px;font-size:12px;color:#334155;font-weight:600;}
+.card.revealed .click-hint{color:#34d399;}
+/* BOXES */
+.keybox{background:rgba(52,211,153,0.07);border-left:4px solid #34d399;border-radius:0 10px 10px 0;padding:14px 20px;margin:14px 0;font-size:18px;color:#a7f3d0;}
+.infobox{background:rgba(99,102,241,0.08);border-left:4px solid #6366f1;border-radius:0 10px 10px 0;padding:14px 20px;margin:14px 0;font-size:18px;color:#c7d2fe;}
+.warnbox{background:rgba(251,191,36,0.08);border-left:4px solid #fbbf24;border-radius:0 10px 10px 0;padding:14px 20px;margin:14px 0;font-size:18px;color:#fde68a;}
+.eq{font-size:19px;color:#34d399;font-family:'Courier New',monospace;background:rgba(52,211,153,0.07);padding:10px 18px;border-radius:8px;margin:10px 0;display:inline-block;}
+p{font-size:18px;line-height:1.75;color:#cbd5e1;margin-bottom:12px;}
+h3{font-size:26px;font-weight:bold;color:#e2e8f0;margin:18px 0 12px;}
+table{width:100%;border-collapse:collapse;margin:14px 0;}
+th{background:rgba(99,102,241,0.2);color:#a5b4fc;padding:11px 15px;font-size:16px;text-align:left;}
+td{padding:10px 15px;font-size:16px;color:#cbd5e1;border-bottom:1px solid #1e293b;}
+/* CHAIN BUILDER */
+.chain-area{display:flex;align-items:center;gap:0;margin:20px 0;min-height:80px;flex-wrap:wrap;}
+.c-atom{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#059669,#047857);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:bold;color:#fff;flex-shrink:0;position:relative;animation:popIn 0.3s ease;}
+@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.c-bond{width:24px;height:4px;background:#34d399;flex-shrink:0;}
+.h-atom{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#1e40af);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold;color:#fff;animation:popIn 0.3s ease;}
+.chain-ctrl{display:flex;gap:12px;margin-top:16px;}
+.cbtn{padding:10px 22px;border-radius:8px;border:none;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.cbtn-g{background:#059669;color:#fff;}
+.cbtn-g:hover{background:#047857;}
+.cbtn-r{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);}
+.cbtn-r:hover{background:rgba(239,68,68,0.25);}
+.chain-info{font-size:17px;color:#94a3b8;margin-top:12px;}
+/* COMBUSTION DEMO */
+.comb-container{display:flex;gap:30px;margin:20px 0;align-items:flex-start;}
+.flame-card{flex:1;background:#0d1527;border:1.5px solid #1e293b;border-radius:14px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.flame-card:hover{transform:translateY(-2px);}
+.flame-card.active-blue{border-color:rgba(56,189,248,0.4);background:rgba(56,189,248,0.05);}
+.flame-card.active-yellow{border-color:rgba(251,191,36,0.4);background:rgba(251,191,36,0.05);}
+canvas{border-radius:10px;}
+.comb-info{flex:1;}
+/* SOAP DEMO */
+.soap-stage{background:#0d1527;border:1.5px solid #1e293b;border-radius:14px;padding:20px;text-align:center;margin:20px 0;}
+.soap-step-btn{padding:11px 24px;border-radius:8px;border:none;background:#059669;color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin:8px 4px;transition:all 0.2s;}
+.soap-step-btn:hover{background:#047857;}
+.soap-step-btn:disabled{background:#1e293b;color:#475569;cursor:not-allowed;}
+/* QUIZ */
+.quiz-q{background:#0d1527;border:1.5px solid #1e293b;border-radius:14px;padding:24px;margin-bottom:16px;}
+.quiz-q-text{font-size:19px;font-weight:bold;color:#e2e8f0;margin-bottom:16px;}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.quiz-opt{padding:12px 18px;border-radius:8px;border:1.5px solid #1e293b;background:#070c17;color:#94a3b8;font-size:16px;cursor:pointer;transition:all 0.2s;text-align:left;}
+.quiz-opt:hover{border-color:#334155;color:#e2e8f0;}
+.quiz-opt.correct{border-color:#34d399;background:rgba(52,211,153,0.1);color:#34d399;}
+.quiz-opt.wrong{border-color:#f87171;background:rgba(248,113,113,0.1);color:#f87171;}
+.quiz-opt.reveal{border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.05);color:#a7f3d0;}
+.quiz-explain{margin-top:12px;font-size:15px;color:#64748b;display:none;padding:10px 14px;background:rgba(99,102,241,0.07);border-radius:8px;}
+.quiz-explain.show{display:block;}
+#quiz-score{font-size:28px;font-weight:bold;color:#34d399;text-align:center;padding:20px;display:none;}
+/* SCENE NAV ARROWS */
+.scene-nav{display:flex;gap:12px;margin-top:28px;padding-top:20px;border-top:1px solid #1e293b;}
+.snbtn{padding:10px 24px;border-radius:8px;border:1.5px solid #1e293b;background:#0d1527;color:#64748b;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.snbtn:hover{border-color:#334155;color:#e2e8f0;}
+.snbtn-next{background:#059669;border-color:#34d399;color:#fff;}
+.snbtn-next:hover{background:#047857;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div>
+    <div class="nav-title">🖱 Carbon and Its Compounds — Interactive Lesson</div>
+    <div class="nav-sub">Class 10 · Chapter 4 · Click cards to explore · Green terms = instant explanation</div>
+  </div>
+  <div class="scene-tabs" id="scene-tabs">
+    <div class="stab active" onclick="goScene(1)">1. Carbon</div>
+    <div class="stab" onclick="goScene(2)">2. Special</div>
+    <div class="stab" onclick="goScene(3)">3. Allotropes</div>
+    <div class="stab" onclick="goScene(4)">4. Series</div>
+    <div class="stab" onclick="goScene(5)">5. Reactions</div>
+    <div class="stab" onclick="goScene(6)">6. Ethanol</div>
+    <div class="stab" onclick="goScene(7)">7. Soap</div>
+    <div class="stab" onclick="goScene(8)">8. Quiz</div>
+  </div>
+  <button class="fsbtn" onclick="document.documentElement.requestFullscreen()">⛶ Fullscreen</button>
+</div>
+
+<div class="main">
+<div class="content" id="content">
+
+<!-- ══ SCENE 1: CARBON IN DAILY LIFE ══ -->
+<div class="scene active" id="scene1">
+  <div class="scene-title">Carbon is <em>Everywhere</em></div>
+  <div class="scene-sub">Click each item to discover the carbon compound inside</div>
+
+  <div class="grid3" style="margin-bottom:20px;">
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">🍚</div>
+      <div class="card-title">Rice / Food</div>
+      <div class="card-body">Our main source of energy</div>
+      <div class="card-hidden">
+        <div class="eq">C₆H₁₂O₆ — Glucose</div>
+        Carbon compound! Every living thing is made of carbon-based molecules — proteins, carbohydrates, fats, DNA.
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">⛽</div>
+      <div class="card-title">LPG / Cooking Gas</div>
+      <div class="card-body">The gas we cook with every day</div>
+      <div class="card-hidden">
+        <div class="eq">C₃H₈ Propane + C₄H₁₀ Butane</div>
+        These are alkanes — saturated hydrocarbons. They burn well and release a lot of heat energy.
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">👕</div>
+      <div class="card-title">Nylon Clothes</div>
+      <div class="card-body">Synthetic fabric we wear</div>
+      <div class="card-hidden">
+        <div class="eq">Polyamide polymer</div>
+        A long-chain carbon compound! Polymers are giant carbon molecules made by joining thousands of small carbon units (monomers).
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">💎</div>
+      <div class="card-title">Diamond</div>
+      <div class="card-body">Hardest natural substance</div>
+      <div class="card-hidden">
+        <div class="eq">Pure Carbon — C</div>
+        Just carbon atoms arranged in a 3D tetrahedral network! No hydrogen, no other element. Same element as pencil lead (graphite) but completely different structure.
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">✏️</div>
+      <div class="card-title">Pencil Lead</div>
+      <div class="card-body">The 'lead' in pencils</div>
+      <div class="card-hidden">
+        <div class="eq">Pure Carbon — Graphite</div>
+        Also pure carbon! But in layered hexagonal sheets. The layers slide over each other — that's why it writes. Same element as diamond but totally different properties!
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">💊</div>
+      <div class="card-title">Paracetamol</div>
+      <div class="card-body">Common pain-relief medicine</div>
+      <div class="card-hidden">
+        <div class="eq">C₈H₉NO₂</div>
+        A carbon compound with nitrogen and oxygen too! Almost all medicines are organic (carbon-based) molecules designed to interact with our body's own carbon chemistry.
+      </div>
+    </div>
+  </div>
+
+  <div class="keybox">📌 <b>Organic Chemistry</b> = the study of carbon compounds. Carbon forms the basis of <span class="c" onclick="openC('catenation')">all living organisms</span> and millions of synthetic materials.</div>
+
+  <div class="scene-nav">
+    <button class="snbtn snbtn-next" onclick="goScene(2)">Next: Why Carbon is Special ▶</button>
+  </div>
+</div>
+
+<!-- ══ SCENE 2: WHY CARBON IS SPECIAL ══ -->
+<div class="scene" id="scene2">
+  <div class="scene-title">Why Carbon is <em>Special</em></div>
+  <div class="scene-sub">Two unique properties — tetravalency and catenation — explain everything</div>
+
+  <div class="grid2" style="margin-bottom:24px;">
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click to explore</span>
+      <div class="card-icon">4️⃣</div>
+      <div class="card-title">Tetravalency</div>
+      <div class="card-body">Carbon has 4 electrons in its outer shell. It needs 4 more to be stable.</div>
+      <div class="card-hidden">
+        <p>Carbon's electronic configuration is <b>2, 4</b>.</p>
+        <p>It needs 4 more electrons to complete its outer shell (need 8 total).</p>
+        <p>It can't easily gain 4 electrons (would become C⁴⁻ — very unstable)<br>
+        It can't easily lose 4 electrons (needs too much energy)</p>
+        <p><b>Solution:</b> Share electrons → <span class="c" onclick="openC('covalent-bond')">Covalent bonds</span>!</p>
+        <p>Carbon forms exactly <b>4 bonds</b> with other atoms → called tetravalency (tetra = 4).</p>
+        <div class="eq">CH₄ — carbon makes 4 bonds, one with each H</div>
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click to explore</span>
+      <div class="card-icon">🔗</div>
+      <div class="card-title">Catenation</div>
+      <div class="card-body">Carbon atoms can bond with each other to form chains, branches, and rings.</div>
+      <div class="card-hidden">
+        <p><b>Catenation</b> = ability of an element to bond with its own atoms.</p>
+        <p>Carbon does this better than any other element because:</p>
+        <ul style="font-size:16px;padding-left:20px;">
+          <li>C–C bonds are very stable</li>
+          <li>Carbon can form chains of hundreds of atoms</li>
+          <li>Can form straight chains, branched chains, and rings</li>
+        </ul>
+        <p>Silicon (Si) also shows some catenation but C–C bonds are much stronger than Si–Si.</p>
+        <div class="keybox" style="font-size:15px;">Result: Over <b>10 million</b> carbon compounds known! No other element comes close.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>How carbon bonds with other atoms:</h3>
+  <div class="grid3">
+    <div class="card card-g" onclick="revealCard(this)" style="border-color:rgba(52,211,153,0.3);">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-title">Single Bond (—)</div>
+      <div class="card-body">Share 1 pair of electrons. Found in all alkanes.</div>
+      <div class="card-hidden">
+        <svg width="100%" height="80" viewBox="0 0 200 80">
+          <circle cx="70" cy="40" r="22" fill="#059669"/><text x="70" y="46" text-anchor="middle" fill="white" font-size="14" font-weight="bold">C</text>
+          <line x1="92" y1="40" x2="108" y2="40" stroke="#34d399" stroke-width="4"/>
+          <circle cx="130" cy="40" r="22" fill="#1d4ed8"/><text x="130" y="46" text-anchor="middle" fill="white" font-size="14" font-weight="bold">H</text>
+          <text x="100" y="20" text-anchor="middle" fill="#94a3b8" font-size="12">C—H single bond</text>
+        </svg>
+        <b>Example:</b> CH₄ (methane) — C forms 4 single bonds with H<br>
+        Single bonds are <b>stronger than double bonds</b> individually but less reactive.
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)" style="border-color:rgba(56,189,248,0.3);">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-title">Double Bond (=)</div>
+      <div class="card-body">Share 2 pairs of electrons. Found in alkenes.</div>
+      <div class="card-hidden">
+        <svg width="100%" height="80" viewBox="0 0 200 80">
+          <circle cx="70" cy="40" r="22" fill="#059669"/><text x="70" y="46" text-anchor="middle" fill="white" font-size="14" font-weight="bold">C</text>
+          <line x1="92" y1="36" x2="108" y2="36" stroke="#38bdf8" stroke-width="3"/>
+          <line x1="92" y1="44" x2="108" y2="44" stroke="#38bdf8" stroke-width="3"/>
+          <circle cx="130" cy="40" r="22" fill="#059669"/><text x="130" y="46" text-anchor="middle" fill="white" font-size="14" font-weight="bold">C</text>
+          <text x="100" y="22" text-anchor="middle" fill="#38bdf8" font-size="12">C=C double bond</text>
+        </svg>
+        <b>Example:</b> CH₂=CH₂ (ethene)<br>
+        More reactive than single bond. Can undergo <span class="c" onclick="openC('addition-reaction')">addition reactions</span>.
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)" style="border-color:rgba(251,191,36,0.3);">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-title">Triple Bond (≡)</div>
+      <div class="card-body">Share 3 pairs of electrons. Found in alkynes.</div>
+      <div class="card-hidden">
+        <svg width="100%" height="80" viewBox="0 0 200 80">
+          <circle cx="70" cy="40" r="22" fill="#059669"/><text x="70" y="46" text-anchor="middle" fill="white" font-size="14" font-weight="bold">C</text>
+          <line x1="92" y1="34" x2="108" y2="34" stroke="#fbbf24" stroke-width="2.5"/>
+          <line x1="92" y1="40" x2="108" y2="40" stroke="#fbbf24" stroke-width="2.5"/>
+          <line x1="92" y1="46" x2="108" y2="46" stroke="#fbbf24" stroke-width="2.5"/>
+          <circle cx="130" cy="40" r="22" fill="#059669"/><text x="130" y="46" text-anchor="middle" fill="white" font-size="14" font-weight="bold">C</text>
+          <text x="100" y="22" text-anchor="middle" fill="#fbbf24" font-size="12">C≡C triple bond</text>
+        </svg>
+        <b>Example:</b> CH≡CH (ethyne / acetylene)<br>
+        Most reactive. Burns with an extremely hot flame → used in <b>welding</b>.
+      </div>
+    </div>
+  </div>
+
+  <div class="scene-nav">
+    <button class="snbtn" onclick="goScene(1)">◀ Back</button>
+    <button class="snbtn snbtn-next" onclick="goScene(3)">Next: Allotropes ▶</button>
+  </div>
+</div>
+
+<!-- ══ SCENE 3: ALLOTROPES ══ -->
+<div class="scene" id="scene3">
+  <div class="scene-title">Allotropes of <em>Carbon</em></div>
+  <div class="scene-sub">Same element, different arrangement → completely different properties! Click each to compare.</div>
+
+  <div class="grid3" style="margin-bottom:20px;">
+    <div class="card" onclick="revealCard(this)" style="border-color:rgba(251,191,36,0.3);">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">💎</div>
+      <div class="card-title">Diamond</div>
+      <div class="card-body">Hardest natural substance on Earth</div>
+      <div class="card-hidden">
+        <svg width="100%" height="110" viewBox="0 0 200 110">
+          <line x1="100" y1="10" x2="60" y2="50" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="100" y1="10" x2="140" y2="50" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="100" y1="10" x2="100" y2="70" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="60" y1="50" x2="140" y2="50" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="60" y1="50" x2="80" y2="100" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="140" y1="50" x2="120" y2="100" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="100" y1="70" x2="80" y2="100" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="100" y1="70" x2="120" y2="100" stroke="#94a3b8" stroke-width="2"/>
+          <circle cx="100" cy="10" r="7" fill="#e2e8f0"/><circle cx="60" cy="50" r="7" fill="#e2e8f0"/><circle cx="140" cy="50" r="7" fill="#e2e8f0"/>
+          <circle cx="100" cy="70" r="7" fill="#e2e8f0"/><circle cx="80" cy="100" r="7" fill="#e2e8f0"/><circle cx="120" cy="100" r="7" fill="#e2e8f0"/>
+        </svg>
+        <b>Structure:</b> Each C bonded to 4 C → 3D tetrahedral network<br><br>
+        <b>Properties:</b><br>
+        ✅ Hardest natural substance<br>
+        ✅ Transparent, high refractive index<br>
+        ❌ Does NOT conduct electricity (no free electrons)<br><br>
+        <b>Uses:</b> Cutting tools, drilling, jewellery, industrial abrasives<br><br>
+        <div class="infobox" style="font-size:14px;">Why so hard? Each C has 4 bonds → rigid 3D cage → nothing can scratch it!</div>
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)" style="border-color:rgba(56,189,248,0.3);">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">✏️</div>
+      <div class="card-title">Graphite</div>
+      <div class="card-body">Soft, slippery, conducts electricity</div>
+      <div class="card-hidden">
+        <svg width="100%" height="110" viewBox="0 0 200 110">
+          <!-- top layer -->
+          <polygon points="100,8 125,22 125,50 100,64 75,50 75,22" fill="none" stroke="#38bdf8" stroke-width="2"/>
+          <polygon points="125,22 150,8 150,36 125,50" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.6"/>
+          <!-- bottom layer shifted -->
+          <polygon points="100,30 125,44 125,72 100,86 75,72 75,44" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="100" y="102" text-anchor="middle" fill="#94a3b8" font-size="11">← layers slide →</text>
+        </svg>
+        <b>Structure:</b> Each C bonded to 3 C in hexagonal layers<br>
+        Layers held by weak forces → can slide!<br><br>
+        <b>Properties:</b><br>
+        ✅ Soft, good lubricant<br>
+        ✅ Good electrical conductor (free electrons between layers)<br>
+        ✅ Opaque, grey-black<br><br>
+        <b>Uses:</b> Pencil leads, electrode in electrolysis, lubricant, carbon brushes in motors<br><br>
+        <div class="infobox" style="font-size:14px;">Why does it conduct? The 4th electron of each C is free to move between layers!</div>
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)" style="border-color:rgba(52,211,153,0.3);">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">⚽</div>
+      <div class="card-title">Fullerene (C₆₀)</div>
+      <div class="card-body">Soccer ball-shaped carbon molecule</div>
+      <div class="card-hidden">
+        <svg width="100%" height="110" viewBox="0 0 200 110">
+          <circle cx="100" cy="55" r="45" fill="none" stroke="#334155" stroke-width="1.5"/>
+          <polygon points="100,15 120,28 115,52 85,52 80,28" fill="none" stroke="#34d399" stroke-width="1.5"/>
+          <polygon points="120,28 148,28 152,55 134,70 115,52" fill="none" stroke="#34d399" stroke-width="1.5" opacity="0.7"/>
+          <polygon points="85,52 115,52 118,76 100,90 82,76" fill="none" stroke="#34d399" stroke-width="1.5" opacity="0.9"/>
+          <text x="100" y="104" text-anchor="middle" fill="#94a3b8" font-size="11">60 carbon atoms</text>
+        </svg>
+        <b>Structure:</b> 60 C atoms in soccer ball shape<br>
+        Contains 20 hexagons + 12 pentagons<br><br>
+        <b>Properties:</b><br>
+        ✅ Hollow cage structure<br>
+        ✅ Can trap other atoms/molecules inside<br><br>
+        <b>Uses:</b> Nanotechnology, drug delivery (carry medicine to cancer cells), superconductors<br><br>
+        <div class="infobox" style="font-size:14px;">Named after Buckminster Fuller, an architect who designed geodesic dome buildings with similar shapes!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="keybox">🤔 <b>Big Question:</b> Diamond doesn't conduct electricity but graphite does. Both are pure carbon. <i>Why?</i><br>
+  → Diamond: each C uses all 4 electrons for bonds → no free electrons.<br>
+  → Graphite: each C uses only 3 electrons for bonds → 4th electron is free to conduct!</div>
+
+  <div class="scene-nav">
+    <button class="snbtn" onclick="goScene(2)">◀ Back</button>
+    <button class="snbtn snbtn-next" onclick="goScene(4)">Next: Homologous Series ▶</button>
+  </div>
+</div>
+
+<!-- ══ SCENE 4: HOMOLOGOUS SERIES BUILDER ══ -->
+<div class="scene" id="scene4">
+  <div class="scene-title"><em>Homologous Series</em> Builder</div>
+  <div class="scene-sub">Build carbon chains and discover the pattern — press + to add carbon atoms</div>
+
+  <div class="grid2">
+    <div>
+      <h3>Alkane Chain Builder</h3>
+      <div class="chain-area" id="chain-display"></div>
+      <div class="chain-ctrl">
+        <button class="cbtn cbtn-g" onclick="addCarbon()">+ Add Carbon (CH₂)</button>
+        <button class="cbtn cbtn-r" onclick="removeCarbon()">− Remove</button>
+        <button class="cbtn" style="background:#1e293b;color:#94a3b8;" onclick="resetChain()">↺ Reset</button>
+      </div>
+      <div class="chain-info" id="chain-info"></div>
+    </div>
+    <div>
+      <h3>What you're building:</h3>
+      <table>
+        <tr><th>n</th><th>Name</th><th>Formula</th><th>State</th></tr>
+        <tr id="row1" style="background:rgba(52,211,153,0.07);"><td><b>1</b></td><td>Methane</td><td>CH₄</td><td>Gas</td></tr>
+        <tr id="row2"><td>2</td><td>Ethane</td><td>C₂H₆</td><td>Gas</td></tr>
+        <tr id="row3"><td>3</td><td>Propane</td><td>C₃H₈</td><td>Gas</td></tr>
+        <tr id="row4"><td>4</td><td>Butane</td><td>C₄H₁₀</td><td>Gas/Liquid</td></tr>
+        <tr id="row5"><td>5</td><td>Pentane</td><td>C₅H₁₂</td><td>Liquid</td></tr>
+      </table>
+      <div class="keybox" style="font-size:16px;">Notice: each member adds <b>CH₂</b> (1 carbon + 2 hydrogen). Boiling point <b>increases</b> as chain gets longer. This is a <span class="c" onclick="openC('homologous-series')">homologous series</span>!</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:20px;">Alkenes and Alkynes follow the same pattern:</h3>
+  <div class="grid2">
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-title">Alkenes (C=C double bond)</div>
+      <div class="card-body">General formula: CₙH₂ₙ — always 2H fewer than alkane</div>
+      <div class="card-hidden">
+        <table>
+          <tr><th>n</th><th>Name</th><th>Formula</th><th>Use</th></tr>
+          <tr><td>2</td><td>Ethene</td><td>CH₂=CH₂</td><td>Polythene, PVC</td></tr>
+          <tr><td>3</td><td>Propene</td><td>CH₂=CH–CH₃</td><td>Polypropylene</td></tr>
+          <tr><td>4</td><td>Butene</td><td>CH₂=CH–CH₂–CH₃</td><td>Synthetic rubber</td></tr>
+        </table>
+        <div class="warnbox" style="font-size:14px;">Test: Alkenes <b>decolourize bromine water</b> (brown → colourless). Alkanes do NOT.</div>
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-title">Alkynes (C≡C triple bond)</div>
+      <div class="card-body">General formula: CₙH₂ₙ₋₂ — 4H fewer than alkane</div>
+      <div class="card-hidden">
+        <table>
+          <tr><th>n</th><th>Name</th><th>Formula</th><th>Use</th></tr>
+          <tr><td>2</td><td>Ethyne</td><td>CH≡CH</td><td>Welding (oxy-acetylene)</td></tr>
+          <tr><td>3</td><td>Propyne</td><td>CH≡C–CH₃</td><td>Organic synthesis</td></tr>
+        </table>
+        <div class="keybox" style="font-size:14px;">Ethyne burns at ~3,500°C with oxygen → hottest flame used in metal cutting and welding!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene-nav">
+    <button class="snbtn" onclick="goScene(3)">◀ Back</button>
+    <button class="snbtn snbtn-next" onclick="goScene(5)">Next: Reactions ▶</button>
+  </div>
+</div>
+
+<!-- ══ SCENE 5: REACTIONS ══ -->
+<div class="scene" id="scene5">
+  <div class="scene-title">Chemical <em>Reactions</em></div>
+  <div class="scene-sub">Click each reaction type to see what happens and why</div>
+
+  <div class="comb-container">
+    <div class="flame-card" id="flame-blue" onclick="showFlame('blue')">
+      <canvas id="canvas-blue" width="200" height="160"></canvas>
+      <div style="font-size:17px;font-weight:bold;color:#38bdf8;margin-top:8px;">Complete Combustion</div>
+      <div style="font-size:14px;color:#64748b;">Enough oxygen → blue flame</div>
+    </div>
+    <div class="flame-card" id="flame-yellow" onclick="showFlame('yellow')">
+      <canvas id="canvas-yellow" width="200" height="160"></canvas>
+      <div style="font-size:17px;font-weight:bold;color:#fbbf24;margin-top:8px;">Incomplete Combustion</div>
+      <div style="font-size:14px;color:#64748b;">Less oxygen → yellow, sooty flame</div>
+    </div>
+    <div class="comb-info" id="comb-info">
+      <div class="infobox">👆 Click a flame to see the reaction and products</div>
+    </div>
+  </div>
+
+  <div class="grid2" style="margin-top:16px;">
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">➕</div>
+      <div class="card-title">Addition Reaction</div>
+      <div class="card-body">Adding atoms across a double/triple bond. Unsaturated → saturated.</div>
+      <div class="card-hidden">
+        <div class="eq">CH₂=CH₂ + H₂ →(Ni)→ CH₃–CH₃</div>
+        <p>Ethene + Hydrogen → Ethane (using Nickel catalyst)</p>
+        <p><b>Hydrogenation</b> = adding H₂ across a double bond</p>
+        <p><b>Industrial use:</b> Vegetable oils (liquid, unsaturated) + H₂ → Vanaspati ghee (solid, saturated)</p>
+        <p>Also add halogens: CH₂=CH₂ + Cl₂ → CH₂Cl–CH₂Cl</p>
+        <div class="keybox" style="font-size:14px;">Only possible with <b>unsaturated</b> compounds! Saturated compounds can't do addition.</div>
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">🔄</div>
+      <div class="card-title">Substitution Reaction</div>
+      <div class="card-body">Replace one atom with another. Saturated compounds undergo this.</div>
+      <div class="card-hidden">
+        <div class="eq">CH₄ + Cl₂ →(hν)→ CH₃Cl + HCl</div>
+        <p>Methane + Chlorine → Chloromethane + Hydrogen chloride</p>
+        <p><b>hν</b> = sunlight (photochemical reaction)</p>
+        <p>One H in methane is replaced by Cl</p>
+        <p>Can continue: CH₃Cl → CH₂Cl₂ → CHCl₃ → CCl₄</p>
+        <div class="keybox" style="font-size:14px;"><b>Saturated</b> compounds undergo substitution (can't do addition — no double bond).</div>
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">🔴</div>
+      <div class="card-title">Oxidation</div>
+      <div class="card-body">Adding oxygen or removing hydrogen from a compound.</div>
+      <div class="card-hidden">
+        <div class="eq">C₂H₅OH + [O] → CH₃COOH</div>
+        <p>Ethanol → Ethanoic acid using KMnO₄ or K₂Cr₂O₇</p>
+        <p>These are <span class="c" onclick="openC('catalyst')">oxidising agents</span> — they provide oxygen</p>
+        <p>Colour change: KMnO₄ (purple) → colourless on reduction</p>
+        <div class="warnbox" style="font-size:14px;">This is the same process that happens when wine turns to vinegar — ethanol in wine gets oxidized to ethanoic acid!</div>
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">🌸</div>
+      <div class="card-title">Esterification</div>
+      <div class="card-body">Acid + Alcohol → Ester + Water. Esters have fruity smells!</div>
+      <div class="card-hidden">
+        <div class="eq">CH₃COOH + C₂H₅OH ⇌ CH₃COOC₂H₅ + H₂O</div>
+        <p>Ethanoic acid + Ethanol ⇌ Ethyl ethanoate + Water</p>
+        <p>Catalyst: conc. H₂SO₄ (acid catalyst)</p>
+        <p>⇌ means <b>reversible</b> — ester can also break back down with water (hydrolysis)</p>
+        <div class="keybox" style="font-size:14px;">Ethyl ethanoate smells like nail polish / pineapple! Used in perfumes and artificial flavours.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene-nav">
+    <button class="snbtn" onclick="goScene(4)">◀ Back</button>
+    <button class="snbtn snbtn-next" onclick="goScene(6)">Next: Ethanol ▶</button>
+  </div>
+</div>
+
+<!-- ══ SCENE 6: ETHANOL ══ -->
+<div class="scene" id="scene6">
+  <div class="scene-title">Ethanol — <em>Ethyl Alcohol</em></div>
+  <div class="scene-sub">Formula: C₂H₅OH · Click each property to explore</div>
+
+  <div class="grid3" style="margin-bottom:20px;">
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">🌡️</div>
+      <div class="card-title">Physical Properties</div>
+      <div class="card-body">What does ethanol look, smell, feel like?</div>
+      <div class="card-hidden">
+        <ul style="font-size:15px;padding-left:18px;">
+          <li>Colourless liquid at room temperature</li>
+          <li>Characteristic pleasant smell</li>
+          <li>Boiling point: <b>78°C</b> (much lower than water's 100°C)</li>
+          <li>Completely miscible with water (mixes in all proportions)</li>
+          <li>Lower density than water</li>
+          <li>Burns with a blue flame</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">⚗️</div>
+      <div class="card-title">Chemical Reactions</div>
+      <div class="card-body">What reactions does ethanol undergo?</div>
+      <div class="card-hidden">
+        <p><b>1. Combustion:</b></p>
+        <div class="eq" style="font-size:13px;">C₂H₅OH + 3O₂ → 2CO₂ + 3H₂O</div>
+        <p><b>2. With Na metal:</b></p>
+        <div class="eq" style="font-size:13px;">2C₂H₅OH + 2Na → 2C₂H₅ONa + H₂↑</div>
+        <p><b>3. Oxidation to ethanoic acid:</b></p>
+        <div class="eq" style="font-size:13px;">C₂H₅OH + [O] → CH₃COOH</div>
+        <p><b>4. Dehydration (conc. H₂SO₄, 170°C):</b></p>
+        <div class="eq" style="font-size:13px;">C₂H₅OH → CH₂=CH₂ + H₂O</div>
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">🔧</div>
+      <div class="card-title">Uses</div>
+      <div class="card-body">Where is ethanol used in real life?</div>
+      <div class="card-hidden">
+        <ul style="font-size:15px;padding-left:18px;">
+          <li><b>Antiseptic:</b> 70% ethanol solution kills bacteria (wound cleaning)</li>
+          <li><b>Solvent:</b> dissolves varnishes, perfumes, medicines</li>
+          <li><b>Fuel:</b> mixed with petrol (flex fuel) — cleaner than pure petrol</li>
+          <li><b>Beverages:</b> beer, wine, spirits (fermentation of sugars)</li>
+          <li><b>Thermometers:</b> coloured ethanol (doesn't freeze as easily as water)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card" onclick="revealCard(this)" style="border-color:rgba(248,113,113,0.3);">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">⚠️</div>
+      <div class="card-title" style="color:#f87171;">Harmful Effects</div>
+      <div class="card-body">What happens when ethanol is consumed?</div>
+      <div class="card-hidden">
+        <ul style="font-size:15px;padding-left:18px;">
+          <li>Affects the brain → slows thinking, coordination</li>
+          <li>Long-term: damages liver (cirrhosis)</li>
+          <li>Addictive substance</li>
+          <li>Causes road accidents (drunk driving)</li>
+        </ul>
+        <div class="warnbox" style="font-size:14px;">⚠️ <b>Denatured alcohol:</b> Methanol or other poisons added to ethanol to make it undrinkable (industrial use). Methanol causes permanent blindness even in small amounts!</div>
+      </div>
+    </div>
+    <div class="card" onclick="revealCard(this)" style="border-color:rgba(251,191,36,0.3);">
+      <span class="click-hint">👆 Click</span>
+      <div class="card-icon">🏭</div>
+      <div class="card-title">How is Ethanol Made?</div>
+      <div class="card-body">Fermentation of sugars</div>
+      <div class="card-hidden">
+        <div class="eq" style="font-size:14px;">C₆H₁₂O₆ →(yeast, 37°C)→ 2C₂H₅OH + 2CO₂</div>
+        <p>Glucose ferments with yeast (enzyme) at 37°C</p>
+        <p>Also by <b>hydration of ethene:</b></p>
+        <div class="eq" style="font-size:14px;">CH₂=CH₂ + H₂O →(H₃PO₄, 300°C)→ C₂H₅OH</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene-nav">
+    <button class="snbtn" onclick="goScene(5)">◀ Back</button>
+    <button class="snbtn snbtn-next" onclick="goScene(7)">Next: Soap Science ▶</button>
+  </div>
+</div>
+
+<!-- ══ SCENE 7: SOAP SCIENCE ══ -->
+<div class="scene" id="scene7">
+  <div class="scene-title">Soap <em>Science</em></div>
+  <div class="scene-sub">How does soap actually clean? Watch the micelle form step by step</div>
+
+  <div class="grid2">
+    <div>
+      <div class="soap-stage">
+        <canvas id="soap-canvas" width="380" height="260"></canvas>
+        <br>
+        <button class="soap-step-btn" id="sbtn1" onclick="soapStep(1)">Step 1: Add Soap to Water</button>
+        <button class="soap-step-btn" id="sbtn2" onclick="soapStep(2)" disabled>Step 2: Soap Meets Grease</button>
+        <button class="soap-step-btn" id="sbtn3" onclick="soapStep(3)" disabled>Step 3: Micelle Forms</button>
+        <button class="soap-step-btn" id="sbtn4" onclick="soapStep(4)" disabled>Step 4: Wash Away!</button>
+        <button class="cbtn cbtn-r" style="margin-top:8px;" onclick="soapReset()">↺ Reset Demo</button>
+      </div>
+    </div>
+    <div>
+      <h3>Making Soap: <span class="c" onclick="openC('saponification')">Saponification</span></h3>
+      <div class="keybox">Fat/Oil + NaOH → <b>Soap</b> + Glycerol<br>(heated together)</div>
+      <div class="card" onclick="revealCard(this)" style="margin-top:16px;">
+        <span class="click-hint">👆 Click</span>
+        <div class="card-title">Soap vs Detergent</div>
+        <div class="card-body">Why does soap fail in hard water?</div>
+        <div class="card-hidden">
+          <table style="font-size:14px;">
+            <tr><th>Soap</th><th>Detergent</th></tr>
+            <tr><td>From fat/oil + NaOH</td><td>From petrochemicals</td></tr>
+            <tr><td>❌ Fails in hard water (scum)</td><td>✅ Works in hard water</td></tr>
+            <tr><td>✅ Biodegradable</td><td>⚠️ Often non-biodegradable</td></tr>
+            <tr><td>Mild on skin</td><td>Can be harsh</td></tr>
+          </table>
+          <div class="warnbox" style="font-size:13px;margin-top:8px;">Hard water has Ca²⁺ and Mg²⁺ ions. These react with soap → insoluble scum: 2C₁₇H₃₅COONa + CaCl₂ → (C₁₇H₃₅COO)₂Ca↓ + 2NaCl</div>
+        </div>
+      </div>
+      <div id="soap-step-desc" style="margin-top:14px;font-size:16px;color:#94a3b8;line-height:1.65;">
+        Press "Step 1" to begin the demo →
+      </div>
+    </div>
+  </div>
+
+  <div class="scene-nav">
+    <button class="snbtn" onclick="goScene(6)">◀ Back</button>
+    <button class="snbtn snbtn-next" onclick="goScene(8)">Next: Quiz ▶</button>
+  </div>
+</div>
+
+<!-- ══ SCENE 8: QUIZ ══ -->
+<div class="scene" id="scene8">
+  <div class="scene-title">Quick <em>Quiz</em></div>
+  <div class="scene-sub">Test what you've learnt — click your answer</div>
+
+  <div id="quiz-score"></div>
+
+  <div class="quiz-q" id="q1">
+    <div class="quiz-q-text">1. Carbon forms covalent bonds because it has _____ electrons in its outer shell and cannot easily lose or gain all 4.</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="answer(this,'q1',false)">2 electrons</div>
+      <div class="quiz-opt" onclick="answer(this,'q1',true)">4 electrons</div>
+      <div class="quiz-opt" onclick="answer(this,'q1',false)">6 electrons</div>
+      <div class="quiz-opt" onclick="answer(this,'q1',false)">8 electrons</div>
+    </div>
+    <div class="quiz-explain" id="exp1">Carbon's configuration is 2,4 — 4 electrons in the outer shell. It needs 4 more to complete the shell. Gaining or losing 4 electrons requires too much energy, so it shares instead (covalent bond).</div>
+  </div>
+
+  <div class="quiz-q" id="q2">
+    <div class="quiz-q-text">2. Which of the following is an UNSATURATED hydrocarbon?</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="answer(this,'q2',false)">Methane (CH₄)</div>
+      <div class="quiz-opt" onclick="answer(this,'q2',false)">Ethane (C₂H₆)</div>
+      <div class="quiz-opt" onclick="answer(this,'q2',true)">Ethene (CH₂=CH₂)</div>
+      <div class="quiz-opt" onclick="answer(this,'q2',false)">Propane (C₃H₈)</div>
+    </div>
+    <div class="quiz-explain" id="exp2">Ethene has a C=C double bond → unsaturated. Methane, Ethane, and Propane all have only single bonds → saturated (alkanes).</div>
+  </div>
+
+  <div class="quiz-q" id="q3">
+    <div class="quiz-q-text">3. The property of carbon atoms to bond with each other is called:</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="answer(this,'q3',false)">Tetravalency</div>
+      <div class="quiz-opt" onclick="answer(this,'q3',true)">Catenation</div>
+      <div class="quiz-opt" onclick="answer(this,'q3',false)">Isomerism</div>
+      <div class="quiz-opt" onclick="answer(this,'q3',false)">Polymerisation</div>
+    </div>
+    <div class="quiz-explain" id="exp3">Catenation = ability to bond with its own atoms. This is what allows carbon to form long chains, branches and rings. Tetravalency = ability to form 4 bonds (with any atom).</div>
+  </div>
+
+  <div class="quiz-q" id="q4">
+    <div class="quiz-q-text">4. 3–4% solution of ethanoic acid in water is commonly known as:</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="answer(this,'q4',false)">Baking soda</div>
+      <div class="quiz-opt" onclick="answer(this,'q4',false)">Ethanol</div>
+      <div class="quiz-opt" onclick="answer(this,'q4',true)">Vinegar</div>
+      <div class="quiz-opt" onclick="answer(this,'q4',false)">Glacial acetic acid</div>
+    </div>
+    <div class="quiz-explain" id="exp4">Vinegar is 3–4% ethanoic acid (acetic acid) in water. Glacial acetic acid is the pure (100%) form which freezes at 17°C. Ethanol is C₂H₅OH (alcohol, not an acid).</div>
+  </div>
+
+  <div class="quiz-q" id="q5">
+    <div class="quiz-q-text">5. In a micelle, the hydrophobic tails of soap molecules point:</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="answer(this,'q5',false)">Outward toward water</div>
+      <div class="quiz-opt" onclick="answer(this,'q5',true)">Inward toward the grease/oil</div>
+      <div class="quiz-opt" onclick="answer(this,'q5',false)">In random directions</div>
+      <div class="quiz-opt" onclick="answer(this,'q5',false)">They dissolve in water directly</div>
+    </div>
+    <div class="quiz-explain" id="exp5">Hydrophobic tails "hate" water and "love" grease → they point inward, surrounding the grease droplet. Hydrophilic heads "love" water → they point outward. The micelle is then water-soluble and washes away!</div>
+  </div>
+
+  <div class="scene-nav">
+    <button class="snbtn" onclick="goScene(7)">◀ Back</button>
+    <button class="snbtn snbtn-next" onclick="showScore()">🎯 Show My Score</button>
+  </div>
+</div>
+
+</div><!-- end content -->
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <div class="sb-head">
+    <div class="sb-emoji" id="sb-emoji">⚛️</div>
+    <div class="sb-title" id="sb-title">Concept</div>
+    <button class="sb-close" onclick="closeSB()">✕</button>
+  </div>
+  <div class="sb-body" id="sb-body"></div>
+</div>
+</div><!-- end main -->
+
+<script>
+/* ══ SCENE NAVIGATION ══ */
+let currentScene = 1;
+function goScene(n) {
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+  document.getElementById('scene' + n).classList.add('active');
+  document.querySelectorAll('.stab').forEach((t,i) => {
+    t.classList.remove('active');
+    if (i < n - 1) t.classList.add('done'); else t.classList.remove('done');
+  });
+  document.querySelectorAll('.stab')[n-1].classList.add('active');
+  document.getElementById('content').scrollTop = 0;
+  currentScene = n;
+  if (n === 4 && !chainInit) initChain();
+  if (n === 5) initFlames();
+  if (n === 7) initSoap();
+}
+
+/* ══ CARD REVEAL ══ */
+function revealCard(card) {
+  card.classList.toggle('revealed');
+  const hint = card.querySelector('.click-hint');
+  if (hint) hint.textContent = card.classList.contains('revealed') ? '✓ Click to hide' : '👆 Click';
+}
+
+/* ══ CHAIN BUILDER ══ */
+let chainLen = 1, chainInit = false;
+const names = ['','Methane','Ethane','Propane','Butane','Pentane'];
+const formulas = ['','CH₄','C₂H₆','C₃H₈','C₄H₁₀','C₅H₁₂'];
+const states = ['','Gas (fuel)','Gas (fuel)','Gas (LPG, fuel)','Gas/Liquid (LPG, lighter)','Liquid (solvent, petrol)'];
+
+function initChain() {
+  chainInit = true;
+  chainLen = 1;
+  renderChain();
+}
+
+function renderChain() {
+  const d = document.getElementById('chain-display');
+  d.innerHTML = '';
+  for (let i = 0; i < chainLen; i++) {
+    if (i > 0) {
+      const bond = document.createElement('div');
+      bond.className = 'c-bond';
+      d.appendChild(bond);
+    }
+    const atom = document.createElement('div');
+    atom.className = 'c-atom';
+    const hCount = i === 0 ? (chainLen === 1 ? 4 : 3) : (i === chainLen - 1 ? 3 : 2);
+    atom.innerHTML = `C<sub style="font-size:10px;">H${hCount}</sub>`;
+    d.appendChild(atom);
+  }
+  const info = document.getElementById('chain-info');
+  info.innerHTML = `<b>${names[chainLen]}</b> — Formula: <b>${formulas[chainLen]}</b> — ${states[chainLen]}`;
+
+  for (let i = 1; i <= 5; i++) {
+    const row = document.getElementById('row' + i);
+    if (row) {
+      row.style.background = i === chainLen ? 'rgba(52,211,153,0.1)' : '';
+      row.style.color = i === chainLen ? '#a7f3d0' : '';
+    }
+  }
+}
+
+function addCarbon() {
+  if (chainLen < 5) { chainLen++; renderChain(); }
+}
+function removeCarbon() {
+  if (chainLen > 1) { chainLen--; renderChain(); }
+}
+function resetChain() { chainLen = 1; renderChain(); }
+
+/* ══ COMBUSTION FLAMES ══ */
+let flameAnims = {};
+function initFlames() {
+  drawStaticFlame('canvas-blue', '#38bdf8', '#3b82f6');
+  drawStaticFlame('canvas-yellow', '#fbbf24', '#f97316');
+}
+function drawStaticFlame(id, col1, col2) {
+  const c = document.getElementById(id);
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  const W = c.width, H = c.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#070c17'; ctx.fillRect(0, 0, W, H);
+  // burner
+  ctx.fillStyle = '#334155'; ctx.fillRect(W/2-30, H-30, 60, 20);
+  ctx.fillStyle = '#475569'; ctx.fillRect(W/2-12, H-80, 24, 50);
+  // flame
+  const g = ctx.createRadialGradient(W/2, H-90, 5, W/2, H-100, 50);
+  g.addColorStop(0, col1 + 'dd'); g.addColorStop(1, col2 + '00');
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.moveTo(W/2-20, H-80);
+  ctx.quadraticCurveTo(W/2-25, H-130, W/2, H-145);
+  ctx.quadraticCurveTo(W/2+25, H-130, W/2+20, H-80);
+  ctx.closePath(); ctx.fill();
+}
+function showFlame(type) {
+  const blueCard = document.getElementById('flame-blue');
+  const yellowCard = document.getElementById('flame-yellow');
+  const info = document.getElementById('comb-info');
+  blueCard.classList.remove('active-blue'); yellowCard.classList.remove('active-yellow');
+  if (type === 'blue') {
+    blueCard.classList.add('active-blue');
+    info.innerHTML = `<div class="keybox"><b>Complete Combustion</b></div>
+      <div class="eq">CH₄ + 2O₂ → CO₂ + 2H₂O + heat</div>
+      <ul style="font-size:16px;padding-left:20px;margin-top:8px;">
+        <li>Enough oxygen available</li>
+        <li>Products: CO₂ and H₂O (safe)</li>
+        <li>Blue, clean flame</li>
+        <li>Maximum heat energy released</li>
+        <li>Preferred for cooking</li>
+      </ul>`;
+  } else {
+    yellowCard.classList.add('active-yellow');
+    info.innerHTML = `<div class="warnbox"><b>Incomplete Combustion</b></div>
+      <div class="eq" style="color:#fbbf24;">2CH₄ + 3O₂ → 2CO + 4H₂O</div>
+      <ul style="font-size:16px;padding-left:20px;margin-top:8px;">
+        <li>Limited oxygen available</li>
+        <li>Products: CO (toxic!) + soot</li>
+        <li>Yellow/orange, smoky flame</li>
+        <li>Less heat energy released</li>
+        <li>⚠️ CO causes carbon monoxide poisoning!</li>
+      </ul>`;
+  }
+}
+
+/* ══ SOAP DEMO ══ */
+let soapStep_n = 0;
+function initSoap() {
+  const c = document.getElementById('soap-canvas');
+  if (!c) return;
+  drawSoapStep(0);
+}
+function drawSoapStep(n) {
+  const c = document.getElementById('soap-canvas');
+  const ctx = c.getContext('2d');
+  const W = c.width, H = c.height;
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#070c17'; ctx.fillRect(0, 0, W, H);
+
+  if (n === 0) {
+    ctx.fillStyle = '#1e293b'; ctx.fillRect(40, H/2-20, W-80, 60); ctx.fillRect(40, H/2+40, W-80, 20);
+    ctx.fillStyle = 'rgba(56,189,248,0.3)'; ctx.fillRect(40, H/2, W-80, 60);
+    ctx.fillStyle = '#38bdf8'; ctx.font = '16px Segoe UI'; ctx.textAlign = 'center';
+    ctx.fillText('Water in beaker', W/2, H/2 - 30);
+    ctx.fillStyle = '#94a3b8'; ctx.font = '14px Segoe UI';
+    ctx.fillText('Press Step 1 to add soap...', W/2, H - 20);
+  }
+  if (n >= 1) {
+    // beaker with water
+    ctx.fillStyle = 'rgba(56,189,248,0.2)'; ctx.fillRect(40, H/2, W-80, 70);
+    ctx.strokeStyle = '#475569'; ctx.lineWidth = 2;
+    ctx.strokeRect(40, H/2-30, W-80, 100);
+    // soap molecules scattered
+    for (let i = 0; i < 8; i++) {
+      const sx = 60 + i * 35, sy = H/2 - 10;
+      ctx.strokeStyle = '#64748b'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx, sy + 20); ctx.stroke();
+      ctx.beginPath(); ctx.arc(sx, sy - 8, 8, 0, Math.PI*2);
+      ctx.fillStyle = '#059669'; ctx.fill();
+    }
+    ctx.fillStyle = '#a7f3d0'; ctx.font = '14px Segoe UI'; ctx.textAlign = 'center';
+    ctx.fillText('Soap molecules in water', W/2, H - 20);
+  }
+  if (n >= 2) {
+    // grease droplet center
+    ctx.beginPath(); ctx.arc(W/2, H/2 + 35, 30, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(251,191,36,0.3)'; ctx.fill();
+    ctx.strokeStyle = 'rgba(251,191,36,0.5)'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = '#fbbf24'; ctx.font = '13px Segoe UI'; ctx.textAlign = 'center';
+    ctx.fillText('Grease', W/2, H/2 + 39);
+    ctx.fillStyle = '#94a3b8'; ctx.font = '14px Segoe UI';
+    ctx.fillText('Soap tails moving toward grease', W/2, H - 20);
+  }
+  if (n >= 3) {
+    // micelle formed
+    const mx = W/2, my = H/2 + 35;
+    for (let i = 0; i < 8; i++) {
+      const angle = (i / 8) * Math.PI * 2;
+      const hx = mx + Math.cos(angle) * 48, hy = my + Math.sin(angle) * 40;
+      const tx = mx + Math.cos(angle) * 28, ty = my + Math.sin(angle) * 22;
+      ctx.strokeStyle = '#64748b'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(hx, hy); ctx.stroke();
+      ctx.beginPath(); ctx.arc(hx + Math.cos(angle) * 10, hy + Math.sin(angle) * 10, 10, 0, Math.PI*2);
+      ctx.fillStyle = '#059669'; ctx.fill();
+    }
+    ctx.fillStyle = '#a7f3d0'; ctx.font = '14px Segoe UI'; ctx.textAlign = 'center';
+    ctx.fillText('Micelle formed! Grease trapped inside', W/2, H - 20);
+  }
+  if (n >= 4) {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#070c17'; ctx.fillRect(0, 0, W, H);
+    // clean water
+    ctx.fillStyle = 'rgba(56,189,248,0.3)'; ctx.fillRect(40, H/2, W-80, 70);
+    ctx.strokeStyle = '#475569'; ctx.lineWidth = 2; ctx.strokeRect(40, H/2-30, W-80, 100);
+    // micelle floating away
+    ctx.beginPath(); ctx.arc(W/2, H/2 + 35, 30, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(52,211,153,0.2)'; ctx.fill();
+    ctx.strokeStyle = '#34d399'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = '#34d399'; ctx.font = '13px Segoe UI'; ctx.textAlign = 'center';
+    ctx.fillText('✓ Clean!', W/2, H/2 + 39);
+    ctx.fillStyle = '#a7f3d0'; ctx.font = '15px Segoe UI'; ctx.fillText('Micelle washed away with water! 🎉', W/2, H - 20);
+  }
+}
+
+const soapDescs = [
+  '',
+  'Soap molecules dissolve in water. Each molecule has a <b>hydrophilic head</b> (ionic, loves water) and a <b>hydrophobic tail</b> (long carbon chain, hates water).',
+  'When grease is present, the hydrophobic tails point <b>toward the grease</b> (like dissolves like principle). The heads still face the water.',
+  'A <b>micelle</b> forms — soap molecules surround the grease droplet. Grease is trapped inside. The outer surface (ionic heads) makes it water-soluble.',
+  '<b>The micelle washes away!</b> When you rinse with water, the entire micelle (with grease inside) is carried away. Result: clean hands! ✅'
+];
+
+function soapStep(n) {
+  drawSoapStep(n);
+  document.getElementById('soap-step-desc').innerHTML = soapDescs[n];
+  document.getElementById('sbtn' + n).disabled = true;
+  if (n < 4) document.getElementById('sbtn' + (n+1)).disabled = false;
+}
+function soapReset() {
+  for (let i = 1; i <= 4; i++) {
+    const b = document.getElementById('sbtn' + i);
+    if (b) { b.disabled = i !== 1; }
+  }
+  drawSoapStep(0);
+  document.getElementById('soap-step-desc').innerHTML = 'Press "Step 1" to begin the demo →';
+}
+
+/* ══ QUIZ ══ */
+let scores = {}, totalQ = 5;
+function answer(opt, qId, correct) {
+  const q = document.getElementById(qId);
+  if (q.dataset.answered) return;
+  q.dataset.answered = '1';
+  const opts = q.querySelectorAll('.quiz-opt');
+  opts.forEach(o => {
+    o.style.pointerEvents = 'none';
+    if (o === opt) { o.classList.add(correct ? 'correct' : 'wrong'); }
+    else if (correct === false && o.dataset.correct) { o.classList.add('reveal'); }
+  });
+  if (correct) scores[qId] = 1;
+  document.getElementById('exp' + qId.slice(1)).classList.add('show');
+}
+function showScore() {
+  const total = Object.keys(scores).length;
+  const el = document.getElementById('quiz-score');
+  el.style.display = 'block';
+  if (total === 5) el.innerHTML = `🎉 Perfect Score! ${total}/5 — Excellent!`;
+  else if (total >= 3) el.innerHTML = `👍 Good job! ${total}/5 — Review the ones you missed above.`;
+  else el.innerHTML = `📖 ${total}/5 — Keep studying! Revisit the scenes above.`;
+  el.scrollIntoView({behavior:'smooth'});
+}
+
+/* ══ CONCEPT SIDEBAR ══ */
+const CONCEPTS = {
+  'covalent-bond': {emoji:'⚛️',title:'Covalent Bond',def:'A covalent bond forms when two atoms SHARE one or more pairs of electrons to complete their outer shells. Neither atom gains nor loses electrons — they share them.',ex:'H₂: each H has 1 electron, needs 1 more → they share → H—H\nCO₂: O=C=O (carbon makes 2 double bonds)'},
+  'homologous-series': {emoji:'📋',title:'Homologous Series',def:'A series of organic compounds with the same functional group, same general formula, differing by a –CH₂– unit. They show gradually changing physical properties and similar chemical properties.',ex:'Alkanes: CH₄ → C₂H₆ → C₃H₈ → C₄H₁₀ (each adds CH₂ = 14 mass units)'},
+  'saponification': {emoji:'🧼',title:'Saponification',def:'The process of making soap by reacting fat/oil with a strong alkali (NaOH or KOH) with heat. The ester bonds in fat break, releasing glycerol and the sodium salt of fatty acid (soap).',ex:'Fat + NaOH →heat→ Soap + Glycerol\nNaOH → hard bar soap, KOH → soft/liquid soap'},
+  'micelle': {emoji:'🫧',title:'Micelle',def:'A spherical cluster of soap molecules in water with grease trapped inside. Hydrophobic tails point inward toward grease; hydrophilic heads point outward toward water. The micelle is water-soluble.',ex:'Steps: soap added → tails enter grease → micelle forms → washes away with water'},
+  'catalyst': {emoji:'⚗️',title:'Catalyst',def:'A substance that speeds up a reaction without being consumed. It provides an alternative lower-energy pathway for the reaction.',ex:'Ni in hydrogenation: CH₂=CH₂ + H₂ →Ni→ CH₃CH₃\nSunlight in substitution: CH₄ + Cl₂ →hν→ CH₃Cl + HCl'},
+  'catenation': {emoji:'🔗',title:'Catenation',def:'The ability of an element to bond with its own atoms to form long chains, branches, and rings. Carbon shows this more than any other element.',ex:'C–C–C–C (straight chain), branched C with side chains, benzene ring (C₆H₆)'},
+  'addition-reaction': {emoji:'➕',title:'Addition Reaction',def:'A reaction where atoms are added across a double or triple bond, converting an unsaturated compound to a saturated one. Only unsaturated compounds can undergo addition.',ex:'CH₂=CH₂ + H₂ →Ni→ CH₃CH₃ (hydrogenation)\nCH₂=CH₂ + Cl₂ → CH₂Cl–CH₂Cl (halogenation)'}
+};
+function openC(key) {
+  const c = CONCEPTS[key]; if (!c) return;
+  document.getElementById('sb-emoji').textContent = c.emoji;
+  document.getElementById('sb-title').textContent = c.title;
+  let html = `<p>${c.def}</p>`;
+  if (c.ex) html += `<div style="background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.2);border-radius:8px;padding:12px;margin-top:12px;"><div style="font-size:11px;color:#34d399;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:700;">Example</div><div style="font-size:14px;color:#a7f3d0;">${c.ex.replace(/\n/g,'<br>')}</div></div>`;
+  document.getElementById('sb-body').innerHTML = html;
+  document.getElementById('sidebar').classList.add('open');
+}
+function closeSB() { document.getElementById('sidebar').classList.remove('open'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSB(); });
+</script>
+</body>
+</html>
