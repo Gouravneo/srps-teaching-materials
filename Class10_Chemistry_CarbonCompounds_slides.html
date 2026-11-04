@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Class 10 | Carbon and Its Compounds | Slides</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{background:#0a0f1e;color:#e2e8f0;font-family:'Segoe UI',Arial,sans-serif;display:flex;flex-direction:column;}
+/* NAV */
+.navbar{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;background:linear-gradient(135deg,#1e3a8a,#1e1b4b);border-bottom:2px solid #3730a3;flex-shrink:0;z-index:10;}
+.nav-title{font-size:17px;font-weight:bold;color:#fff;}
+.nav-sub{font-size:13px;color:#818cf8;margin-top:2px;}
+.nav-center{display:flex;align-items:center;gap:16px;}
+.nbtn{width:40px;height:40px;border-radius:50%;border:2px solid #3730a3;background:rgba(55,48,163,0.3);color:#818cf8;font-size:20px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;}
+.nbtn:hover{background:rgba(99,102,241,0.3);border-color:#6366f1;color:#fff;}
+.scnt{font-size:16px;color:#94a3b8;min-width:72px;text-align:center;}
+.nav-hint{font-size:13px;color:#475569;}
+.nav-hint b{color:#34d399;border-bottom:2px dashed #34d399;padding:0 2px;}
+.fsbtn{background:rgba(30,41,59,0.8);border:1px solid #334155;color:#64748b;padding:7px 14px;font-size:14px;border-radius:7px;cursor:pointer;}
+.fsbtn:hover{color:#e2e8f0;}
+/* PROGRESS */
+.pbar{height:3px;background:#1e293b;flex-shrink:0;}
+.pfill{height:100%;background:linear-gradient(90deg,#34d399,#38bdf8);transition:width 0.3s;}
+/* MAIN */
+.main{flex:1;display:flex;overflow:hidden;}
+/* SLIDE WRAPPER */
+.sw{flex:1;overflow:hidden;position:relative;}
+.slide{display:none;padding:44px 64px 36px;height:100%;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#334155 transparent;flex-direction:column;}
+.slide.active{display:flex;}
+/* SLIDE TYPOGRAPHY */
+.stitle{font-size:46px;font-weight:bold;color:#fff;margin-bottom:8px;line-height:1.1;}
+.stitle em{color:#34d399;font-style:normal;}
+.ssub{font-size:19px;color:#64748b;margin-bottom:32px;font-style:italic;}
+.sbody{flex:1;}
+h3{font-size:28px;font-weight:bold;color:#e2e8f0;margin:20px 0 12px;}
+h4{font-size:22px;font-weight:600;color:#94a3b8;margin:14px 0 10px;}
+p{font-size:20px;line-height:1.75;color:#cbd5e1;margin-bottom:12px;}
+ul,ol{margin:0 0 14px 0;padding-left:28px;}
+li{font-size:20px;color:#cbd5e1;line-height:1.85;}
+li b{color:#e2e8f0;}
+/* CONCEPT LINKS */
+.c{color:#34d399;border-bottom:2px dashed #34d399;cursor:pointer;font-weight:600;padding:0 2px;transition:background 0.15s;}
+.c:hover{background:rgba(52,211,153,0.12);border-radius:3px;}
+/* BOXES */
+.keybox{background:rgba(52,211,153,0.07);border-left:4px solid #34d399;border-radius:0 10px 10px 0;padding:14px 20px;margin:14px 0;font-size:19px;color:#a7f3d0;}
+.infobox{background:rgba(99,102,241,0.08);border-left:4px solid #6366f1;border-radius:0 10px 10px 0;padding:14px 20px;margin:14px 0;font-size:19px;color:#c7d2fe;}
+.warnbox{background:rgba(251,191,36,0.08);border-left:4px solid #fbbf24;border-radius:0 10px 10px 0;padding:14px 20px;margin:14px 0;font-size:19px;color:#fde68a;}
+.eq{font-size:21px;color:#34d399;font-family:'Courier New',monospace;background:rgba(52,211,153,0.07);padding:10px 20px;border-radius:8px;margin:12px 0;display:inline-block;}
+/* GRIDS */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;}
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;}
+.card{background:rgba(30,41,59,0.6);border:1.5px solid #1e293b;border-radius:14px;padding:22px;}
+.card-g{border-color:rgba(52,211,153,0.3);}
+.card-b{border-color:rgba(56,189,248,0.3);}
+.card-y{border-color:rgba(251,191,36,0.3);}
+.card-r{border-color:rgba(248,113,113,0.3);}
+.ctitle{font-size:19px;font-weight:bold;margin-bottom:10px;}
+.cbody{font-size:17px;color:#cbd5e1;line-height:1.65;}
+/* TABLE */
+table{width:100%;border-collapse:collapse;margin:16px 0;}
+th{background:rgba(99,102,241,0.2);color:#a5b4fc;padding:12px 16px;font-size:17px;text-align:left;}
+td{padding:11px 16px;font-size:17px;color:#cbd5e1;border-bottom:1px solid #1e293b;}
+tr:hover td{background:rgba(255,255,255,0.03);}
+/* BADGE */
+.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+.badge-chem{background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3);}
+/* SIDEBAR */
+.sidebar{width:0;overflow:hidden;background:#0d1527;border-left:1.5px solid #1e293b;transition:width 0.3s ease;display:flex;flex-direction:column;flex-shrink:0;}
+.sidebar.open{width:390px;}
+.sb-head{display:flex;align-items:center;padding:18px 20px;border-bottom:1px solid #1e293b;background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(6,78,59,0.05));gap:12px;}
+.sb-emoji{font-size:34px;}
+.sb-title{font-size:20px;font-weight:bold;color:#34d399;flex:1;}
+.sb-close{background:rgba(100,116,139,0.2);border:none;color:#64748b;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sb-close:hover{background:rgba(248,113,113,0.2);color:#f87171;}
+.sb-body{flex:1;overflow-y:auto;padding:20px;scrollbar-width:thin;scrollbar-color:#334155 transparent;}
+.sb-class{font-size:12px;color:#475569;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.sb-def{font-size:16px;color:#cbd5e1;line-height:1.75;margin-bottom:16px;}
+.sb-ex{background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px;margin-bottom:16px;}
+.sb-ex-label{font-size:12px;color:#34d399;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:700;}
+.sb-ex-text{font-size:15px;color:#a7f3d0;line-height:1.6;}
+.sb-related{margin-top:12px;}
+.sb-rel-label{font-size:12px;color:#475569;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.sb-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.sb-chip{padding:5px 12px;border-radius:20px;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);color:#a5b4fc;font-size:13px;cursor:pointer;}
+.sb-chip:hover{background:rgba(99,102,241,0.25);}
+/* TITLE SLIDE */
+.title-atom{display:flex;justify-content:center;margin:20px 0;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div>
+    <div class="nav-title">⚗️ Carbon and Its Compounds</div>
+    <div class="nav-sub">Class 10 Science · Chapter 4 · NCERT / Karnataka KTBS</div>
+  </div>
+  <div class="nav-center">
+    <button class="nbtn" onclick="prevSlide()">◀</button>
+    <div class="scnt" id="scnt">1 / 29</div>
+    <button class="nbtn" onclick="nextSlide()">▶</button>
+  </div>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <div class="nav-hint">Click <b>green terms</b> for instant explanation</div>
+    <button class="fsbtn" onclick="document.documentElement.requestFullscreen()">⛶ Fullscreen</button>
+  </div>
+</div>
+<div class="pbar"><div class="pfill" id="pfill" style="width:3.4%"></div></div>
+
+<div class="main">
+<div class="sw" id="sw">
+
+<!-- ══ SLIDE 1 ══ -->
+<div class="slide active" id="s1">
+  <div class="badge badge-chem">Chemistry · Chapter 4</div>
+  <div class="stitle">Carbon and Its <em>Compounds</em></div>
+  <div class="ssub">Class 10 Science | NCERT | Karnataka KTBS Syllabus</div>
+  <div class="title-atom">
+    <svg width="420" height="220" viewBox="0 0 420 220">
+      <defs>
+        <radialGradient id="nucG"><stop offset="0%" stop-color="#34d399"/><stop offset="100%" stop-color="#059669"/></radialGradient>
+      </defs>
+      <!-- nucleus -->
+      <circle cx="210" cy="110" r="28" fill="url(#nucG)" filter="drop-shadow(0 0 12px #34d399)"/>
+      <text x="210" y="116" text-anchor="middle" fill="white" font-size="16" font-weight="bold">6C</text>
+      <!-- shell 1 -->
+      <ellipse cx="210" cy="110" rx="68" ry="68" fill="none" stroke="#334155" stroke-width="1.5" stroke-dasharray="5,4"/>
+      <circle cx="278" cy="110" r="8" fill="#38bdf8"/>
+      <circle cx="142" cy="110" r="8" fill="#38bdf8"/>
+      <!-- shell 2 -->
+      <ellipse cx="210" cy="110" rx="130" ry="130" fill="none" stroke="#334155" stroke-width="1.5" stroke-dasharray="5,4"/>
+      <circle cx="340" cy="110" r="8" fill="#f87171"/>
+      <circle cx="80" cy="110" r="8" fill="#f87171"/>
+      <circle cx="210" cy="240" r="8" fill="#f87171" opacity="0.3"/>
+      <circle cx="210" cy="210" r="8" fill="#f87171"/>
+      <!-- labels -->
+      <text x="296" y="88" fill="#38bdf8" font-size="13">2 electrons</text>
+      <text x="344" y="130" fill="#f87171" font-size="13">4 electrons</text>
+      <text x="210" y="195" text-anchor="middle" fill="#94a3b8" font-size="14">(outer shell — needs 4 more)</text>
+    </svg>
+  </div>
+  <div class="keybox" style="text-align:center;font-size:21px;">
+    Carbon forms <b>millions of compounds</b> — more than any other element!<br>
+    Electronic config: <b>2, 4</b> · Atomic number: <b>6</b> · Valency: <b>4</b>
+  </div>
+</div>
+
+<!-- ══ SLIDE 2 ══ -->
+<div class="slide" id="s2">
+  <div class="stitle">Carbon in <em>Daily Life</em></div>
+  <div class="ssub">Carbon is everywhere around us</div>
+  <div class="sbody">
+    <div class="three">
+      <div class="card card-g">
+        <div class="ctitle">🍚 Food</div>
+        <div class="cbody">Glucose (C₆H₁₂O₆), proteins, fats — all contain carbon. Every living cell is carbon-based.</div>
+      </div>
+      <div class="card card-b">
+        <div class="ctitle">⛽ Fuel</div>
+        <div class="cbody">LPG (C₃H₈/C₄H₁₀), petrol, diesel, coal, natural gas — all carbon compounds.</div>
+      </div>
+      <div class="card card-y">
+        <div class="ctitle">👕 Clothes &amp; Plastics</div>
+        <div class="cbody">Nylon, polyester, rubber — synthetic fibres and plastics are carbon compounds.</div>
+      </div>
+      <div class="card card-r">
+        <div class="ctitle">💎 Diamond &amp; ✏️ Graphite</div>
+        <div class="cbody">Pure forms of carbon! Same element, completely different properties.</div>
+      </div>
+      <div class="card card-g">
+        <div class="ctitle">💊 Medicines</div>
+        <div class="cbody">Aspirin, penicillin, paracetamol — all organic (carbon-based) molecules.</div>
+      </div>
+      <div class="card card-b">
+        <div class="ctitle">🌿 Life Itself</div>
+        <div class="cbody">DNA, proteins, cell walls — all made of carbon. Life = carbon chemistry.</div>
+      </div>
+    </div>
+    <div class="infobox">📌 <b>Organic Chemistry</b> = the study of carbon compounds (originally thought to come only from living organisms)</div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 3 ══ -->
+<div class="slide" id="s3">
+  <div class="stitle">Why Carbon is <em>Special</em></div>
+  <div class="ssub">Two unique properties make millions of compounds possible</div>
+  <div class="sbody two">
+    <div>
+      <div class="card card-g" style="margin-bottom:24px;">
+        <div class="ctitle" style="color:#34d399;font-size:22px;">1️⃣ Tetravalency</div>
+        <div class="cbody">Carbon has <b>4 electrons in its outer shell</b>. It needs 4 more to complete the shell.<br><br>
+        Instead of losing or gaining 4 electrons (needs too much energy), carbon <b>shares</b> its electrons — forming <span class="c" onclick="openC('covalent-bond')">covalent bonds</span>.<br><br>
+        This means carbon can form <b>4 bonds</b> with other atoms.</div>
+      </div>
+      <div class="card card-b">
+        <div class="ctitle" style="color:#38bdf8;font-size:22px;">2️⃣ Catenation</div>
+        <div class="cbody">Carbon atoms can <b>bond with each other</b> to form long chains, branched chains, and rings.<br><br>
+        No other element shows this property to such a large extent. This is why millions of carbon compounds exist!</div>
+      </div>
+    </div>
+    <div>
+      <svg width="100%" height="340" viewBox="0 0 320 340">
+        <text x="160" y="22" text-anchor="middle" fill="#94a3b8" font-size="13">Chain: C-C-C-C</text>
+        <circle cx="50" cy="60" r="22" fill="#059669"/><text x="50" y="66" text-anchor="middle" fill="white" font-size="13" font-weight="bold">C</text>
+        <line x1="72" y1="60" x2="98" y2="60" stroke="#34d399" stroke-width="3"/>
+        <circle cx="120" cy="60" r="22" fill="#059669"/><text x="120" y="66" text-anchor="middle" fill="white" font-size="13" font-weight="bold">C</text>
+        <line x1="142" y1="60" x2="168" y2="60" stroke="#34d399" stroke-width="3"/>
+        <circle cx="190" cy="60" r="22" fill="#059669"/><text x="190" y="66" text-anchor="middle" fill="white" font-size="13" font-weight="bold">C</text>
+        <line x1="212" y1="60" x2="238" y2="60" stroke="#34d399" stroke-width="3"/>
+        <circle cx="260" cy="60" r="22" fill="#059669"/><text x="260" y="66" text-anchor="middle" fill="white" font-size="13" font-weight="bold">C</text>
+        <text x="160" y="110" text-anchor="middle" fill="#94a3b8" font-size="13">Branched chain</text>
+        <circle cx="80" cy="150" r="22" fill="#059669"/><text x="80" y="156" text-anchor="middle" fill="white" font-size="13" font-weight="bold">C</text>
+        <line x1="102" y1="150" x2="128" y2="150" stroke="#34d399" stroke-width="3"/>
+        <circle cx="150" cy="150" r="22" fill="#059669"/><text x="150" y="156" text-anchor="middle" fill="white" font-size="13" font-weight="bold">C</text>
+        <line x1="172" y1="150" x2="198" y2="150" stroke="#34d399" stroke-width="3"/>
+        <circle cx="220" cy="150" r="22" fill="#059669"/><text x="220" y="156" text-anchor="middle" fill="white" font-size="13" font-weight="bold">C</text>
+        <line x1="150" y1="128" x2="150" y2="102" stroke="#34d399" stroke-width="3"/>
+        <circle cx="150" cy="80" r="22" fill="#059669"/><text x="150" y="86" text-anchor="middle" fill="white" font-size="13" font-weight="bold">C</text>
+        <text x="160" y="210" text-anchor="middle" fill="#94a3b8" font-size="13">Ring (benzene)</text>
+        <polygon points="160,228 190,245 190,278 160,296 130,278 130,245" fill="none" stroke="#34d399" stroke-width="3"/>
+        <circle cx="160" cy="228" r="14" fill="#059669"/><text x="160" y="233" text-anchor="middle" fill="white" font-size="11" font-weight="bold">C</text>
+        <circle cx="190" cy="245" r="14" fill="#059669"/><text x="190" y="250" text-anchor="middle" fill="white" font-size="11" font-weight="bold">C</text>
+        <circle cx="190" cy="278" r="14" fill="#059669"/><text x="190" y="283" text-anchor="middle" fill="white" font-size="11" font-weight="bold">C</text>
+        <circle cx="160" cy="296" r="14" fill="#059669"/><text x="160" y="301" text-anchor="middle" fill="white" font-size="11" font-weight="bold">C</text>
+        <circle cx="130" cy="278" r="14" fill="#059669"/><text x="130" y="283" text-anchor="middle" fill="white" font-size="11" font-weight="bold">C</text>
+        <circle cx="130" cy="245" r="14" fill="#059669"/><text x="130" y="250" text-anchor="middle" fill="white" font-size="11" font-weight="bold">C</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 4 ══ -->
+<div class="slide" id="s4">
+  <div class="stitle"><em>Covalent Bond</em> — Sharing Electrons</div>
+  <div class="ssub">Carbon shares electrons instead of gaining or losing them</div>
+  <div class="sbody">
+    <div class="two">
+      <div>
+        <div class="keybox">A <span class="c" onclick="openC('covalent-bond')">covalent bond</span> forms when two atoms <b>share a pair of electrons</b> to complete their outer shells.</div>
+        <h3>Three types of covalent bonds:</h3>
+        <div class="card card-g" style="margin-bottom:12px;">
+          <div class="ctitle">Single Bond (—)</div>
+          <div class="cbody">Share <b>1 pair</b> of electrons · Example: C-H in methane<br><span style="font-family:monospace;color:#34d399;font-size:16px;">H—C (C shares 1 e⁻, H shares 1 e⁻)</span></div>
+        </div>
+        <div class="card card-b" style="margin-bottom:12px;">
+          <div class="ctitle">Double Bond (=)</div>
+          <div class="cbody">Share <b>2 pairs</b> of electrons · Example: C=C in ethene<br><span style="font-family:monospace;color:#38bdf8;font-size:16px;">C=C (each C shares 2 e⁻)</span></div>
+        </div>
+        <div class="card card-y">
+          <div class="ctitle">Triple Bond (≡)</div>
+          <div class="cbody">Share <b>3 pairs</b> of electrons · Example: C≡C in ethyne<br><span style="font-family:monospace;color:#fbbf24;font-size:16px;">C≡C (each C shares 3 e⁻)</span></div>
+        </div>
+      </div>
+      <div>
+        <svg width="100%" height="380" viewBox="0 0 300 380">
+          <!-- Methane H4C -->
+          <text x="150" y="22" text-anchor="middle" fill="#64748b" font-size="13">Methane CH₄</text>
+          <circle cx="150" cy="80" r="26" fill="#059669"/><text x="150" y="86" text-anchor="middle" fill="white" font-size="14" font-weight="bold">C</text>
+          <circle cx="150" cy="30" r="16" fill="#1d4ed8"/><text x="150" y="35" text-anchor="middle" fill="white" font-size="12">H</text>
+          <circle cx="200" cy="80" r="16" fill="#1d4ed8"/><text x="200" y="85" text-anchor="middle" fill="white" font-size="12">H</text>
+          <circle cx="150" cy="130" r="16" fill="#1d4ed8"/><text x="150" y="135" text-anchor="middle" fill="white" font-size="12">H</text>
+          <circle cx="100" cy="80" r="16" fill="#1d4ed8"/><text x="100" y="85" text-anchor="middle" fill="white" font-size="12">H</text>
+          <line x1="150" y1="46" x2="150" y2="54" stroke="#34d399" stroke-width="3"/>
+          <line x1="184" y1="80" x2="176" y2="80" stroke="#34d399" stroke-width="3"/>
+          <line x1="150" y1="114" x2="150" y2="106" stroke="#34d399" stroke-width="3"/>
+          <line x1="116" y1="80" x2="124" y2="80" stroke="#34d399" stroke-width="3"/>
+          <!-- Ethene C=C -->
+          <text x="150" y="172" text-anchor="middle" fill="#64748b" font-size="13">Ethene (double bond)</text>
+          <circle cx="110" cy="210" r="22" fill="#059669"/><text x="110" y="216" text-anchor="middle" fill="white" font-size="12" font-weight="bold">C</text>
+          <circle cx="190" cy="210" r="22" fill="#059669"/><text x="190" y="216" text-anchor="middle" fill="white" font-size="12" font-weight="bold">C</text>
+          <line x1="132" y1="207" x2="168" y2="207" stroke="#38bdf8" stroke-width="3"/>
+          <line x1="132" y1="213" x2="168" y2="213" stroke="#38bdf8" stroke-width="3"/>
+          <!-- Ethyne C≡C -->
+          <text x="150" y="262" text-anchor="middle" fill="#64748b" font-size="13">Ethyne (triple bond)</text>
+          <circle cx="100" cy="300" r="22" fill="#059669"/><text x="100" y="306" text-anchor="middle" fill="white" font-size="12" font-weight="bold">C</text>
+          <circle cx="200" cy="300" r="22" fill="#059669"/><text x="200" y="306" text-anchor="middle" fill="white" font-size="12" font-weight="bold">C</text>
+          <line x1="122" y1="297" x2="178" y2="297" stroke="#fbbf24" stroke-width="2.5"/>
+          <line x1="122" y1="300" x2="178" y2="300" stroke="#fbbf24" stroke-width="2.5"/>
+          <line x1="122" y1="303" x2="178" y2="303" stroke="#fbbf24" stroke-width="2.5"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 5 ══ -->
+<div class="slide" id="s5">
+  <div class="stitle">Allotropes of <em>Carbon</em></div>
+  <div class="ssub">Same element — completely different properties!</div>
+  <div class="sbody">
+    <div class="infobox">📌 <b>Allotrope:</b> <span class="c" onclick="openC('allotrope')">Different physical forms of the same element</span> with different arrangements of atoms.</div>
+    <div class="three">
+      <div class="card card-y">
+        <div class="ctitle" style="color:#fbbf24;">💎 Diamond</div>
+        <svg width="100%" height="130" viewBox="0 0 200 130">
+          <line x1="100" y1="20" x2="60" y2="60" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="100" y1="20" x2="140" y2="60" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="100" y1="20" x2="100" y2="80" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="60" y1="60" x2="140" y2="60" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="60" y1="60" x2="80" y2="110" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="140" y1="60" x2="120" y2="110" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="100" y1="80" x2="80" y2="110" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="100" y1="80" x2="120" y2="110" stroke="#94a3b8" stroke-width="2"/>
+          <circle cx="100" cy="20" r="8" fill="#e2e8f0"/>
+          <circle cx="60" cy="60" r="8" fill="#e2e8f0"/>
+          <circle cx="140" cy="60" r="8" fill="#e2e8f0"/>
+          <circle cx="100" cy="80" r="8" fill="#e2e8f0"/>
+          <circle cx="80" cy="110" r="8" fill="#e2e8f0"/>
+          <circle cx="120" cy="110" r="8" fill="#e2e8f0"/>
+        </svg>
+        <div class="cbody">
+          Each C bonded to <b>4 C atoms</b><br>
+          3D tetrahedral network<br><br>
+          ✅ <b>Hardest</b> natural substance<br>
+          ✅ Transparent<br>
+          ❌ Bad electrical conductor<br><br>
+          <b>Uses:</b> Cutting tools, jewellery, drill bits
+        </div>
+      </div>
+      <div class="card card-b">
+        <div class="ctitle" style="color:#38bdf8;">✏️ Graphite</div>
+        <svg width="100%" height="130" viewBox="0 0 200 130">
+          <!-- hexagonal layers -->
+          <g opacity="0.5" transform="translate(0,15)">
+            <polygon points="100,10 130,27 130,61 100,78 70,61 70,27" fill="none" stroke="#64748b" stroke-width="1.5"/>
+            <polygon points="130,27 160,10 160,44 130,61" fill="none" stroke="#64748b" stroke-width="1.5"/>
+          </g>
+          <g transform="translate(0,0)">
+            <polygon points="100,10 130,27 130,61 100,78 70,61 70,27" fill="none" stroke="#38bdf8" stroke-width="2"/>
+            <polygon points="130,27 160,10 160,44 130,61" fill="none" stroke="#38bdf8" stroke-width="2"/>
+          </g>
+          <text x="100" y="120" text-anchor="middle" fill="#94a3b8" font-size="11">← layers slide →</text>
+        </svg>
+        <div class="cbody">
+          Each C bonded to <b>3 C atoms</b><br>
+          Hexagonal layers, weak forces between layers<br><br>
+          ✅ <b>Soft</b> (layers slide)<br>
+          ✅ Good <b>electrical conductor</b><br>
+          ✅ Lubricant<br><br>
+          <b>Uses:</b> Pencil leads, electrodes, lubricant
+        </div>
+      </div>
+      <div class="card card-g">
+        <div class="ctitle" style="color:#34d399;">⚽ Fullerene (C₆₀)</div>
+        <svg width="100%" height="130" viewBox="0 0 200 130">
+          <circle cx="100" cy="65" r="50" fill="none" stroke="#334155" stroke-width="1.5"/>
+          <circle cx="100" cy="65" r="50" fill="none" stroke="#34d399" stroke-width="1" stroke-dasharray="6,3" opacity="0.4"/>
+          <!-- pentagon and hexagon shapes on sphere -->
+          <polygon points="100,20 115,30 110,47 90,47 85,30" fill="none" stroke="#34d399" stroke-width="1.5"/>
+          <polygon points="115,30 135,30 142,50 128,65 110,47" fill="none" stroke="#34d399" stroke-width="1.5" opacity="0.7"/>
+          <polygon points="90,47 110,47 115,65 100,80 85,65" fill="none" stroke="#34d399" stroke-width="1.5" opacity="0.9"/>
+          <text x="100" y="120" text-anchor="middle" fill="#94a3b8" font-size="11">60 carbon atoms</text>
+        </svg>
+        <div class="cbody">
+          <b>60 C atoms</b> in soccer ball shape<br>
+          Pentagons + Hexagons<br><br>
+          ✅ Used in nanotechnology<br>
+          ✅ Drug delivery research<br>
+          ✅ Superconductors<br><br>
+          Named after architect <b>Buckminster Fuller</b>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 6 ══ -->
+<div class="slide" id="s6">
+  <div class="stitle">Hydrocarbons — <em>Introduction</em></div>
+  <div class="ssub">Compounds containing only Carbon and Hydrogen</div>
+  <div class="sbody">
+    <div class="keybox">A <b>hydrocarbon</b> contains <b>only Carbon (C) and Hydrogen (H)</b>. They are the simplest organic compounds.</div>
+    <div class="two" style="margin-top:20px;">
+      <div>
+        <div class="card card-g">
+          <div class="ctitle" style="color:#34d399;">Saturated Hydrocarbons</div>
+          <div class="cbody">
+            All <b>single bonds</b> (C–C) only<br>
+            Called <span class="c" onclick="openC('saturated')">Saturated</span> — no more H can be added<br><br>
+            General formula: <b>CₙH₂ₙ₊₂</b><br>
+            Family name: <b>Alkanes</b><br><br>
+            Example: Methane CH₄, Ethane C₂H₆
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card card-b">
+          <div class="ctitle" style="color:#38bdf8;">Unsaturated Hydrocarbons</div>
+          <div class="cbody">
+            Contains <b>double bonds (C=C)</b> or <b>triple bonds (C≡C)</b><br>
+            Called <span class="c" onclick="openC('unsaturated')">Unsaturated</span> — more H can be added<br><br>
+            Double bond family: <b>Alkenes</b> (CₙH₂ₙ)<br>
+            Triple bond family: <b>Alkynes</b> (CₙH₂ₙ₋₂)<br><br>
+            Example: Ethene C₂H₄, Ethyne C₂H₂
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="warnbox" style="margin-top:16px;">💡 Unsaturated compounds are <b>more reactive</b> than saturated because the double/triple bonds are easier to break.</div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 7 ══ -->
+<div class="slide" id="s7">
+  <div class="stitle">Alkanes — <em>Saturated Hydrocarbons</em></div>
+  <div class="ssub">Single bonds only · General formula: CₙH₂ₙ₊₂</div>
+  <div class="sbody">
+    <table>
+      <tr><th>n</th><th>Name</th><th>Formula</th><th>Structural Formula</th><th>State (RT)</th><th>Use</th></tr>
+      <tr><td>1</td><td><b>Methane</b></td><td>CH₄</td><td>H₃C–H</td><td>Gas</td><td>Natural gas, LPG</td></tr>
+      <tr><td>2</td><td><b>Ethane</b></td><td>C₂H₆</td><td>H₃C–CH₃</td><td>Gas</td><td>Fuel, chemical synthesis</td></tr>
+      <tr><td>3</td><td><b>Propane</b></td><td>C₃H₈</td><td>H₃C–CH₂–CH₃</td><td>Gas</td><td>LPG (cooking gas)</td></tr>
+      <tr><td>4</td><td><b>Butane</b></td><td>C₄H₁₀</td><td>H₃C–(CH₂)₂–CH₃</td><td>Gas/Liquid</td><td>Lighters, LPG blend</td></tr>
+      <tr><td>5</td><td><b>Pentane</b></td><td>C₅H₁₂</td><td>H₃C–(CH₂)₃–CH₃</td><td>Liquid</td><td>Solvent, petrol component</td></tr>
+    </table>
+    <div class="keybox">Pattern: each member adds <b>CH₂</b> unit · This is the <span class="c" onclick="openC('homologous-series')">homologous series</span> of alkanes</div>
+    <div class="infobox">🔥 Alkanes burn well → used as <b>fuels</b>. They are less reactive in other ways (no double bond to react with).</div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 8 ══ -->
+<div class="slide" id="s8">
+  <div class="stitle">Alkenes &amp; Alkynes — <em>Unsaturated</em></div>
+  <div class="ssub">More reactive because of double and triple bonds</div>
+  <div class="sbody">
+    <div class="two">
+      <div>
+        <h3>Alkenes (C=C double bond)</h3>
+        <div class="eq">General formula: CₙH₂ₙ</div>
+        <table>
+          <tr><th>Name</th><th>Formula</th><th>Structure</th></tr>
+          <tr><td>Ethene</td><td>C₂H₄</td><td>CH₂=CH₂</td></tr>
+          <tr><td>Propene</td><td>C₃H₆</td><td>CH₂=CH–CH₃</td></tr>
+          <tr><td>Butene</td><td>C₄H₈</td><td>CH₂=CH–CH₂–CH₃</td></tr>
+        </table>
+        <div class="keybox" style="margin-top:12px;">💡 Ethene is used to make <b>polythene</b> (plastic bags)</div>
+      </div>
+      <div>
+        <h3>Alkynes (C≡C triple bond)</h3>
+        <div class="eq">General formula: CₙH₂ₙ₋₂</div>
+        <table>
+          <tr><th>Name</th><th>Formula</th><th>Structure</th></tr>
+          <tr><td>Ethyne</td><td>C₂H₂</td><td>CH≡CH</td></tr>
+          <tr><td>Propyne</td><td>C₃H₄</td><td>CH≡C–CH₃</td></tr>
+        </table>
+        <div class="keybox" style="margin-top:12px;">🔥 Ethyne (acetylene) burns with very <b>hot flame</b> → used in <b>welding torches</b></div>
+        <div class="warnbox" style="margin-top:8px;">⚠️ <span class="c" onclick="openC('unsaturated')">Unsaturated</span> compounds decolourize bromine water (brown → colourless) — this is a test!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 9 ══ -->
+<div class="slide" id="s9">
+  <div class="stitle">Homologous <em>Series</em></div>
+  <div class="ssub">A family of carbon compounds with the same functional group</div>
+  <div class="sbody">
+    <div class="keybox"><span class="c" onclick="openC('homologous-series')">Homologous series</span>: a series of organic compounds that have the <b>same functional group</b>, same general formula, and differ from each other by a <b>–CH₂– unit</b>.</div>
+    <h3>4 Key Properties of a Homologous Series:</h3>
+    <div class="two">
+      <div>
+        <div class="card card-g" style="margin-bottom:16px;">
+          <div class="ctitle">1. Same General Formula</div>
+          <div class="cbody">All alkanes: CₙH₂ₙ₊₂<br>All alkenes: CₙH₂ₙ</div>
+        </div>
+        <div class="card card-b">
+          <div class="ctitle">2. Similar Chemical Properties</div>
+          <div class="cbody">Same functional group → same type of reactions<br>Methane and butane both combust the same way</div>
+        </div>
+      </div>
+      <div>
+        <div class="card card-y" style="margin-bottom:16px;">
+          <div class="ctitle">3. Gradually Changing Physical Properties</div>
+          <div class="cbody">Boiling point, melting point, density increase as chain length increases</div>
+        </div>
+        <div class="card card-r">
+          <div class="ctitle">4. Each Member Differs by CH₂</div>
+          <div class="cbody">Methane (CH₄) → Ethane (C₂H₆) → Propane (C₃H₈)<br>Each adds 14 mass units</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 10 ══ -->
+<div class="slide" id="s10">
+  <div class="stitle">Functional <em>Groups</em></div>
+  <div class="ssub">The reactive part of an organic molecule that determines its properties</div>
+  <div class="sbody">
+    <div class="keybox">A <span class="c" onclick="openC('functional-group')">functional group</span> is an atom or group of atoms that gives an organic compound its characteristic properties.</div>
+    <table>
+      <tr><th>Functional Group</th><th>Structure</th><th>Family</th><th>Suffix</th><th>Example</th></tr>
+      <tr><td><b>Hydroxyl</b></td><td>–OH</td><td>Alcohol</td><td>-ol</td><td>Ethanol (C₂H₅OH)</td></tr>
+      <tr><td><b>Carboxyl</b></td><td>–COOH</td><td>Carboxylic acid</td><td>-oic acid</td><td>Ethanoic acid (CH₃COOH)</td></tr>
+      <tr><td><b>Aldehyde</b></td><td>–CHO</td><td>Aldehyde</td><td>-al</td><td>Methanal (HCHO)</td></tr>
+      <tr><td><b>Ketone</b></td><td>–CO–</td><td>Ketone</td><td>-one</td><td>Propanone (CH₃COCH₃)</td></tr>
+      <tr><td><b>Halogen</b></td><td>–Cl, –Br</td><td>Haloalkane</td><td>chloro-/bromo-</td><td>Chloromethane (CH₃Cl)</td></tr>
+    </table>
+    <div class="infobox">📌 The <b>rest of the molecule</b> (the carbon chain) is relatively unreactive. All the chemistry happens at the functional group!</div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 11 ══ -->
+<div class="slide" id="s11">
+  <div class="stitle">Naming Carbon Compounds — <em>IUPAC Rules</em></div>
+  <div class="ssub">International Union of Pure and Applied Chemistry naming system</div>
+  <div class="sbody">
+    <div class="two">
+      <div>
+        <h3>Steps to Name:</h3>
+        <ol style="margin-left:0;padding-left:24px;">
+          <li style="margin-bottom:12px;"><b>Find longest carbon chain</b> → gives parent name<br><span style="color:#64748b;font-size:17px;">1C=meth, 2C=eth, 3C=prop, 4C=but, 5C=pent</span></li>
+          <li style="margin-bottom:12px;"><b>Number carbons</b> from the end nearest to functional group</li>
+          <li style="margin-bottom:12px;"><b>Add suffix</b> for functional group<br><span style="color:#64748b;font-size:17px;">-ane (alkane), -ene (alkene), -ol (alcohol), -oic acid</span></li>
+          <li style="margin-bottom:12px;"><b>Name side chains</b> with their position number</li>
+        </ol>
+      </div>
+      <div>
+        <h3>Examples:</h3>
+        <div class="card card-g" style="margin-bottom:12px;">
+          <div class="ctitle">CH₃–CH₂–OH</div>
+          <div class="cbody">2 carbons (eth) + OH (alcohol = -ol)<br>→ <b>Ethanol</b></div>
+        </div>
+        <div class="card card-b" style="margin-bottom:12px;">
+          <div class="ctitle">CH₃–COOH</div>
+          <div class="cbody">2 carbons (eth) + COOH (-oic acid)<br>→ <b>Ethanoic acid</b></div>
+        </div>
+        <div class="card card-y">
+          <div class="ctitle">CH₃–CH(CH₃)–CH₃</div>
+          <div class="cbody">Longest chain: 3C (propane) + CH₃ branch at C2<br>→ <b>2-methylpropane</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 12 ══ -->
+<div class="slide" id="s12">
+  <div class="stitle">Chemical Properties — <em>Combustion</em></div>
+  <div class="ssub">Carbon compounds are excellent fuels</div>
+  <div class="sbody">
+    <div class="two">
+      <div>
+        <div class="card card-g" style="margin-bottom:20px;">
+          <div class="ctitle" style="color:#34d399;">Complete Combustion</div>
+          <div class="cbody">
+            Excess oxygen, clean burn<br>
+            <b>Blue flame</b>, no smoke<br><br>
+            <div class="eq">CH₄ + 2O₂ → CO₂ + 2H₂O</div>
+            Products: <b>CO₂ + H₂O + heat</b>
+          </div>
+        </div>
+        <div class="card card-r">
+          <div class="ctitle" style="color:#f87171;">Incomplete Combustion</div>
+          <div class="cbody">
+            Limited oxygen supply<br>
+            <b>Yellow/sooty flame</b><br><br>
+            <div class="eq" style="color:#f87171;">2CH₄ + 3O₂ → 2CO + 4H₂O</div>
+            Products: <b>CO + soot (carbon)</b><br>
+            CO is <b>toxic gas</b>! 🚨
+          </div>
+        </div>
+      </div>
+      <div>
+        <svg width="100%" height="300" viewBox="0 0 240 300">
+          <!-- burner base -->
+          <rect x="90" y="260" width="60" height="20" rx="4" fill="#334155"/>
+          <rect x="104" y="220" width="32" height="40" fill="#475569"/>
+          <!-- blue flame (complete) -->
+          <ellipse cx="120" cy="190" rx="18" ry="30" fill="rgba(56,189,248,0.4)"/>
+          <ellipse cx="120" cy="175" rx="10" ry="20" fill="rgba(99,102,241,0.6)"/>
+          <ellipse cx="120" cy="165" rx="6" ry="14" fill="rgba(147,197,253,0.8)"/>
+          <text x="155" y="175" fill="#38bdf8" font-size="13">Blue flame</text>
+          <text x="155" y="192" fill="#94a3b8" font-size="12">Complete combustion</text>
+          <!-- soot particles -->
+          <circle cx="30" cy="80" r="4" fill="#475569" opacity="0.6"/>
+          <circle cx="45" cy="60" r="3" fill="#475569" opacity="0.5"/>
+          <circle cx="20" cy="55" r="5" fill="#475569" opacity="0.4"/>
+          <circle cx="55" cy="90" r="3" fill="#475569" opacity="0.6"/>
+          <!-- yellow sooty flame (incomplete) -->
+          <ellipse cx="50" cy="130" rx="18" ry="30" fill="rgba(251,191,36,0.3)"/>
+          <ellipse cx="50" cy="115" rx="10" ry="20" fill="rgba(251,146,60,0.5)"/>
+          <text x="78" y="118" fill="#fbbf24" font-size="13">Yellow + soot</text>
+          <text x="78" y="135" fill="#94a3b8" font-size="12">Incomplete</text>
+          <text x="20" y="160" fill="#f87171" font-size="12">CO → toxic!</text>
+        </svg>
+      </div>
+    </div>
+    <div class="warnbox">⚠️ Always ensure good ventilation when burning carbon fuels — CO poisoning is dangerous!</div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 13 ══ -->
+<div class="slide" id="s13">
+  <div class="stitle">Oxidation, Addition &amp; <em>Substitution</em></div>
+  <div class="ssub">Three important types of reactions of carbon compounds</div>
+  <div class="sbody">
+    <div class="three">
+      <div class="card card-b">
+        <div class="ctitle" style="color:#38bdf8;">🔵 Oxidation</div>
+        <div class="cbody">
+          Adding oxygen or removing hydrogen.<br><br>
+          Ethanol → Ethanoic acid using <b>KMnO₄ or K₂Cr₂O₇</b> (oxidising agents)<br><br>
+          <div class="eq" style="font-size:14px;color:#38bdf8;">C₂H₅OH → CH₃COOH</div>
+          Alcohol → Carboxylic acid
+        </div>
+      </div>
+      <div class="card card-g">
+        <div class="ctitle" style="color:#34d399;">🟢 Addition Reaction</div>
+        <div class="cbody">
+          Unsaturated → Saturated by adding H₂<br>
+          Needs <span class="c" onclick="openC('catalyst')">catalyst</span> (Ni or Pt)<br><br>
+          <div class="eq" style="font-size:14px;">CH₂=CH₂ + H₂ → CH₃–CH₃</div>
+          Industrial use: <b>Vegetable oil → Ghee</b> (hydrogenation)
+        </div>
+      </div>
+      <div class="card card-y">
+        <div class="ctitle" style="color:#fbbf24;">🟡 Substitution</div>
+        <div class="cbody">
+          Replace one atom with another.<br>
+          Needs sunlight (photochemical)<br><br>
+          <div class="eq" style="font-size:14px;">CH₄ + Cl₂ → CH₃Cl + HCl</div>
+          Methane + Chlorine →<br>Chloromethane + HCl
+        </div>
+      </div>
+    </div>
+    <div class="keybox" style="margin-top:16px;">💡 Addition reactions are possible only with <b>unsaturated</b> compounds (double/triple bonds). Saturated compounds undergo <b>substitution</b> instead.</div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 14 ══ -->
+<div class="slide" id="s14">
+  <div class="stitle">Ethanol — <em>Ethyl Alcohol</em></div>
+  <div class="ssub">Formula: C₂H₅OH or CH₃CH₂OH</div>
+  <div class="sbody">
+    <div class="two">
+      <div>
+        <h3>Properties:</h3>
+        <table>
+          <tr><th>Property</th><th>Value</th></tr>
+          <tr><td>State at room temp</td><td>Liquid</td></tr>
+          <tr><td>Boiling point</td><td>78°C</td></tr>
+          <tr><td>Solubility in water</td><td>Completely miscible</td></tr>
+          <tr><td>Smell</td><td>Characteristic pleasant</td></tr>
+          <tr><td>Combustion</td><td>Burns with blue flame</td></tr>
+        </table>
+        <h3 style="margin-top:16px;">Uses:</h3>
+        <ul>
+          <li>Solvent (varnishes, perfumes)</li>
+          <li>Antiseptic (wound cleaning)</li>
+          <li>Beverages (beer, wine)</li>
+          <li>Fuel (mixed with petrol)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Key Reactions:</h3>
+        <div class="card card-b" style="margin-bottom:12px;">
+          <div class="ctitle">Combustion</div>
+          <div class="cbody"><div class="eq" style="font-size:15px;">C₂H₅OH + 3O₂ → 2CO₂ + 3H₂O</div></div>
+        </div>
+        <div class="card card-g" style="margin-bottom:12px;">
+          <div class="ctitle">Oxidation → Ethanoic Acid</div>
+          <div class="cbody"><div class="eq" style="font-size:15px;">C₂H₅OH + [O] → CH₃COOH</div>Using KMnO₄ or K₂Cr₂O₇</div>
+        </div>
+        <div class="card card-y">
+          <div class="ctitle">With Na metal</div>
+          <div class="cbody"><div class="eq" style="font-size:15px;">2C₂H₅OH + 2Na → 2C₂H₅ONa + H₂↑</div></div>
+        </div>
+        <div class="warnbox" style="margin-top:12px;">⚠️ <b>Denatured alcohol:</b> Methanol or other poisonous substances added to ethanol to prevent drinking. <b>Methanol is deadly</b> even in small amounts — causes blindness.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 15 ══ -->
+<div class="slide" id="s15">
+  <div class="stitle">Ethanoic Acid — <em>Acetic Acid</em></div>
+  <div class="ssub">Formula: CH₃COOH · Found in vinegar</div>
+  <div class="sbody">
+    <div class="two">
+      <div>
+        <h3>Properties:</h3>
+        <table>
+          <tr><th>Property</th><th>Value</th></tr>
+          <tr><td>State</td><td>Liquid (solid below 17°C)</td></tr>
+          <tr><td>Smell</td><td>Pungent, vinegar-like</td></tr>
+          <tr><td>Taste</td><td>Sour</td></tr>
+          <tr><td>Vinegar conc.</td><td>3–4% solution</td></tr>
+          <tr><td>Glacial acetic acid</td><td>Pure CH₃COOH (freezes at 17°C)</td></tr>
+        </table>
+        <div class="keybox" style="margin-top:12px;">📌 "Glacial" acetic acid — pure ethanoic acid freezes to an ice-like solid at just 17°C, hence the name!</div>
+      </div>
+      <div>
+        <h3>Key Reactions:</h3>
+        <div class="card card-g" style="margin-bottom:12px;">
+          <div class="ctitle">With Carbonates (brisk effervescence)</div>
+          <div class="cbody"><div class="eq" style="font-size:14px;">2CH₃COOH + Na₂CO₃ → 2CH₃COONa + H₂O + CO₂↑</div></div>
+        </div>
+        <div class="card card-b" style="margin-bottom:12px;">
+          <div class="ctitle">With Base (neutralisation)</div>
+          <div class="cbody"><div class="eq" style="font-size:14px;">CH₃COOH + NaOH → CH₃COONa + H₂O</div></div>
+        </div>
+        <div class="card card-y">
+          <div class="ctitle">Esterification (sweet smell!)</div>
+          <div class="cbody"><div class="eq" style="font-size:14px;">CH₃COOH + C₂H₅OH ⇌ CH₃COOC₂H₅ + H₂O</div>Ethyl ethanoate (fruity ester, used in perfumes)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 16 ══ -->
+<div class="slide" id="s16">
+  <div class="stitle">Soaps and <em>Detergents</em></div>
+  <div class="ssub">How are soaps made? What makes them clean?</div>
+  <div class="sbody">
+    <div class="two">
+      <div>
+        <h3>Making Soap — <span class="c" onclick="openC('saponification')">Saponification</span></h3>
+        <div class="keybox">Fat/Oil + NaOH (or KOH) → <b>Soap</b> + Glycerol</div>
+        <div class="eq" style="font-size:17px;">Fat + NaOH →(heat)→ Soap + Glycerol</div>
+        <ul style="margin-top:12px;">
+          <li>NaOH makes <b>hard soap</b> (bar soap)</li>
+          <li>KOH makes <b>soft soap</b> (liquid soap, shaving cream)</li>
+        </ul>
+        <h3 style="margin-top:20px;">Soap Molecule Structure:</h3>
+        <div class="card card-g">
+          <div class="cbody">
+            Long <b>hydrophobic</b> tail: –CH₂–CH₂–CH₂–... (non-polar, repels water, loves grease)<br><br>
+            Ionic <b>hydrophilic</b> head: –COO⁻Na⁺ (polar, loves water, repels grease)
+          </div>
+        </div>
+      </div>
+      <div>
+        <svg width="100%" height="340" viewBox="0 0 280 340">
+          <!-- soap molecule diagram -->
+          <text x="140" y="22" text-anchor="middle" fill="#94a3b8" font-size="14">Soap molecule</text>
+          <!-- hydrophobic tail (wavy line) -->
+          <path d="M140 40 Q155 55 140 70 Q125 85 140 100 Q155 115 140 130 Q125 145 140 160 Q155 175 140 190" fill="none" stroke="#64748b" stroke-width="3"/>
+          <text x="165" y="118" fill="#64748b" font-size="12">Hydrophobic tail</text>
+          <text x="165" y="133" fill="#64748b" font-size="12">(non-polar)</text>
+          <!-- hydrophilic head -->
+          <circle cx="140" cy="210" r="22" fill="#059669"/>
+          <text x="140" y="215" text-anchor="middle" fill="white" font-size="12" font-weight="bold">COO⁻</text>
+          <circle cx="140" cy="250" r="12" fill="#2563eb"/>
+          <text x="140" y="255" text-anchor="middle" fill="white" font-size="11">Na⁺</text>
+          <text x="165" y="215" fill="#34d399" font-size="12">Hydrophilic head</text>
+          <text x="165" y="230" fill="#34d399" font-size="12">(ionic, loves water)</text>
+          <!-- water molecules -->
+          <circle cx="30" cy="260" r="8" fill="rgba(56,189,248,0.4)"/><text x="30" y="264" text-anchor="middle" fill="#38bdf8" font-size="10">H₂O</text>
+          <circle cx="80" cy="275" r="8" fill="rgba(56,189,248,0.4)"/><text x="80" y="279" text-anchor="middle" fill="#38bdf8" font-size="10">H₂O</text>
+          <circle cx="200" cy="265" r="8" fill="rgba(56,189,248,0.4)"/><text x="200" y="269" text-anchor="middle" fill="#38bdf8" font-size="10">H₂O</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 17 ══ -->
+<div class="slide" id="s17">
+  <div class="stitle">How Soap Cleans — <em>Micelle Formation</em></div>
+  <div class="ssub">The science of washing dirt away</div>
+  <div class="sbody">
+    <div class="two">
+      <div>
+        <h3>Step-by-step:</h3>
+        <ol style="padding-left:24px;">
+          <li style="margin-bottom:12px;">Soap is added to dirty (greasy) water</li>
+          <li style="margin-bottom:12px;">Hydrophobic tails of soap molecules <b>point toward the grease</b> (like dissolves like)</li>
+          <li style="margin-bottom:12px;">Hydrophilic heads <b>face outward toward water</b></li>
+          <li style="margin-bottom:12px;">A <span class="c" onclick="openC('micelle')">micelle</span> forms — a spherical cluster with grease trapped inside</li>
+          <li style="margin-bottom:12px;">Micelle is <b>soluble in water</b> (outer surface is ionic/polar)</li>
+          <li>Micelle washes away with water, taking the grease with it! ✅</li>
+        </ol>
+        <div class="warnbox" style="margin-top:16px;">⚠️ Soap does <b>NOT work in hard water</b> — it forms a white scum (insoluble calcium/magnesium salts). Use <b>detergents</b> instead!</div>
+      </div>
+      <div>
+        <svg width="100%" height="300" viewBox="0 0 280 300">
+          <text x="140" y="20" text-anchor="middle" fill="#94a3b8" font-size="14">Micelle structure</text>
+          <!-- grease droplet center -->
+          <circle cx="140" cy="155" r="40" fill="rgba(251,191,36,0.15)" stroke="rgba(251,191,36,0.3)" stroke-width="1.5"/>
+          <text x="140" y="160" text-anchor="middle" fill="#fbbf24" font-size="12">Grease</text>
+          <!-- soap molecules around it (8 directions) -->
+          <g id="soap-ring">
+            <!-- top -->
+            <line x1="140" y1="102" x2="140" y2="115" stroke="#64748b" stroke-width="2.5"/>
+            <circle cx="140" cy="97" r="10" fill="#059669"/>
+            <!-- bottom -->
+            <line x1="140" y1="195" x2="140" y2="208" stroke="#64748b" stroke-width="2.5"/>
+            <circle cx="140" cy="213" r="10" fill="#059669"/>
+            <!-- left -->
+            <line x1="87" y1="155" x2="100" y2="155" stroke="#64748b" stroke-width="2.5"/>
+            <circle cx="82" cy="155" r="10" fill="#059669"/>
+            <!-- right -->
+            <line x1="180" y1="155" x2="193" y2="155" stroke="#64748b" stroke-width="2.5"/>
+            <circle cx="198" cy="155" r="10" fill="#059669"/>
+            <!-- top-left -->
+            <line x1="102" y1="117" x2="112" y2="127" stroke="#64748b" stroke-width="2.5"/>
+            <circle cx="96" cy="111" r="10" fill="#059669"/>
+            <!-- top-right -->
+            <line x1="168" y1="122" x2="178" y2="112" stroke="#64748b" stroke-width="2.5"/>
+            <circle cx="183" cy="107" r="10" fill="#059669"/>
+            <!-- bottom-left -->
+            <line x1="107" y1="183" x2="117" y2="193" stroke="#64748b" stroke-width="2.5"/>
+            <circle cx="101" cy="198" r="10" fill="#059669"/>
+            <!-- bottom-right -->
+            <line x1="168" y1="183" x2="178" y2="193" stroke="#64748b" stroke-width="2.5"/>
+            <circle cx="183" cy="198" r="10" fill="#059669"/>
+          </g>
+          <text x="140" y="250" text-anchor="middle" fill="#34d399" font-size="13">Green circles = hydrophilic heads</text>
+          <text x="140" y="268" text-anchor="middle" fill="#94a3b8" font-size="13">Lines = hydrophobic tails → grease</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 18 ══ -->
+<div class="slide" id="s18">
+  <div class="stitle">Soaps vs <em>Detergents</em></div>
+  <div class="ssub">Why do we have both?</div>
+  <div class="sbody">
+    <table>
+      <tr><th>Feature</th><th>Soap</th><th>Detergent</th></tr>
+      <tr><td><b>Made from</b></td><td>Animal fat / vegetable oil + NaOH</td><td>Petrochemicals (sulphonate compounds)</td></tr>
+      <tr><td><b>Hard water</b></td><td>❌ Forms scum, ineffective</td><td>✅ Works in hard water</td></tr>
+      <tr><td><b>Biodegradable</b></td><td>✅ Yes — environment friendly</td><td>⚠️ Many are non-biodegradable (causes foam in rivers)</td></tr>
+      <tr><td><b>Skin effect</b></td><td>Mild, good for sensitive skin</td><td>Can be harsh (synthetic chemicals)</td></tr>
+      <tr><td><b>Cost</b></td><td>Relatively expensive to make</td><td>Cheaper to produce at scale</td></tr>
+      <tr><td><b>Lather in cold water</b></td><td>Less lather</td><td>Good lather even in cold water</td></tr>
+    </table>
+    <div class="infobox" style="margin-top:16px;">📌 <b>Hard water</b> contains dissolved Ca²⁺ and Mg²⁺ ions. These react with soap to form insoluble salts (scum): <span style="font-family:monospace;">2C₁₇H₃₅COONa + CaCl₂ → (C₁₇H₃₅COO)₂Ca↓ + 2NaCl</span></div>
+    <div class="warnbox">🌍 Non-biodegradable detergents cause <b>foam in rivers</b> and kill aquatic life. Use biodegradable detergents!</div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 19 ══ -->
+<div class="slide" id="s19">
+  <div class="stitle">Summary &amp; <em>Exam Tips</em></div>
+  <div class="ssub">Chapter 4 at a glance — everything you need to remember</div>
+  <div class="sbody">
+    <div class="two">
+      <div>
+        <h3>Key Reactions to Remember:</h3>
+        <div class="card card-g" style="margin-bottom:10px;">
+          <div class="ctitle">Complete Combustion of Methane</div>
+          <div class="cbody"><div class="eq" style="font-size:15px;">CH₄ + 2O₂ → CO₂ + 2H₂O</div></div>
+        </div>
+        <div class="card card-b" style="margin-bottom:10px;">
+          <div class="ctitle">Oxidation of Ethanol</div>
+          <div class="cbody"><div class="eq" style="font-size:15px;">C₂H₅OH + [O] → CH₃COOH</div></div>
+        </div>
+        <div class="card card-y" style="margin-bottom:10px;">
+          <div class="ctitle">Esterification</div>
+          <div class="cbody"><div class="eq" style="font-size:15px;">CH₃COOH + C₂H₅OH ⇌ CH₃COOC₂H₅ + H₂O</div></div>
+        </div>
+        <div class="card card-r">
+          <div class="ctitle">Saponification</div>
+          <div class="cbody"><div class="eq" style="font-size:15px;">Fat + NaOH → Soap + Glycerol</div></div>
+        </div>
+      </div>
+      <div>
+        <h3>Key Points:</h3>
+        <ul>
+          <li>Carbon's unique properties: <b>tetravalency</b> + <b>catenation</b></li>
+          <li>Allotropes: Diamond (hardest, insulator), Graphite (soft, conductor), Fullerene (C₆₀)</li>
+          <li>Alkanes = saturated (single bonds), Alkenes = C=C, Alkynes = C≡C</li>
+          <li>Ethanol: antiseptic, solvent, fuel; <b>methanol is POISONOUS</b></li>
+          <li>Ethanoic acid: vinegar (3-4%), glacial = pure (freezes at 17°C)</li>
+          <li>Soap works by <b>micelle formation</b></li>
+          <li>Soap fails in <b>hard water</b> → use detergent</li>
+          <li>Test for unsaturation: <b>decolourizes bromine water</b></li>
+        </ul>
+        <div class="keybox" style="margin-top:14px;">🎯 Most asked in exams: Properties of ethanol &amp; ethanoic acid, saponification, micelle formation, hard water problem!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end .sw -->
+
+<!-- ══ CONCEPT SIDEBAR ══ -->
+<div class="sidebar" id="sidebar">
+  <div class="sb-head">
+    <div class="sb-emoji" id="sb-emoji">⚛️</div>
+    <div class="sb-title" id="sb-title">Concept</div>
+    <button class="sb-close" onclick="closeC()">✕</button>
+  </div>
+  <div class="sb-body" id="sb-body"></div>
+</div>
+</div><!-- end .main -->
+
+<script>
+/* ═══ SLIDE DATA ═══ */
+const TOTAL = 19;
+let cur = 1;
+
+function showSlide(n) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('s' + n);
+  if (el) el.classList.add('active');
+  document.getElementById('scnt').textContent = n + ' / ' + TOTAL;
+  document.getElementById('pfill').style.width = (n / TOTAL * 100) + '%';
+  cur = n;
+}
+function nextSlide() { if (cur < TOTAL) showSlide(cur + 1); }
+function prevSlide() { if (cur > 1) showSlide(cur - 1); }
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextSlide();
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevSlide();
+  if (e.key === 'Escape') closeC();
+});
+
+/* ═══ CONCEPT DEFINITIONS ═══ */
+const CONCEPTS = {
+  'covalent-bond': {
+    emoji: '⚛️',
+    title: 'Covalent Bond',
+    cls: 'Class 9 & 10 | Structure of Atom / Carbon',
+    def: 'A covalent bond forms when two atoms SHARE one or more pairs of electrons to complete their outer shells. Neither atom gains nor loses electrons — they share them. The shared pair is called a "bonding pair".',
+    ex: 'H₂ molecule: each hydrogen atom has 1 electron, needs 1 more. They share → H—H (single covalent bond).\n\nCO₂: O=C=O (carbon makes 2 double bonds to satisfy all atoms)',
+    related: ['valency','ionic-bond','saturated','unsaturated']
+  },
+  'ionic-bond': {
+    emoji: '⚡',
+    title: 'Ionic Bond',
+    cls: 'Class 10 | Metals & Non-metals (Ch 3)',
+    def: 'An ionic bond forms by TRANSFER of electrons from a metal atom to a non-metal atom. The metal becomes a positive ion (cation) and the non-metal becomes a negative ion (anion). The opposite charges attract.',
+    ex: 'NaCl: Na gives 1 electron to Cl → Na⁺ and Cl⁻ attract → NaCl\n\nMgO: Mg gives 2 electrons to O → Mg²⁺ and O²⁻',
+    related: ['covalent-bond','valency']
+  },
+  'valency': {
+    emoji: '🔢',
+    title: 'Valency',
+    cls: 'Class 9 | Atoms and Molecules',
+    def: 'The valency of an element is the combining capacity of that element — how many bonds it can form. It equals the number of electrons it needs to gain/lose/share to achieve a stable outer shell (8 electrons, except H & He which need 2).',
+    ex: 'Carbon: outer shell has 4 electrons, needs 4 more → valency = 4\nNitrogen: outer shell has 5 electrons, needs 3 more → valency = 3\nOxygen: outer shell has 6 electrons, needs 2 more → valency = 2',
+    related: ['covalent-bond','ionic-bond']
+  },
+  'allotrope': {
+    emoji: '💎',
+    title: 'Allotrope',
+    cls: 'Class 10 | Carbon (Ch 4)',
+    def: 'Allotropes are different physical forms of the same element, in which the atoms are arranged differently. They have the same chemical properties but very different physical properties.',
+    ex: 'Carbon allotropes: Diamond (each C bonded to 4 C, tetrahedral, very hard), Graphite (layered hexagonal, soft, conducts electricity), Fullerene (C₆₀, ball shape)',
+    related: ['covalent-bond']
+  },
+  'saturated': {
+    emoji: '🔗',
+    title: 'Saturated Compound',
+    cls: 'Class 10 | Carbon (Ch 4)',
+    def: 'A saturated organic compound contains only SINGLE bonds between carbon atoms (C–C). No more hydrogen can be added to it — it is "saturated" with hydrogen. The general formula for saturated hydrocarbons (alkanes) is CₙH₂ₙ₊₂.',
+    ex: 'Methane CH₄, Ethane C₂H₆, Propane C₃H₈ are all saturated.\nTest: Does NOT decolourize bromine water.',
+    related: ['unsaturated','covalent-bond','homologous-series']
+  },
+  'unsaturated': {
+    emoji: '⚡',
+    title: 'Unsaturated Compound',
+    cls: 'Class 10 | Carbon (Ch 4)',
+    def: 'An unsaturated organic compound contains one or more DOUBLE bonds (C=C) or TRIPLE bonds (C≡C) between carbon atoms. More hydrogen can be added across these bonds. More reactive than saturated compounds.',
+    ex: 'Ethene CH₂=CH₂ (double bond), Ethyne CH≡CH (triple bond).\nTest: DECOLOURIZES bromine water (brown → colourless).\nUse: Ethene + H₂ → Ethane (hydrogenation, used to make ghee)',
+    related: ['saturated','covalent-bond','homologous-series']
+  },
+  'homologous-series': {
+    emoji: '📋',
+    title: 'Homologous Series',
+    cls: 'Class 10 | Carbon (Ch 4)',
+    def: 'A homologous series is a group of organic compounds that: (1) have the same functional group, (2) have the same general formula, (3) differ from each other by a –CH₂– unit (14 mass units), and (4) show a gradual change in physical properties.',
+    ex: 'Alkane series: CH₄ → C₂H₆ → C₃H₈ → C₄H₁₀ (each adds CH₂)\nAlcohol series: CH₃OH → C₂H₅OH → C₃H₇OH',
+    related: ['functional-group','saturated','unsaturated']
+  },
+  'functional-group': {
+    emoji: '🎯',
+    title: 'Functional Group',
+    cls: 'Class 10 | Carbon (Ch 4)',
+    def: 'A functional group is a specific atom or group of atoms attached to a carbon chain that determines the chemical properties of the organic compound. All compounds with the same functional group undergo similar reactions.',
+    ex: '–OH (hydroxyl) → alcohols: ethanol C₂H₅OH\n–COOH (carboxyl) → acids: ethanoic acid CH₃COOH\n–CHO (aldehyde) → formaldehyde HCHO\n–CO– (ketone) → acetone CH₃COCH₃',
+    related: ['homologous-series','saturated','unsaturated']
+  },
+  'catalyst': {
+    emoji: '⚗️',
+    title: 'Catalyst',
+    cls: 'Class 10 | Metals (Ch 3) & Carbon (Ch 4)',
+    def: 'A catalyst is a substance that SPEEDS UP a chemical reaction without being consumed in the reaction. It provides an alternative pathway with lower activation energy. The catalyst is recovered unchanged at the end.',
+    ex: 'Ni/Pt catalyst in hydrogenation: CH₂=CH₂ + H₂ →(Ni)→ CH₃CH₃\nMnO₂ in decomposition of H₂O₂: 2H₂O₂ →(MnO₂)→ 2H₂O + O₂\nSunlight in substitution: CH₄ + Cl₂ →(hν)→ CH₃Cl + HCl',
+    related: ['oxidation','covalent-bond']
+  },
+  'saponification': {
+    emoji: '🧼',
+    title: 'Saponification',
+    cls: 'Class 10 | Carbon (Ch 4)',
+    def: 'Saponification is the chemical process of making soap. A fat or oil (ester of glycerol and fatty acids) is treated with a strong alkali (NaOH or KOH) and heat. The ester bonds break, releasing glycerol and the sodium/potassium salt of the fatty acid (soap).',
+    ex: 'Fat + NaOH →(heat)→ Soap + Glycerol\n\nNaOH → hard soap (bar soap)\nKOH → soft/liquid soap\n\nThe word "saponification" comes from Latin sapo = soap',
+    related: ['micelle','esterification']
+  },
+  'micelle': {
+    emoji: '🫧',
+    title: 'Micelle',
+    cls: 'Class 10 | Carbon (Ch 4)',
+    def: 'A micelle is a spherical cluster of soap molecules that forms in water when soap is added to grease/oil. The hydrophobic (water-fearing) tails of soap molecules point inward toward the trapped grease, while the hydrophilic (water-loving) ionic heads point outward toward the water.',
+    ex: 'When you wash oily hands with soap:\n1. Soap tails bury into grease\n2. Ionic heads face the water\n3. Micelle forms around the grease droplet\n4. Micelle is water-soluble → washes away!',
+    related: ['saponification','hydrophobic','hydrophilic']
+  },
+  'esterification': {
+    emoji: '🌸',
+    title: 'Esterification',
+    cls: 'Class 10 | Carbon (Ch 4)',
+    def: 'Esterification is the reaction between a carboxylic acid (–COOH) and an alcohol (–OH) in the presence of an acid catalyst to form an ester (–COO–) and water. Esters have fruity smells and are used in perfumes and flavours.',
+    ex: 'CH₃COOH + C₂H₅OH ⇌ CH₃COOC₂H₅ + H₂O\n(Ethanoic acid + Ethanol ⇌ Ethyl ethanoate + Water)\n\nEthyl ethanoate smells like nail polish remover / pineapple!\n\nThis is a reversible reaction (⇌)',
+    related: ['saponification','functional-group']
+  },
+  'hydrophobic': {
+    emoji: '💧',
+    title: 'Hydrophobic',
+    cls: 'Class 10 | Carbon (Ch 4)',
+    def: '"Hydrophobic" means water-fearing (Greek: hydro = water, phobos = fear). A hydrophobic molecule or part of a molecule does not mix with water. It tends to associate with oils and non-polar substances. The long carbon tail of soap is hydrophobic.',
+    ex: 'Soap molecule: –CH₂–CH₂–CH₂–... (the hydrocarbon tail)\nOil and grease are hydrophobic\nWhen soap is in water, the hydrophobic tails hide from water by pointing into grease → micelle forms',
+    related: ['hydrophilic','micelle','saponification']
+  },
+  'hydrophilic': {
+    emoji: '🌊',
+    title: 'Hydrophilic',
+    cls: 'Class 10 | Carbon (Ch 4)',
+    def: '"Hydrophilic" means water-loving (Greek: hydro = water, philos = love). A hydrophilic molecule or part of a molecule readily mixes with water because it is polar or ionic. The ionic head of soap (–COO⁻Na⁺) is hydrophilic.',
+    ex: 'Soap molecule: –COO⁻Na⁺ (the ionic head)\nSugar is hydrophilic (dissolves in water)\nIn a micelle, hydrophilic heads face outward toward water → makes the micelle water-soluble',
+    related: ['hydrophobic','micelle','saponification']
+  },
+  'oxidation': {
+    emoji: '🔴',
+    title: 'Oxidation',
+    cls: 'Class 10 | Metals (Ch 3) & Carbon (Ch 4)',
+    def: 'Oxidation is the addition of oxygen to a substance, OR removal of hydrogen, OR loss of electrons. The substance that gets oxidized is called the reducing agent. In organic chemistry, alcohols are oxidized to carboxylic acids.',
+    ex: 'Mg + O₂ → MgO (metal oxidized)\nC₂H₅OH + [O] → CH₃COOH (ethanol oxidized to ethanoic acid using KMnO₄)\n2Fe + O₂ + H₂O → Fe₂O₃ (iron rusts = oxidation)',
+    related: ['reduction','catalyst']
+  },
+  'reduction': {
+    emoji: '🔵',
+    title: 'Reduction',
+    cls: 'Class 10 | Metals (Ch 3) & Carbon (Ch 4)',
+    def: 'Reduction is the removal of oxygen, OR addition of hydrogen, OR gain of electrons. Reduction always happens along with oxidation — they are paired (redox reactions). The substance that gets reduced is the oxidizing agent.',
+    ex: 'CuO + H₂ → Cu + H₂O (CuO reduced — O removed)\nFe₂O₃ + 3CO → 2Fe + 3CO₂ (iron ore reduced in blast furnace)\nCH₂=CH₂ + H₂ → CH₃CH₃ (ethene reduced by adding H₂)',
+    related: ['oxidation','catalyst']
+  }
+};
+
+function openC(key) {
+  const c = CONCEPTS[key];
+  if (!c) return;
+  document.getElementById('sb-emoji').textContent = c.emoji;
+  document.getElementById('sb-title').textContent = c.title;
+  let html = `<div class="sb-class">${c.cls}</div>`;
+  html += `<div class="sb-def">${c.def}</div>`;
+  if (c.ex) {
+    html += `<div class="sb-ex"><div class="sb-ex-label">Example</div><div class="sb-ex-text">${c.ex.replace(/\n/g,'<br>')}</div></div>`;
+  }
+  if (c.related && c.related.length) {
+    html += `<div class="sb-related"><div class="sb-rel-label">Related concepts</div><div class="sb-chips">`;
+    c.related.forEach(r => {
+      if (CONCEPTS[r]) html += `<span class="sb-chip" onclick="openC('${r}')">${CONCEPTS[r].emoji} ${CONCEPTS[r].title}</span>`;
+    });
+    html += `</div></div>`;
+  }
+  document.getElementById('sb-body').innerHTML = html;
+  document.getElementById('sidebar').classList.add('open');
+}
+
+function closeC() {
+  document.getElementById('sidebar').classList.remove('open');
+}
+</script>
+</body>
+</html>
