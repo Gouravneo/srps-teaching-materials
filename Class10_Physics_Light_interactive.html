@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Class 10 Physics – Light | Interactive Study</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0a0f1e;color:#e2e8f0;font-family:'Segoe UI',Arial,sans-serif;min-height:100vh;}
+header{background:#0d1527;border-bottom:2px solid #1e293b;padding:16px 32px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.hdr-title{font-size:24px;font-weight:800;color:#38bdf8;}
+.hdr-sub{font-size:14px;color:#64748b;margin-left:4px;}
+.hdr-links{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+.hdr-link{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:6px 14px;font-size:13px;border-radius:7px;cursor:pointer;text-decoration:none;}
+.hdr-link:hover{color:#e2e8f0;background:#334155;}
+.tab-bar{display:flex;gap:0;background:#070c17;border-bottom:2px solid #1e293b;overflow-x:auto;}
+.tab{padding:13px 24px;font-size:15px;font-weight:600;color:#64748b;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all 0.15s;}
+.tab.active{color:#38bdf8;border-bottom-color:#38bdf8;background:#0d1527;}
+.tab:hover:not(.active){color:#94a3b8;}
+.pane{display:none;padding:32px;}
+.pane.active{display:block;}
+.section-title{font-size:26px;font-weight:700;color:#38bdf8;margin-bottom:20px;}
+.card{background:#0d1527;border:1.5px solid #1e293b;border-radius:14px;padding:22px;margin-bottom:16px;}
+.card-title{font-size:17px;font-weight:700;color:#fbbf24;margin-bottom:12px;}
+.formula-row{display:flex;align-items:center;gap:14px;margin-bottom:10px;flex-wrap:wrap;}
+label{font-size:14px;color:#94a3b8;display:block;margin-bottom:4px;}
+input[type=number]{background:#1e293b;border:1px solid #334155;color:#e2e8f0;padding:8px 12px;border-radius:8px;font-size:15px;width:120px;outline:none;}
+input[type=number]:focus{border-color:#38bdf8;}
+select.sel{background:#1e293b;border:1px solid #334155;color:#e2e8f0;padding:8px 12px;border-radius:8px;font-size:14px;outline:none;}
+.btn{background:linear-gradient(135deg,#0ea5e9,#6366f1);border:none;color:#fff;padding:10px 24px;font-size:15px;font-weight:600;border-radius:9px;cursor:pointer;transition:opacity 0.15s;}
+.btn:hover{opacity:0.88;}
+.btn-sm{padding:7px 16px;font-size:13px;}
+.result-box{background:#071a10;border:1.5px solid #10b981;border-radius:10px;padding:14px 18px;margin-top:14px;font-family:'Courier New',monospace;font-size:15px;color:#34d399;line-height:1.9;}
+.result-box.error{background:#1a0707;border-color:#f87171;color:#f87171;}
+.result-box.info{background:#0c1e38;border-color:#38bdf8;color:#93c5fd;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+/* Quiz */
+.quiz-q{background:#0d1527;border:1.5px solid #1e293b;border-radius:14px;padding:22px;margin-bottom:14px;}
+.quiz-q-text{font-size:17px;color:#e2e8f0;margin-bottom:14px;line-height:1.5;}
+.quiz-opts{display:flex;flex-direction:column;gap:9px;}
+.quiz-opt{background:#1e293b;border:1.5px solid #334155;border-radius:9px;padding:11px 16px;font-size:15px;cursor:pointer;transition:all 0.15s;color:#cbd5e1;}
+.quiz-opt:hover:not(.locked){border-color:#38bdf8;color:#e2e8f0;}
+.quiz-opt.correct{background:rgba(16,185,129,0.15);border-color:#10b981;color:#34d399;}
+.quiz-opt.wrong{background:rgba(239,68,68,0.1);border-color:#f87171;color:#f87171;}
+.quiz-explanation{margin-top:12px;padding:11px 14px;background:#0c1e38;border-radius:8px;font-size:14px;color:#93c5fd;border-left:3px solid #38bdf8;display:none;}
+.quiz-status{font-size:14px;color:#64748b;margin-top:8px;}
+.score-box{background:linear-gradient(135deg,#0f2a4a,#111827);border:2px solid #38bdf8;border-radius:16px;padding:28px;text-align:center;margin-top:20px;}
+.score-num{font-size:56px;font-weight:800;color:#38bdf8;}
+.score-sub{font-size:16px;color:#64748b;margin-top:4px;}
+/* Flash cards */
+.flashcard{background:#0d1527;border:2px solid #1e293b;border-radius:16px;padding:32px;text-align:center;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:transform 0.15s;position:relative;}
+.flashcard:hover{transform:scale(1.015);}
+.fc-front{font-size:20px;font-weight:700;color:#38bdf8;}
+.fc-back{font-size:16px;color:#34d399;display:none;line-height:1.6;}
+.fc-hint{font-size:12px;color:#475569;margin-top:10px;}
+.fc-nav{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:16px;}
+.fc-nav-btn{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:8px 20px;font-size:14px;border-radius:8px;cursor:pointer;}
+.fc-nav-btn:hover{color:#e2e8f0;background:#334155;}
+.fc-counter{color:#475569;font-size:14px;}
+/* Sign convention vis */
+.sc-diagram{background:#0a1a2e;border-radius:12px;padding:18px;text-align:center;position:relative;overflow:hidden;}
+.sc-axis{height:3px;background:#334155;position:relative;margin:40px 0;}
+.sc-label{position:absolute;font-size:12px;color:#64748b;white-space:nowrap;}
+/* Responsive */
+@media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr;}.pane{padding:16px;}}
+.fs-btn{position:fixed;top:10px;right:10px;background:rgba(30,41,59,0.85);border:1px solid #334155;color:#64748b;padding:7px 12px;font-size:14px;border-radius:7px;cursor:pointer;z-index:999;}
+</style>
+</head>
+<body>
+<button class="fs-btn" onclick="document.documentElement.requestFullscreen()">⛶</button>
+
+<header>
+  <div>
+    <div class="hdr-title">💡 Light — Reflection &amp; Refraction</div>
+    <div class="hdr-sub">Class 10 Physics · Interactive Study Guide</div>
+  </div>
+  <div class="hdr-links">
+    <a class="hdr-link" href="Class10_Physics_Light_slides.html" target="_blank">📊 Slides</a>
+    <a class="hdr-link" href="Class10_Physics_Light_simulations.html" target="_blank">🧪 Simulations</a>
+    <a class="hdr-link" href="index.html">🏠 Dashboard</a>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('calculators')">🧮 Calculators</div>
+  <div class="tab" onclick="showTab('flashcards')">🃏 Flash Cards</div>
+  <div class="tab" onclick="showTab('quiz')">📝 Quiz</div>
+  <div class="tab" onclick="showTab('formulas')">📐 Formulas</div>
+</div>
+
+<!-- ══ CALCULATORS ══ -->
+<div class="pane active" id="pane-calculators">
+  <div class="section-title">Formula Calculators</div>
+  <div class="grid-2">
+
+    <!-- Mirror formula -->
+    <div class="card">
+      <div class="card-title">🪞 Mirror Formula Calculator</div>
+      <div style="font-size:13px;color:#64748b;margin-bottom:14px;font-family:monospace;">1/v + 1/u = 1/f &nbsp;|&nbsp; m = −v/u</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div>
+          <label>u (cm)</label>
+          <input type="number" id="m-u" placeholder="e.g. −30">
+        </div>
+        <div>
+          <label>v (cm)</label>
+          <input type="number" id="m-v" placeholder="optional">
+        </div>
+        <div>
+          <label>f (cm)</label>
+          <input type="number" id="m-f" placeholder="e.g. −20">
+        </div>
+      </div>
+      <div style="font-size:12px;color:#475569;margin-bottom:10px;">Leave one blank to calculate it. Concave: f &lt; 0, u &lt; 0</div>
+      <button class="btn btn-sm" onclick="calcMirror()">Calculate</button>
+      <div id="m-result"></div>
+    </div>
+
+    <!-- Lens formula -->
+    <div class="card">
+      <div class="card-title">🔍 Lens Formula Calculator</div>
+      <div style="font-size:13px;color:#64748b;margin-bottom:14px;font-family:monospace;">1/v − 1/u = 1/f &nbsp;|&nbsp; m = v/u &nbsp;|&nbsp; P = 1/f(m)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div>
+          <label>u (cm)</label>
+          <input type="number" id="l-u" placeholder="e.g. −40">
+        </div>
+        <div>
+          <label>v (cm)</label>
+          <input type="number" id="l-v" placeholder="optional">
+        </div>
+        <div>
+          <label>f (cm)</label>
+          <input type="number" id="l-f" placeholder="e.g. 20">
+        </div>
+      </div>
+      <div style="font-size:12px;color:#475569;margin-bottom:10px;">Leave one blank to calculate it. Convex: f &gt; 0, u &lt; 0</div>
+      <button class="btn btn-sm" onclick="calcLens()">Calculate</button>
+      <div id="l-result"></div>
+    </div>
+
+    <!-- Snell's law -->
+    <div class="card">
+      <div class="card-title">💧 Snell's Law Calculator</div>
+      <div style="font-size:13px;color:#64748b;margin-bottom:14px;font-family:monospace;">n₁ sin θ₁ = n₂ sin θ₂</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div>
+          <label>n₁ (medium 1)</label>
+          <input type="number" id="sn-n1" value="1" step="0.01">
+        </div>
+        <div>
+          <label>θ₁ (degrees)</label>
+          <input type="number" id="sn-t1" placeholder="e.g. 45">
+        </div>
+        <div>
+          <label>n₂ (medium 2)</label>
+          <input type="number" id="sn-n2" placeholder="e.g. 1.5" step="0.01">
+        </div>
+        <div>
+          <label>θ₂ (degrees)</label>
+          <input type="number" id="sn-t2" placeholder="optional">
+        </div>
+      </div>
+      <button class="btn btn-sm" onclick="calcSnell()">Calculate</button>
+      <div id="sn-result"></div>
+    </div>
+
+    <!-- Power of lens -->
+    <div class="card">
+      <div class="card-title">⚡ Power of Lens Calculator</div>
+      <div style="font-size:13px;color:#64748b;margin-bottom:14px;font-family:monospace;">P = 1/f (f in metres) &nbsp;|&nbsp; P = P₁ + P₂</div>
+      <div style="margin-bottom:10px;">
+        <label>Focal length f (cm)</label>
+        <input type="number" id="pw-f" placeholder="e.g. 25 or −50" style="width:160px;">
+      </div>
+      <button class="btn btn-sm" onclick="calcPower()">Calculate Power</button>
+      <div id="pw-result"></div>
+      <hr style="border-color:#1e293b;margin:16px 0;">
+      <div style="font-size:14px;color:#94a3b8;font-weight:600;margin-bottom:10px;">Combined Lenses (up to 3)</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+        <div><label>P₁ (D)</label><input type="number" id="comb-p1" placeholder="e.g. +2" step="0.1" style="width:100px;"></div>
+        <div><label>P₂ (D)</label><input type="number" id="comb-p2" placeholder="e.g. −3" step="0.1" style="width:100px;"></div>
+        <div><label>P₃ (D)</label><input type="number" id="comb-p3" placeholder="optional" step="0.1" style="width:100px;"></div>
+      </div>
+      <button class="btn btn-sm" onclick="calcCombined()">Combine</button>
+      <div id="comb-result"></div>
+    </div>
+
+    <!-- Refractive index -->
+    <div class="card">
+      <div class="card-title">🌊 Refractive Index Calculator</div>
+      <div style="font-size:13px;color:#64748b;margin-bottom:14px;font-family:monospace;">n = c/v = sin i / sin r = real depth / apparent depth</div>
+      <select class="sel" id="ri-mode" onchange="updateRIMode()" style="margin-bottom:12px;width:100%;">
+        <option value="speed">From speed (n = c/v)</option>
+        <option value="angle">From angles (n = sin i / sin r)</option>
+        <option value="depth">From depth (n = real/apparent)</option>
+      </select>
+      <div id="ri-inputs"></div>
+      <button class="btn btn-sm" onclick="calcRI()" style="margin-top:10px;">Calculate</button>
+      <div id="ri-result"></div>
+    </div>
+
+    <!-- Critical angle -->
+    <div class="card">
+      <div class="card-title">🔺 Critical Angle Calculator</div>
+      <div style="font-size:13px;color:#64748b;margin-bottom:14px;font-family:monospace;">sin C = 1/n (for glass-air) &nbsp;|&nbsp; sin C = n₂/n₁</div>
+      <div style="margin-bottom:10px;">
+        <label>Refractive index n₁ (denser medium)</label>
+        <input type="number" id="ca-n1" placeholder="e.g. 1.5" step="0.01" style="width:160px;">
+      </div>
+      <div style="margin-bottom:10px;">
+        <label>n₂ (rarer medium, default 1.0 for air)</label>
+        <input type="number" id="ca-n2" value="1.0" step="0.01" style="width:160px;">
+      </div>
+      <button class="btn btn-sm" onclick="calcCritical()">Calculate</button>
+      <div id="ca-result"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ FLASH CARDS ══ -->
+<div class="pane" id="pane-flashcards">
+  <div class="section-title">Flash Cards</div>
+  <p style="color:#64748b;margin-bottom:20px;font-size:14px;">Click a card to reveal the answer. Use arrows to navigate.</p>
+  <div style="max-width:600px;margin:0 auto;">
+    <div class="flashcard" id="fc-card" onclick="flipCard()">
+      <div class="fc-front" id="fc-front"></div>
+      <div class="fc-back" id="fc-back"></div>
+      <div class="fc-hint" id="fc-hint">Click to reveal answer</div>
+    </div>
+    <div class="fc-nav">
+      <button class="fc-nav-btn" onclick="fcPrev()">◀ Prev</button>
+      <span class="fc-counter" id="fc-counter">1 / 20</span>
+      <button class="fc-nav-btn" onclick="fcNext()">Next ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ QUIZ ══ -->
+<div class="pane" id="pane-quiz">
+  <div class="section-title">Practice Quiz — Light</div>
+  <p style="color:#64748b;margin-bottom:20px;font-size:14px;">15 MCQ questions covering reflection, refraction, mirrors, and lenses.</p>
+  <div id="quiz-container"></div>
+  <div id="quiz-score" style="display:none;" class="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div class="score-sub" id="score-sub"></div>
+    <button class="btn" style="margin-top:16px;" onclick="resetQuiz()">Try Again</button>
+  </div>
+</div>
+
+<!-- ══ FORMULAS ══ -->
+<div class="pane" id="pane-formulas">
+  <div class="section-title">Formula Reference Sheet</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">🪞 Mirrors</div>
+      <div style="font-family:monospace;font-size:16px;color:#fbbf24;line-height:2.2;">
+        1/v + 1/u = 1/f<br>
+        f = R/2<br>
+        m = −v/u = h'/h
+      </div>
+      <div style="margin-top:12px;font-size:13px;color:#64748b;line-height:1.9;">
+        u: object distance (always −ve)<br>
+        v: image distance (−ve = real, +ve = virtual)<br>
+        f: focal length (concave −ve, convex +ve)<br>
+        m &lt; 0: inverted &nbsp;|&nbsp; m &gt; 0: erect<br>
+        |m| &gt; 1: enlarged &nbsp;|&nbsp; |m| &lt; 1: diminished
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🔍 Lenses</div>
+      <div style="font-family:monospace;font-size:16px;color:#fbbf24;line-height:2.2;">
+        1/v − 1/u = 1/f<br>
+        m = v/u = h'/h<br>
+        P = 1/f(m) &nbsp;[in metres]
+      </div>
+      <div style="margin-top:12px;font-size:13px;color:#64748b;line-height:1.9;">
+        u: object distance (always −ve)<br>
+        v: +ve = real (right), −ve = virtual (left)<br>
+        f: convex +ve, concave −ve<br>
+        Power in Dioptres (D)<br>
+        P_total = P₁ + P₂ + P₃
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">💧 Refraction &amp; Snell's Law</div>
+      <div style="font-family:monospace;font-size:16px;color:#fbbf24;line-height:2.2;">
+        n₁ sin θ₁ = n₂ sin θ₂<br>
+        n = c / v<br>
+        sin C = n₂ / n₁
+      </div>
+      <div style="margin-top:12px;font-size:13px;color:#64748b;line-height:1.9;">
+        n: refractive index (dimensionless)<br>
+        c = 3 × 10⁸ m/s (speed in vacuum)<br>
+        v: speed in medium<br>
+        C: critical angle for TIR<br>
+        TIR: denser → rarer, angle &gt; C
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">📋 Sign Convention Summary</div>
+      <div style="font-size:14px;color:#94a3b8;line-height:1.9;">
+        All distances from <strong style="color:#38bdf8;">optical centre / pole</strong><br>
+        Along incident ray direction = <strong style="color:#34d399;">positive (+)</strong><br>
+        Against incident ray direction = <strong style="color:#f87171;">negative (−)</strong><br>
+        Heights above principal axis = <strong style="color:#34d399;">positive (+)</strong><br>
+        Heights below principal axis = <strong style="color:#f87171;">negative (−)</strong><br><br>
+        <strong>u</strong> always −ve (object in front)<br>
+        <strong>Concave mirror f</strong>: −ve<br>
+        <strong>Convex mirror f</strong>: +ve<br>
+        <strong>Convex lens f</strong>: +ve<br>
+        <strong>Concave lens f</strong>: −ve
+      </div>
+    </div>
+    <div class="card" style="grid-column:span 2;">
+      <div class="card-title">📊 Quick Comparison Table</div>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <thead>
+          <tr style="border-bottom:2px solid #1e293b;">
+            <th style="padding:9px 12px;text-align:left;color:#38bdf8;">Property</th>
+            <th style="padding:9px 12px;text-align:center;color:#38bdf8;">Concave Mirror</th>
+            <th style="padding:9px 12px;text-align:center;color:#fbbf24;">Convex Mirror</th>
+            <th style="padding:9px 12px;text-align:center;color:#38bdf8;">Convex Lens</th>
+            <th style="padding:9px 12px;text-align:center;color:#a78bfa;">Concave Lens</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #1e293b;"><td style="padding:8px 12px;color:#94a3b8;">f sign</td><td style="text-align:center;color:#f87171;">−ve</td><td style="text-align:center;color:#34d399;">+ve</td><td style="text-align:center;color:#34d399;">+ve</td><td style="text-align:center;color:#f87171;">−ve</td></tr>
+          <tr style="border-bottom:1px solid #1e293b;"><td style="padding:8px 12px;color:#94a3b8;">Type</td><td style="text-align:center;">Converging</td><td style="text-align:center;">Diverging</td><td style="text-align:center;">Converging</td><td style="text-align:center;">Diverging</td></tr>
+          <tr style="border-bottom:1px solid #1e293b;"><td style="padding:8px 12px;color:#94a3b8;">Real image?</td><td style="text-align:center;color:#34d399;">Yes (u beyond F)</td><td style="text-align:center;color:#f87171;">Never</td><td style="text-align:center;color:#34d399;">Yes (u beyond F)</td><td style="text-align:center;color:#f87171;">Never</td></tr>
+          <tr style="border-bottom:1px solid #1e293b;"><td style="padding:8px 12px;color:#94a3b8;">Virtual image</td><td style="text-align:center;">Yes (u inside F)</td><td style="text-align:center;color:#34d399;">Always</td><td style="text-align:center;">Yes (u inside F)</td><td style="text-align:center;color:#34d399;">Always</td></tr>
+          <tr><td style="padding:8px 12px;color:#94a3b8;">Use</td><td style="text-align:center;font-size:12px;">Shaving mirror, headlights</td><td style="text-align:center;font-size:12px;">Rear-view mirror</td><td style="text-align:center;font-size:12px;">Camera, magnifier</td><td style="text-align:center;font-size:12px;">Myopia correction</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   TABS
+══════════════════════════════════════════════ */
+function showTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('pane-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+/* ══════════════════════════════════════════════
+   CALCULATORS
+══════════════════════════════════════════════ */
+function fmt(n, dp = 2) { return isFinite(n) ? n.toFixed(dp) : '∞'; }
+
+function calcMirror() {
+  const uv = document.getElementById('m-u').value;
+  const vv = document.getElementById('m-v').value;
+  const fv = document.getElementById('m-f').value;
+  const u = uv !== '' ? +uv : null;
+  const v = vv !== '' ? +vv : null;
+  const f = fv !== '' ? +fv : null;
+  const blanks = [u, v, f].filter(x => x === null).length;
+  const el = document.getElementById('m-result');
+
+  if (blanks !== 1) {
+    el.innerHTML = '<div class="result-box error">Fill exactly 2 of the 3 values and leave one blank.</div>';
+    return;
+  }
+  let uc = u, vc = v, fc = f;
+  if (fc === null) fc = 1 / (1/vc + 1/uc);
+  else if (vc === null) vc = 1 / (1/fc - 1/uc);
+  else if (uc === null) uc = 1 / (1/fc - 1/vc);
+
+  const m = -vc / uc;
+  const nat = vc < 0 ? 'Real' : 'Virtual';
+  const ori = m < 0 ? 'Inverted' : 'Erect';
+  const sz  = Math.abs(m) > 1.01 ? 'Enlarged' : Math.abs(m) < 0.99 ? 'Diminished' : 'Same size';
+
+  el.innerHTML = `<div class="result-box">
+u = ${fmt(uc)} cm &nbsp;|&nbsp; v = ${fmt(vc)} cm &nbsp;|&nbsp; f = ${fmt(fc)} cm<br>
+Magnification m = ${fmt(m, 3)}<br>
+Image: <strong>${nat}</strong>, <strong>${ori}</strong>, <strong>${sz}</strong>
+  </div>`;
+}
+
+function calcLens() {
+  const uv = document.getElementById('l-u').value;
+  const vv = document.getElementById('l-v').value;
+  const fv = document.getElementById('l-f').value;
+  const u = uv !== '' ? +uv : null;
+  const v = vv !== '' ? +vv : null;
+  const f = fv !== '' ? +fv : null;
+  const blanks = [u, v, f].filter(x => x === null).length;
+  const el = document.getElementById('l-result');
+
+  if (blanks !== 1) {
+    el.innerHTML = '<div class="result-box error">Fill exactly 2 of the 3 values and leave one blank.</div>';
+    return;
+  }
+  let uc = u, vc = v, fc = f;
+  if (fc === null) fc = 1 / (1/vc - 1/uc);
+  else if (vc === null) vc = 1 / (1/fc + 1/uc);
+  else if (uc === null) uc = 1 / (1/vc - 1/fc);
+
+  const m = vc / uc;
+  const P = 1 / (fc / 100);
+  const nat = vc > 0 ? 'Real' : 'Virtual';
+  const ori = m > 0 ? 'Erect' : 'Inverted';
+  const sz  = Math.abs(m) > 1.01 ? 'Enlarged' : Math.abs(m) < 0.99 ? 'Diminished' : 'Same size';
+
+  el.innerHTML = `<div class="result-box">
+u = ${fmt(uc)} cm &nbsp;|&nbsp; v = ${fmt(vc)} cm &nbsp;|&nbsp; f = ${fmt(fc)} cm<br>
+Magnification m = ${fmt(m, 3)}<br>
+Power P = ${fmt(P, 2)} D<br>
+Image: <strong>${nat}</strong>, <strong>${ori}</strong>, <strong>${sz}</strong>
+  </div>`;
+}
+
+function calcSnell() {
+  const n1 = +document.getElementById('sn-n1').value || 1;
+  const t1v = document.getElementById('sn-t1').value;
+  const n2v = document.getElementById('sn-n2').value;
+  const t2v = document.getElementById('sn-t2').value;
+  const el = document.getElementById('sn-result');
+
+  if (!t1v) { el.innerHTML = '<div class="result-box error">θ₁ is required.</div>'; return; }
+  const t1 = +t1v * Math.PI / 180;
+  const sinT1 = Math.sin(t1);
+
+  if (n2v && !t2v) {
+    const n2 = +n2v;
+    const sinT2 = (n1 * sinT1) / n2;
+    if (sinT2 > 1) {
+      el.innerHTML = `<div class="result-box error">Total Internal Reflection! sinθ₂ = ${fmt(sinT2,3)} > 1. TIR occurs.</div>`;
+    } else {
+      const t2_deg = Math.asin(sinT2) * 180 / Math.PI;
+      el.innerHTML = `<div class="result-box">n₁ = ${n1} &nbsp;|&nbsp; θ₁ = ${t1v}°<br>n₂ = ${n2} &nbsp;|&nbsp; θ₂ = ${fmt(t2_deg, 2)}°<br>n₁ sinθ₁ = ${fmt(n1*sinT1,4)} = n₂ sinθ₂ ✓</div>`;
+    }
+  } else if (!n2v && t2v) {
+    const t2 = +t2v * Math.PI / 180;
+    const n2 = (n1 * sinT1) / Math.sin(t2);
+    el.innerHTML = `<div class="result-box">n₁ = ${n1} &nbsp;|&nbsp; θ₁ = ${t1v}°<br>θ₂ = ${t2v}°<br>Refractive index n₂ = ${fmt(n2, 4)}</div>`;
+  } else {
+    el.innerHTML = '<div class="result-box error">Provide either n₂ or θ₂ (not both, not neither).</div>';
+  }
+}
+
+function calcPower() {
+  const f_cm = +document.getElementById('pw-f').value;
+  const el = document.getElementById('pw-result');
+  if (!f_cm) { el.innerHTML = ''; return; }
+  const f_m = f_cm / 100;
+  const P = 1 / f_m;
+  const type = P > 0 ? 'Convex (Converging)' : 'Concave (Diverging)';
+  el.innerHTML = `<div class="result-box">P = 1/${fmt(f_m,3)} = <strong>${fmt(P,2)} D</strong><br>Type: ${type}</div>`;
+}
+
+function calcCombined() {
+  const p1 = document.getElementById('comb-p1').value;
+  const p2 = document.getElementById('comb-p2').value;
+  const p3 = document.getElementById('comb-p3').value;
+  const el = document.getElementById('comb-result');
+  if (!p1 && !p2) { el.innerHTML = ''; return; }
+  let total = 0, parts = [];
+  if (p1) { total += +p1; parts.push(p1 + ' D'); }
+  if (p2) { total += +p2; parts.push(p2 + ' D'); }
+  if (p3) { total += +p3; parts.push(p3 + ' D'); }
+  const f_m = 1 / total;
+  el.innerHTML = `<div class="result-box">P = ${parts.join(' + ')} = <strong>${fmt(total,2)} D</strong><br>Equivalent f = ${fmt(f_m * 100, 2)} cm</div>`;
+}
+
+function updateRIMode() {
+  const mode = document.getElementById('ri-mode').value;
+  const el = document.getElementById('ri-inputs');
+  if (mode === 'speed') {
+    el.innerHTML = `<div style="margin-bottom:8px;"><label>Speed in medium v (m/s)</label><input type="number" id="ri-v" placeholder="e.g. 2e8" style="width:160px;"></div>`;
+  } else if (mode === 'angle') {
+    el.innerHTML = `<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
+      <div><label>∠i (degrees)</label><input type="number" id="ri-i" placeholder="e.g. 45" style="width:110px;"></div>
+      <div><label>∠r (degrees)</label><input type="number" id="ri-r" placeholder="e.g. 30" style="width:110px;"></div>
+    </div>`;
+  } else {
+    el.innerHTML = `<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
+      <div><label>Real depth (cm)</label><input type="number" id="ri-real" placeholder="e.g. 12" style="width:120px;"></div>
+      <div><label>Apparent depth (cm)</label><input type="number" id="ri-app" placeholder="e.g. 9" style="width:120px;"></div>
+    </div>`;
+  }
+}
+
+function calcRI() {
+  const mode = document.getElementById('ri-mode').value;
+  const el = document.getElementById('ri-result');
+  let n;
+  if (mode === 'speed') {
+    const v = +document.getElementById('ri-v').value;
+    if (!v) return;
+    n = 3e8 / v;
+    el.innerHTML = `<div class="result-box">n = c/v = 3×10⁸ / ${v} = <strong>${fmt(n, 4)}</strong></div>`;
+  } else if (mode === 'angle') {
+    const i_deg = +document.getElementById('ri-i').value;
+    const r_deg = +document.getElementById('ri-r').value;
+    if (!i_deg || !r_deg) return;
+    n = Math.sin(i_deg * Math.PI/180) / Math.sin(r_deg * Math.PI/180);
+    el.innerHTML = `<div class="result-box">n = sin i / sin r = sin${i_deg}° / sin${r_deg}° = <strong>${fmt(n,4)}</strong></div>`;
+  } else {
+    const real = +document.getElementById('ri-real').value;
+    const app  = +document.getElementById('ri-app').value;
+    if (!real || !app) return;
+    n = real / app;
+    el.innerHTML = `<div class="result-box">n = real depth / apparent depth = ${real} / ${app} = <strong>${fmt(n,4)}</strong></div>`;
+  }
+}
+
+function calcCritical() {
+  const n1 = +document.getElementById('ca-n1').value;
+  const n2 = +(document.getElementById('ca-n2').value || 1);
+  const el = document.getElementById('ca-result');
+  if (!n1 || n1 <= n2) {
+    el.innerHTML = '<div class="result-box error">n₁ must be greater than n₂ for TIR to occur.</div>';
+    return;
+  }
+  const sinC = n2 / n1;
+  const C_deg = Math.asin(sinC) * 180 / Math.PI;
+  el.innerHTML = `<div class="result-box">sin C = n₂/n₁ = ${n2}/${n1} = ${fmt(sinC,4)}<br>Critical angle C = <strong>${fmt(C_deg,2)}°</strong><br>TIR occurs when ∠i &gt; ${fmt(C_deg,1)}°</div>`;
+}
+
+// Init RI mode
+updateRIMode();
+
+/* ══════════════════════════════════════════════
+   FLASH CARDS
+══════════════════════════════════════════════ */
+const flashCards = [
+  { q: 'State the Law of Reflection.', a: 'Angle of incidence = Angle of reflection. The incident ray, normal, and reflected ray are coplanar (∠i = ∠r).' },
+  { q: 'What is the relationship between focal length and radius of curvature?', a: 'f = R/2 (Focal length is half the radius of curvature).' },
+  { q: 'Write the Mirror Formula.', a: '1/v + 1/u = 1/f\n\nu = object distance, v = image distance, f = focal length.' },
+  { q: 'What type of image does a concave mirror form when the object is between F and P?', a: 'Virtual, Erect, Enlarged image (behind the mirror). Used in shaving/makeup mirrors.' },
+  { q: 'Write Snell\'s Law.', a: 'n₁ sin θ₁ = n₂ sin θ₂\n\nWhere n is refractive index and θ is angle with the normal.' },
+  { q: 'What are the conditions for Total Internal Reflection?', a: '1. Light must travel from denser to rarer medium.\n2. Angle of incidence must exceed the critical angle (∠i > C).' },
+  { q: 'Write the Lens Formula.', a: '1/v − 1/u = 1/f\n\nu = object distance, v = image distance, f = focal length.' },
+  { q: 'What is the SI unit of power of a lens?', a: 'Dioptre (D). P = 1/f where f is in metres.' },
+  { q: 'What type of image does a convex mirror always form?', a: 'Virtual, Erect, Diminished image. The image always forms between P and F (behind the mirror).' },
+  { q: 'What is accommodation of the eye?', a: 'The ability of the eye lens to adjust its focal length using ciliary muscles to focus on objects at different distances.' },
+  { q: 'Which lens corrects Myopia? Why?', a: 'Concave (diverging) lens. Myopia = image forms in front of retina. Concave lens diverges rays so they focus on the retina.' },
+  { q: 'Which lens corrects Hypermetropia? Why?', a: 'Convex (converging) lens. Hypermetropia = image forms behind retina. Convex lens converges rays to bring image onto retina.' },
+  { q: 'What is the refractive index of glass and diamond?', a: 'Glass: n ≈ 1.50\nDiamond: n ≈ 2.42\n\nHigher n means slower light and more bending.' },
+  { q: 'A convex lens has f = 25 cm. What is its power?', a: 'f = 25 cm = 0.25 m\nP = 1/f = 1/0.25 = +4.0 D\n(Positive because convex = converging)' },
+  { q: 'What is the near point and far point of a normal eye?', a: 'Near point: 25 cm (least distance of distinct vision)\nFar point: Infinity' },
+  { q: 'What is the sign of v when a real image is formed?', a: 'For a mirror: v is negative (real image is in front of mirror, same side as incident ray).\nFor a lens: v is positive (real image is on the other side).' },
+  { q: 'What colour of light bends the most during dispersion? The least?', a: 'Most bending: Violet (shortest wavelength)\nLeast bending: Red (longest wavelength)\nRemember: VIBGYOR' },
+  { q: 'An object is placed at the centre of curvature (C) of a concave mirror. Where is the image?', a: 'Image is also at C. It is Real, Inverted, Same size (magnification m = −1).' },
+  { q: 'What is the formula for critical angle?', a: 'sin C = n₂/n₁ (general)\nsin C = 1/n (for glass-air, n₂=1)\nC = arcsin(1/n)' },
+  { q: 'What is the magnification formula? What does m = −2 mean?', a: 'm = −v/u (mirror) or m = v/u (lens)\nm = −2 means: Real (negative), Inverted, Magnified twice (|m|=2 > 1).' },
+];
+
+let fcIdx = 0, fcFlipped = false;
+
+function renderFC() {
+  const card = flashCards[fcIdx];
+  document.getElementById('fc-front').textContent = card.q;
+  document.getElementById('fc-back').textContent = card.a;
+  document.getElementById('fc-front').style.display = 'block';
+  document.getElementById('fc-back').style.display = 'none';
+  document.getElementById('fc-hint').textContent = 'Click to reveal answer';
+  document.getElementById('fc-counter').textContent = (fcIdx + 1) + ' / ' + flashCards.length;
+  fcFlipped = false;
+}
+function flipCard() {
+  if (!fcFlipped) {
+    document.getElementById('fc-front').style.display = 'none';
+    document.getElementById('fc-back').style.display = 'block';
+    document.getElementById('fc-hint').textContent = 'Click to hide';
+    fcFlipped = true;
+  } else {
+    document.getElementById('fc-front').style.display = 'block';
+    document.getElementById('fc-back').style.display = 'none';
+    document.getElementById('fc-hint').textContent = 'Click to reveal answer';
+    fcFlipped = false;
+  }
+}
+function fcNext() { if (fcIdx < flashCards.length - 1) { fcIdx++; renderFC(); } }
+function fcPrev() { if (fcIdx > 0) { fcIdx--; renderFC(); } }
+
+renderFC();
+
+/* ══════════════════════════════════════════════
+   QUIZ
+══════════════════════════════════════════════ */
+const quizData = [
+  { q: 'Which of the following correctly states the Law of Reflection?', opts: ['∠i = ∠r and all three rays coplanar', '∠i + ∠r = 90°', '∠i = 2∠r', '∠r is always 45°'], ans: 0, exp: 'The two laws are: (1) ∠i = ∠r, (2) incident ray, normal, and reflected ray are coplanar.' },
+  { q: 'A concave mirror has f = 15 cm. What is its radius of curvature?', opts: ['7.5 cm', '15 cm', '30 cm', '45 cm'], ans: 2, exp: 'R = 2f = 2 × 15 = 30 cm.' },
+  { q: 'For a concave mirror, what is the sign of focal length?', opts: ['Positive (+)', 'Negative (−)', 'Zero', 'Can be either'], ans: 1, exp: 'Concave mirror: f is negative (by New Cartesian Sign Convention). Convex mirror: f is positive.' },
+  { q: 'An object is placed at the focal point of a concave mirror. Where does the image form?', opts: ['At the pole', 'At centre of curvature', 'At infinity', 'Between P and F'], ans: 2, exp: 'When object is at F, reflected rays are parallel — image forms at infinity.' },
+  { q: 'Which mirror is used as a rear-view mirror in vehicles?', opts: ['Concave mirror', 'Convex mirror', 'Plane mirror', 'Both concave and convex'], ans: 1, exp: 'Convex mirror gives a wider field of view and always forms a virtual, erect, diminished image.' },
+  { q: 'Snell\'s Law states:', opts: ['n₁ sin θ₁ = n₂ sin θ₂', 'n₁ cos θ₁ = n₂ cos θ₂', 'n₁ θ₁ = n₂ θ₂', 'n₁/θ₁ = n₂/θ₂'], ans: 0, exp: 'Snell\'s Law: n₁ sin θ₁ = n₂ sin θ₂, where θ is measured from the normal.' },
+  { q: 'When light goes from air into glass, it bends:', opts: ['Away from normal', 'Toward normal', 'Along normal', 'No bending'], ans: 1, exp: 'Air → glass: rarer to denser. Light slows down and bends toward the normal. θ₂ < θ₁.' },
+  { q: 'Which lens is used to correct myopia (short-sightedness)?', opts: ['Convex lens', 'Concave lens', 'Cylindrical lens', 'Bifocal lens'], ans: 1, exp: 'Myopia: image forms in front of retina. Concave (diverging) lens corrects this.' },
+  { q: 'The power of a lens is 4 D. What is its focal length?', opts: ['4 cm', '25 cm', '0.4 m', '4 m'], ans: 1, exp: 'P = 1/f → f = 1/P = 1/4 = 0.25 m = 25 cm.' },
+  { q: 'Which of the following has the highest refractive index?', opts: ['Water (1.33)', 'Glass (1.50)', 'Diamond (2.42)', 'Air (1.00)'], ans: 2, exp: 'Diamond has n = 2.42, the highest among common materials. This gives a critical angle of ~24°, making diamonds sparkle.' },
+  { q: 'An object is placed beyond 2F of a convex lens. The image is:', opts: ['Virtual, erect, enlarged', 'Real, inverted, diminished', 'Real, erect, same size', 'Virtual, inverted, enlarged'], ans: 1, exp: 'Object beyond 2F: image between F₂ and 2F₂ — Real, Inverted, Diminished.' },
+  { q: 'The lens formula is:', opts: ['1/v + 1/u = 1/f', '1/v − 1/u = 1/f', 'v − u = f', '1/f = 1/v × 1/u'], ans: 1, exp: 'Lens formula: 1/v − 1/u = 1/f (note the MINUS sign, unlike mirror formula which uses PLUS).' },
+  { q: 'What is the least distance of distinct vision for a normal adult eye?', opts: ['10 cm', '15 cm', '25 cm', '50 cm'], ans: 2, exp: 'The near point (least distance of distinct vision) is 25 cm for a normal adult eye.' },
+  { q: 'Total Internal Reflection can occur when light travels:', opts: ['From rarer to denser medium', 'From denser to rarer medium', 'Along the normal', 'At any angle in any medium'], ans: 1, exp: 'TIR requires: (1) denser → rarer medium, (2) angle of incidence > critical angle.' },
+  { q: 'Which colour is at the top of a primary rainbow?', opts: ['Violet', 'Blue', 'Yellow', 'Red'], ans: 3, exp: 'Red is at the outer (top) edge of a rainbow. Violet is at the inner (bottom) edge. Remember: ROY G BIV from outside in.' },
+];
+
+let answered = 0, correct = 0;
+
+function buildQuiz() {
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = '';
+  answered = 0; correct = 0;
+  quizData.forEach((q, qi) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-q';
+    div.id = 'qq-' + qi;
+    div.innerHTML = `
+      <div class="quiz-q-text"><strong>${qi + 1}.</strong> ${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o, oi) => `<div class="quiz-opt" onclick="answerQ(${qi}, ${oi})">${String.fromCharCode(65+oi)}. ${o}</div>`).join('')}
+      </div>
+      <div class="quiz-status" id="qs-${qi}"></div>
+      <div class="quiz-explanation" id="qe-${qi}">${q.exp}</div>`;
+    container.appendChild(div);
+  });
+  document.getElementById('quiz-score').style.display = 'none';
+}
+
+function answerQ(qi, choice) {
+  const qEl = document.getElementById('qq-' + qi);
+  if (qEl.classList.contains('locked')) return;
+  qEl.classList.add('locked');
+  const opts = qEl.querySelectorAll('.quiz-opt');
+  const isCorrect = choice === quizData[qi].ans;
+  opts[choice].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) opts[quizData[qi].ans].classList.add('correct');
+  document.getElementById('qs-' + qi).textContent = isCorrect ? '✓ Correct!' : '✗ Incorrect';
+  document.getElementById('qs-' + qi).style.color = isCorrect ? '#34d399' : '#f87171';
+  document.getElementById('qe-' + qi).style.display = 'block';
+  if (isCorrect) correct++;
+  answered++;
+  if (answered === quizData.length) showScore();
+}
+
+function showScore() {
+  setTimeout(() => {
+    const pct = Math.round((correct / quizData.length) * 100);
+    document.getElementById('quiz-score').style.display = 'block';
+    document.getElementById('score-num').textContent = correct + ' / ' + quizData.length;
+    let msg = '';
+    if (pct >= 90) msg = '🏆 Excellent! Outstanding performance!';
+    else if (pct >= 70) msg = '👍 Good job! Keep practicing.';
+    else if (pct >= 50) msg = '📖 Review the slides and try again.';
+    else msg = '💪 Study more and retry. You can do it!';
+    document.getElementById('score-sub').textContent = `${pct}% — ${msg}`;
+    document.getElementById('quiz-score').scrollIntoView({ behavior: 'smooth' });
+  }, 400);
+}
+
+function resetQuiz() { buildQuiz(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+buildQuiz();
+</script>
+</body>
+</html>

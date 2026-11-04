@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Class 10 Physics – Light | Lab Simulations</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0a0f1e;color:#e2e8f0;font-family:'Segoe UI',Arial,sans-serif;overflow:hidden;width:100vw;height:100vh;user-select:none;}
+.scene{display:none;width:100vw;height:100vh;flex-direction:column;}
+.scene.active{display:flex;}
+#home{align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 30%,#0f2044,#0a0f1e);}
+.home-title{font-size:46px;color:#38bdf8;font-weight:bold;text-align:center;margin-bottom:6px;}
+.home-sub{font-size:20px;color:#64748b;margin-bottom:36px;text-align:center;}
+.exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:960px;}
+.exp-card{background:rgba(30,41,59,0.8);border:2px solid #1e293b;border-radius:14px;padding:22px 16px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.exp-card:hover{transform:translateY(-5px);border-color:#38bdf8;background:rgba(14,42,71,0.9);}
+.exp-icon{font-size:48px;margin-bottom:10px;}
+.exp-title{font-size:18px;color:#38bdf8;font-weight:bold;margin-bottom:5px;}
+.exp-desc{font-size:14px;color:#64748b;line-height:1.4;}
+.sim-wrap{display:flex;flex:1;overflow:hidden;}
+.sim-canvas-area{flex:1;position:relative;display:flex;align-items:center;justify-content:center;background:#070c17;}
+.sim-canvas-area canvas{display:block;}
+.sim-panel{width:340px;background:#0d1527;border-left:1px solid #1e293b;display:flex;flex-direction:column;padding:18px;overflow-y:auto;}
+.sim-header{background:#0d1527;border-bottom:1px solid #1e293b;padding:11px 20px;display:flex;align-items:center;gap:14px;}
+.back-btn{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:7px 14px;font-size:16px;border-radius:7px;cursor:pointer;}
+.back-btn:hover{color:#e2e8f0;background:#334155;}
+.sim-name{font-size:22px;color:#38bdf8;font-weight:bold;}
+.sim-chapter{font-size:14px;color:#475569;margin-left:auto;}
+.panel-title{font-size:18px;color:#fbbf24;font-weight:bold;margin-bottom:8px;margin-top:14px;}
+.panel-title:first-child{margin-top:0;}
+.slider-wrap{margin:8px 0;}
+.slider-wrap label{font-size:15px;color:#94a3b8;display:block;margin-bottom:3px;}
+input[type=range]{width:100%;height:6px;border-radius:3px;background:#1e293b;outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{width:18px;height:18px;border-radius:50%;background:#38bdf8;cursor:pointer;-webkit-appearance:none;}
+.eq-box{background:#1e293b;border-radius:8px;padding:11px 13px;margin:7px 0;font-family:'Courier New',monospace;font-size:15px;color:#fbbf24;border-left:3px solid #fbbf24;line-height:1.6;}
+.obs-box{background:#071a10;border-radius:8px;padding:11px 13px;margin:7px 0;font-size:15px;color:#86efac;border-left:3px solid #10b981;line-height:1.6;}
+.info-box{background:#1e3a5f;border-radius:8px;padding:11px 13px;margin:7px 0;font-size:14px;color:#93c5fd;line-height:1.6;}
+.toggle-row{display:flex;gap:8px;margin:8px 0;}
+.tog-btn{flex:1;padding:9px 6px;border-radius:8px;border:2px solid #1e293b;font-size:14px;font-weight:bold;cursor:pointer;background:#1e293b;color:#64748b;transition:all 0.15s;}
+.tog-btn.active{border-color:#38bdf8;color:#38bdf8;background:rgba(56,189,248,0.1);}
+.fs-btn{position:fixed;top:10px;right:10px;background:rgba(30,41,59,0.85);border:1px solid #334155;color:#64748b;padding:7px 12px;font-size:14px;border-radius:7px;cursor:pointer;z-index:999;}
+.fs-btn:hover{color:#e2e8f0;}
+.hdr-nav-btn{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:6px 13px;font-size:14px;border-radius:7px;cursor:pointer;text-decoration:none;white-space:nowrap;}
+.hdr-nav-btn:hover{color:#e2e8f0;background:#334155;}
+.val-badge{display:inline-block;padding:3px 10px;border-radius:5px;font-weight:bold;font-size:14px;margin-left:6px;}
+.val-blue{background:rgba(56,189,248,0.15);color:#38bdf8;}
+.val-green{background:rgba(16,185,129,0.15);color:#34d399;}
+.val-red{background:rgba(239,68,68,0.15);color:#f87171;}
+.val-amber{background:rgba(251,191,36,0.15);color:#fbbf24;}
+select.input-sel{background:#1e293b;border:1px solid #334155;color:#e2e8f0;padding:8px 10px;border-radius:8px;font-size:14px;width:100%;margin:6px 0;}
+</style>
+</head>
+<body>
+
+<button class="fs-btn" onclick="document.documentElement.requestFullscreen()">⛶</button>
+
+<!-- ══ HOME ══ -->
+<div class="scene active" id="home">
+  <div class="home-title">💡 Light — Reflection &amp; Refraction</div>
+  <div class="home-sub">Class 10 Physics · Chapter 10 · Interactive Lab Simulations</div>
+  <div class="exp-grid">
+    <div class="exp-card" onclick="goSim('sim1')">
+      <div class="exp-icon">🪞</div>
+      <div class="exp-title">Law of Reflection</div>
+      <div class="exp-desc">Plane mirror — angle of incidence equals angle of reflection</div>
+    </div>
+    <div class="exp-card" onclick="goSim('sim2')">
+      <div class="exp-icon">🔵</div>
+      <div class="exp-title">Concave Mirror</div>
+      <div class="exp-desc">Ray diagram — image formation for different object positions</div>
+    </div>
+    <div class="exp-card" onclick="goSim('sim3')">
+      <div class="exp-icon">🟡</div>
+      <div class="exp-title">Convex Mirror</div>
+      <div class="exp-desc">Virtual, erect, diminished image — safety mirrors &amp; rear-view</div>
+    </div>
+    <div class="exp-card" onclick="goSim('sim4')">
+      <div class="exp-icon">💧</div>
+      <div class="exp-title">Snell's Law</div>
+      <div class="exp-desc">Refraction at interface — bending of light, refractive index</div>
+    </div>
+    <div class="exp-card" onclick="goSim('sim5')">
+      <div class="exp-icon">🔍</div>
+      <div class="exp-title">Convex Lens</div>
+      <div class="exp-desc">Converging lens — real and virtual images, magnification</div>
+    </div>
+    <div class="exp-card" onclick="goSim('sim6')">
+      <div class="exp-icon">🔎</div>
+      <div class="exp-title">Concave Lens</div>
+      <div class="exp-desc">Diverging lens — always virtual, erect, diminished image</div>
+    </div>
+  </div>
+  <div style="margin-top:28px;display:flex;gap:14px;">
+    <a class="hdr-nav-btn" href="Class10_Physics_Light_slides.html" target="_blank">📊 Slides</a>
+    <a class="hdr-nav-btn" href="Class10_Physics_Light_interactive.html" target="_blank">🖱 Interactive</a>
+    <a class="hdr-nav-btn" href="index.html">🏠 Dashboard</a>
+  </div>
+</div>
+
+<!-- ══ SIM 1: LAW OF REFLECTION ══ -->
+<div class="scene" id="sim1">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="sim-name">🪞 Law of Reflection</div>
+    <div class="sim-chapter">Class 10 Physics · Ch 10</div>
+    <a class="hdr-nav-btn" href="index.html">🏠</a>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c1" width="700" height="480"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">Controls</div>
+      <div class="slider-wrap">
+        <label>Angle of Incidence: <strong id="s1-angle-val">40°</strong></label>
+        <input type="range" id="s1-angle" min="5" max="80" value="40" oninput="updateSim1()">
+      </div>
+      <div class="panel-title">Measurements</div>
+      <div class="obs-box">
+        ∠i (Incidence) = <span id="s1-i">40°</span><br>
+        ∠r (Reflection) = <span id="s1-r">40°</span><br>
+        ∠i = ∠r ✓
+      </div>
+      <div class="eq-box">Law of Reflection:<br>∠i = ∠r<br>Incident ray, reflected ray &amp; normal are coplanar</div>
+      <div class="panel-title">Key Points</div>
+      <div class="info-box">
+        • Angles are measured from the <strong>Normal</strong> (perpendicular to surface)<br><br>
+        • The incident ray, normal, and reflected ray all lie in the same plane<br><br>
+        • Regular reflection → parallel rays remain parallel (smooth surface)<br><br>
+        • Diffuse reflection → scattered rays (rough surface)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SIM 2: CONCAVE MIRROR ══ -->
+<div class="scene" id="sim2">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="sim-name">🔵 Concave Mirror</div>
+    <div class="sim-chapter">Class 10 Physics · Ch 10</div>
+    <a class="hdr-nav-btn" href="index.html">🏠</a>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c2" width="700" height="480"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">Object Distance</div>
+      <div class="slider-wrap">
+        <label>u = <strong id="s2-u-val">30</strong> cm (from pole)</label>
+        <input type="range" id="s2-u" min="5" max="80" value="30" oninput="updateSim2()">
+      </div>
+      <div class="panel-title">Mirror Properties</div>
+      <div class="obs-box" id="s2-props">
+        f = 20 cm (concave)<br>
+        R = 40 cm
+      </div>
+      <div class="panel-title">Image Details</div>
+      <div class="obs-box" id="s2-result">—</div>
+      <div class="eq-box">Mirror Formula:<br>1/v + 1/u = 1/f<br>m = −v/u</div>
+      <div class="info-box" id="s2-case">—</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SIM 3: CONVEX MIRROR ══ -->
+<div class="scene" id="sim3">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="sim-name">🟡 Convex Mirror</div>
+    <div class="sim-chapter">Class 10 Physics · Ch 10</div>
+    <a class="hdr-nav-btn" href="index.html">🏠</a>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c3" width="700" height="480"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">Object Distance</div>
+      <div class="slider-wrap">
+        <label>u = <strong id="s3-u-val">30</strong> cm (from pole)</label>
+        <input type="range" id="s3-u" min="5" max="80" value="30" oninput="updateSim3()">
+      </div>
+      <div class="panel-title">Image Details</div>
+      <div class="obs-box" id="s3-result">—</div>
+      <div class="eq-box">Mirror Formula:<br>1/v + 1/u = 1/f<br>f = +20 cm (convex)</div>
+      <div class="info-box">
+        Convex mirror always gives:<br>
+        ✓ Virtual image<br>
+        ✓ Erect (upright)<br>
+        ✓ Diminished (smaller)<br>
+        ✓ Image between P and F<br><br>
+        <strong>Uses:</strong> Rear-view mirrors, security mirrors — wide field of view
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SIM 4: SNELL'S LAW ══ -->
+<div class="scene" id="sim4">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="sim-name">💧 Snell's Law — Refraction</div>
+    <div class="sim-chapter">Class 10 Physics · Ch 10</div>
+    <a class="hdr-nav-btn" href="index.html">🏠</a>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c4" width="700" height="480"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">Incident Angle</div>
+      <div class="slider-wrap">
+        <label>∠i = <strong id="s4-angle-val">40°</strong></label>
+        <input type="range" id="s4-angle" min="0" max="80" value="40" oninput="updateSim4()">
+      </div>
+      <div class="panel-title">Medium (below boundary)</div>
+      <select class="input-sel" id="s4-medium" onchange="updateSim4()">
+        <option value="1.33">Water (n = 1.33)</option>
+        <option value="1.5" selected>Glass (n = 1.50)</option>
+        <option value="1.77">Dense Glass (n = 1.77)</option>
+        <option value="2.42">Diamond (n = 2.42)</option>
+      </select>
+      <div class="panel-title">Measurements</div>
+      <div class="obs-box" id="s4-result">—</div>
+      <div class="eq-box">Snell's Law:<br>n₁ sin θ₁ = n₂ sin θ₂<br>n = c / v</div>
+      <div class="info-box">
+        Air (n₁ = 1.0) → denser medium<br><br>
+        • Light bends <strong>toward normal</strong> when entering denser medium<br>
+        • Higher refractive index = more bending<br>
+        • Critical angle → Total Internal Reflection
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SIM 5: CONVEX LENS ══ -->
+<div class="scene" id="sim5">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="sim-name">🔍 Convex Lens</div>
+    <div class="sim-chapter">Class 10 Physics · Ch 10</div>
+    <a class="hdr-nav-btn" href="index.html">🏠</a>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c5" width="700" height="480"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">Object Distance</div>
+      <div class="slider-wrap">
+        <label>u = <strong id="s5-u-val">40</strong> cm (from lens)</label>
+        <input type="range" id="s5-u" min="5" max="80" value="40" oninput="updateSim5()">
+      </div>
+      <div class="panel-title">Image Details</div>
+      <div class="obs-box" id="s5-result">—</div>
+      <div class="eq-box">Lens Formula:<br>1/v − 1/u = 1/f<br>m = v/u &nbsp; P = 1/f(m)</div>
+      <div class="info-box" id="s5-case">—</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SIM 6: CONCAVE LENS ══ -->
+<div class="scene" id="sim6">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="sim-name">🔎 Concave Lens</div>
+    <div class="sim-chapter">Class 10 Physics · Ch 10</div>
+    <a class="hdr-nav-btn" href="index.html">🏠</a>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c6" width="700" height="480"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">Object Distance</div>
+      <div class="slider-wrap">
+        <label>u = <strong id="s6-u-val">40</strong> cm (from lens)</label>
+        <input type="range" id="s6-u" min="10" max="80" value="40" oninput="updateSim6()">
+      </div>
+      <div class="panel-title">Image Details</div>
+      <div class="obs-box" id="s6-result">—</div>
+      <div class="eq-box">Lens Formula:<br>1/v − 1/u = 1/f<br>f = −20 cm (concave)</div>
+      <div class="info-box">
+        Concave lens always gives:<br>
+        ✓ Virtual image<br>
+        ✓ Erect (upright)<br>
+        ✓ Diminished (smaller)<br>
+        ✓ Image on same side as object<br><br>
+        <strong>Uses:</strong> Correcting myopia (short-sightedness), spectacles
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════ */
+function goSim(id) {
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (id === 'sim1') updateSim1();
+  if (id === 'sim2') updateSim2();
+  if (id === 'sim3') updateSim3();
+  if (id === 'sim4') updateSim4();
+  if (id === 'sim5') updateSim5();
+  if (id === 'sim6') updateSim6();
+}
+function goHome() {
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+  document.getElementById('home').classList.add('active');
+}
+
+/* ══════════════════════════════════════════════
+   DRAWING HELPERS
+══════════════════════════════════════════════ */
+function clearCanvas(canvas) {
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  return ctx;
+}
+
+function drawArrowhead(ctx, x1, y1, x2, y2, color, size = 10) {
+  const angle = Math.atan2(y2 - y1, x2 - x1);
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(x2, y2);
+  ctx.lineTo(x2 - size * Math.cos(angle - 0.4), y2 - size * Math.sin(angle - 0.4));
+  ctx.lineTo(x2 - size * Math.cos(angle + 0.4), y2 - size * Math.sin(angle + 0.4));
+  ctx.closePath();
+  ctx.fill();
+}
+
+function drawRay(ctx, x1, y1, x2, y2, color, dash = false, arrow = true) {
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.8;
+  if (dash) ctx.setLineDash([6, 4]);
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  if (arrow) drawArrowhead(ctx, x1, y1, x2, y2, color);
+  ctx.restore();
+}
+
+function drawLabel(ctx, text, x, y, color = '#94a3b8', size = 13, align = 'center') {
+  ctx.save();
+  ctx.fillStyle = color;
+  ctx.font = `bold ${size}px Segoe UI, Arial`;
+  ctx.textAlign = align;
+  ctx.fillText(text, x, y);
+  ctx.restore();
+}
+
+function clampLine(x1, y1, x2, y2, W, H) {
+  // Extend line from (x1,y1) through (x2,y2) and clip to canvas [0,W]x[0,H]
+  if (x1 === x2) return [x1, 0, x1, H];
+  const slope = (y2 - y1) / (x2 - x1);
+  const pts = [];
+  // left edge x=0
+  const yl = y1 + slope * (0 - x1);
+  if (yl >= 0 && yl <= H) pts.push([0, yl]);
+  // right edge x=W
+  const yr = y1 + slope * (W - x1);
+  if (yr >= 0 && yr <= H) pts.push([W, yr]);
+  // top edge y=0
+  if (slope !== 0) {
+    const xt = x1 + (0 - y1) / slope;
+    if (xt >= 0 && xt <= W) pts.push([xt, 0]);
+  }
+  // bottom edge y=H
+  if (slope !== 0) {
+    const xb = x1 + (H - y1) / slope;
+    if (xb >= 0 && xb <= W) pts.push([xb, H]);
+  }
+  if (pts.length < 2) return [x1, y1, x2, y2];
+  // pick the two extreme points that bracket (x1,y1)
+  pts.sort((a, b) => a[0] - b[0]);
+  return [pts[0][0], pts[0][1], pts[pts.length - 1][0], pts[pts.length - 1][1]];
+}
+
+/* ══════════════════════════════════════════════
+   SIM 1 — LAW OF REFLECTION
+══════════════════════════════════════════════ */
+function updateSim1() {
+  const angle_deg = +document.getElementById('s1-angle').value;
+  document.getElementById('s1-angle-val').textContent = angle_deg + '°';
+  document.getElementById('s1-i').textContent = angle_deg + '°';
+  document.getElementById('s1-r').textContent = angle_deg + '°';
+
+  const canvas = document.getElementById('c1');
+  const ctx = clearCanvas(canvas);
+  const W = canvas.width, H = canvas.height;
+  const cx = W / 2, cy = H / 2;
+  const angle = angle_deg * Math.PI / 180;
+  const len = 200;
+
+  // Background gradient
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, '#070c17');
+  bg.addColorStop(1, '#0a0f1e');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Mirror surface (horizontal)
+  ctx.strokeStyle = '#475569';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(cx - 200, cy);
+  ctx.lineTo(cx + 200, cy);
+  ctx.stroke();
+  // Hatch marks below mirror
+  ctx.strokeStyle = '#334155';
+  ctx.lineWidth = 1.5;
+  for (let i = -180; i <= 180; i += 20) {
+    ctx.beginPath();
+    ctx.moveTo(cx + i, cy);
+    ctx.lineTo(cx + i - 10, cy + 12);
+    ctx.stroke();
+  }
+
+  // Normal (dashed vertical)
+  ctx.strokeStyle = '#475569';
+  ctx.lineWidth = 1.2;
+  ctx.setLineDash([6, 5]);
+  ctx.beginPath();
+  ctx.moveTo(cx, cy - 160);
+  ctx.lineTo(cx, cy + 60);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  drawLabel(ctx, 'Normal', cx + 8, cy - 148, '#475569', 12, 'left');
+
+  // Incident ray (from upper-left)
+  const incX = cx - len * Math.sin(angle);
+  const incY = cy - len * Math.cos(angle);
+  drawRay(ctx, incX, incY, cx, cy, '#fbbf24', false, true);
+
+  // Reflected ray (upper-right, mirror image of incident about normal)
+  const refX = cx + len * Math.sin(angle);
+  const refY = cy - len * Math.cos(angle);
+  drawRay(ctx, cx, cy, refX, refY, '#34d399', false, true);
+
+  // Angle arcs
+  ctx.strokeStyle = '#fbbf24';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 50, -Math.PI / 2, -(Math.PI / 2 - angle), false);
+  ctx.stroke();
+
+  ctx.strokeStyle = '#34d399';
+  ctx.beginPath();
+  ctx.arc(cx, cy, 50, -(Math.PI / 2 + angle), -Math.PI / 2, false);
+  ctx.stroke();
+
+  // Angle labels
+  const lx1 = cx - 55 * Math.sin(angle / 2) - 20;
+  const ly1 = cy - 55 * Math.cos(angle / 2) + 5;
+  drawLabel(ctx, '∠i = ' + angle_deg + '°', lx1, ly1, '#fbbf24', 13, 'right');
+  const lx2 = cx + 55 * Math.sin(angle / 2) + 20;
+  drawLabel(ctx, '∠r = ' + angle_deg + '°', lx2, ly1, '#34d399', 13, 'left');
+
+  // Ray labels
+  drawLabel(ctx, 'Incident Ray', incX - 10, incY + 14, '#fbbf24', 12);
+  drawLabel(ctx, 'Reflected Ray', refX + 10, refY + 14, '#34d399', 12);
+
+  // Mirror label
+  drawLabel(ctx, 'Plane Mirror', cx, cy + 30, '#64748b', 13);
+
+  // Point O
+  ctx.fillStyle = '#fff';
+  ctx.beginPath();
+  ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+  ctx.fill();
+  drawLabel(ctx, 'O', cx + 10, cy - 8, '#fff', 13);
+}
+
+/* ══════════════════════════════════════════════
+   SPHERICAL MIRROR HELPERS
+══════════════════════════════════════════════ */
+function drawConcaveMirrorShape(ctx, mx, ay, R) {
+  // Concave mirror: curved arc on the right
+  ctx.save();
+  ctx.strokeStyle = '#94a3b8';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(mx - R, ay, R, -Math.PI / 8, Math.PI / 8);
+  ctx.stroke();
+  // Hatch
+  ctx.strokeStyle = '#334155';
+  ctx.lineWidth = 1.5;
+  for (let a = -0.3; a <= 0.3; a += 0.08) {
+    const ex = mx - R + R * Math.cos(a);
+    const ey = ay + R * Math.sin(a);
+    ctx.beginPath();
+    ctx.moveTo(ex, ey);
+    ctx.lineTo(ex + 8, ey + 12);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawConvexMirrorShape(ctx, mx, ay, R) {
+  // Convex mirror: curved arc facing left
+  ctx.save();
+  ctx.strokeStyle = '#fbbf24';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(mx + R, ay, R, Math.PI - Math.PI / 8, Math.PI + Math.PI / 8);
+  ctx.stroke();
+  ctx.strokeStyle = '#334155';
+  ctx.lineWidth = 1.5;
+  for (let a = Math.PI - 0.3; a <= Math.PI + 0.3; a += 0.08) {
+    const ex = mx + R + R * Math.cos(a);
+    const ey = ay + R * Math.sin(a);
+    ctx.beginPath();
+    ctx.moveTo(ex, ey);
+    ctx.lineTo(ex + 8, ey + 12);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawObjectArrow(ctx, x, ay, h, color = '#e2e8f0') {
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(x, ay);
+  ctx.lineTo(x, ay - h);
+  ctx.stroke();
+  drawArrowhead(ctx, x, ay, x, ay - h, color, 8);
+  drawLabel(ctx, 'O', x - 12, ay - h / 2, color, 12);
+}
+
+function drawImageArrow(ctx, x, ay, h, color, dashed = false) {
+  if (Math.abs(h) < 1) return;
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = 2;
+  if (dashed) ctx.setLineDash([5, 4]);
+  ctx.beginPath();
+  ctx.moveTo(x, ay);
+  ctx.lineTo(x, ay - h);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  if (!dashed) drawArrowhead(ctx, x, ay, x, ay - h, color, 8);
+  drawLabel(ctx, 'I', x + 10, ay - h / 2, color, 12);
+  ctx.restore();
+}
+
+/* ══════════════════════════════════════════════
+   SIM 2 — CONCAVE MIRROR
+══════════════════════════════════════════════ */
+function updateSim2() {
+  const u_cm = +document.getElementById('s2-u').value;
+  document.getElementById('s2-u-val').textContent = u_cm;
+
+  const F_cm = 20; // focal length
+  const canvas = document.getElementById('c2');
+  const ctx = clearCanvas(canvas);
+  const W = canvas.width, H = canvas.height;
+  const ay = H / 2; // axis y
+
+  // Draw background
+  ctx.fillStyle = '#070c17';
+  ctx.fillRect(0, 0, W, H);
+
+  // Scale: 1 cm = 7px so 20cm focal = 140px
+  const sc = 7;
+  const F_px = F_cm * sc;
+  const mx = W - 60; // mirror x (right side)
+
+  // Key points (px from mirror, positive = left in front of mirror)
+  const Fx = mx - F_px;         // focal point
+  const Cx = mx - 2 * F_px;     // center of curvature
+  const objX = mx - u_cm * sc;
+  const objH = 50;               // object height px
+
+  // Mirror formula: v = F*u/(u-F) with sign convention u>0, F>0 for concave
+  // Using: 1/v + 1/u = 1/f (all negative in NC)
+  // → v = F*u/(u-F), result: negative v = real, positive v = virtual
+  const denom = u_cm - F_cm;
+  let v_cm = (Math.abs(denom) < 0.1) ? Infinity : (F_cm * u_cm) / denom;
+  const m = (Math.abs(denom) < 0.1) ? Infinity : F_cm / (denom) * (-1);
+  // m = -v/u in sign convention: m = -(v_cm/u_cm)
+  // But v_cm here already carries sign: negative = real
+  const imgX_physics = -v_cm; // in px offset from mirror (positive = left = in front)
+  const imgX = mx - imgX_physics * sc;
+  const imgH = m * objH;
+
+  // Draw principal axis
+  ctx.strokeStyle = '#1e293b';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([8, 6]);
+  ctx.beginPath();
+  ctx.moveTo(0, ay);
+  ctx.lineTo(W, ay);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Draw mirror shape
+  drawConcaveMirrorShape(ctx, mx, ay, F_px * 2.5);
+
+  // F and C markers
+  if (Fx > 0 && Fx < W) {
+    ctx.fillStyle = '#10b981';
+    ctx.beginPath();
+    ctx.arc(Fx, ay, 5, 0, Math.PI * 2);
+    ctx.fill();
+    drawLabel(ctx, 'F', Fx, ay + 18, '#10b981', 13);
+  }
+  if (Cx > 0 && Cx < W) {
+    ctx.fillStyle = '#3b82f6';
+    ctx.beginPath();
+    ctx.arc(Cx, ay, 5, 0, Math.PI * 2);
+    ctx.fill();
+    drawLabel(ctx, 'C', Cx, ay + 18, '#3b82f6', 13);
+  }
+  // Pole P
+  ctx.fillStyle = '#94a3b8';
+  ctx.beginPath();
+  ctx.arc(mx, ay, 4, 0, Math.PI * 2);
+  ctx.fill();
+  drawLabel(ctx, 'P', mx + 10, ay + 16, '#94a3b8', 13);
+
+  // Draw object
+  if (objX > 0 && objX < mx) {
+    drawObjectArrow(ctx, objX, ay, objH);
+  }
+
+  // ── Rays (only if object is in front of mirror)
+  if (objX > 0 && objX < mx && Math.abs(denom) > 0.5) {
+    const oTip = { x: objX, y: ay - objH };
+
+    // Ray 1: Parallel to axis → reflects through F (or appears to come from F for virtual)
+    // Incident: horizontal from oTip to mirror at y=oTip.y
+    const hit1 = { x: mx, y: oTip.y };
+    drawRay(ctx, oTip.x, oTip.y, hit1.x, hit1.y, '#f59e0b', false, false);
+
+    // Reflected ray 1: from hit1 through F
+    if (v_cm > 0) {
+      // Virtual image — ray appears to come from behind mirror
+      // Draw actual ray going upward/downward away from mirror (reflected)
+      const ext1 = { x: 0, y: hit1.y - (hit1.x - 0) * (hit1.y - ay) / (hit1.x - Fx) };
+      // Ray from hit1 going left-up through intersection
+      drawRay(ctx, hit1.x, hit1.y, 0, hit1.y + (0 - hit1.x) * (ay - hit1.y) / (Fx - hit1.x), '#f59e0b', false, true);
+      // Dashed extension behind mirror (virtual)
+      drawRay(ctx, hit1.x, hit1.y, hit1.x + 120, ay + 120 * (ay - hit1.y) / (Fx - hit1.x), '#f59e0b', true, false);
+    } else {
+      // Real image — ray passes through F and continues
+      const slope1r = (ay - hit1.y) / (Fx - hit1.x);
+      drawRay(ctx, hit1.x, hit1.y, 0, hit1.y + slope1r * (0 - hit1.x), '#f59e0b', false, true);
+    }
+
+    // Ray 2: Through F → reflects parallel to axis
+    const slope2i = (ay - oTip.y) / (Fx - oTip.x);
+    const hit2Y = oTip.y + slope2i * (mx - oTip.x);
+    const hit2 = { x: mx, y: hit2Y };
+    drawRay(ctx, oTip.x, oTip.y, hit2.x, hit2.y, '#a78bfa', false, false);
+    if (v_cm > 0) {
+      // Virtual: reflect parallel, draw real ray going right, dashed behind
+      drawRay(ctx, hit2.x, hit2.y, 0, hit2Y, '#a78bfa', false, true);
+      drawRay(ctx, hit2.x, hit2.y, hit2.x + 120, hit2Y, '#a78bfa', true, false);
+    } else {
+      drawRay(ctx, hit2.x, hit2.y, 0, hit2Y, '#a78bfa', false, true);
+    }
+
+    // Image arrow
+    if (isFinite(imgX) && imgX > 0 && imgX < W) {
+      const isVirtual = v_cm > 0;
+      const iColor = isVirtual ? '#a78bfa' : '#34d399';
+      drawImageArrow(ctx, imgX, ay, imgH, iColor, isVirtual);
+    }
+  }
+
+  // Update panel
+  const natImage = v_cm < 0 ? 'Real' : 'Virtual';
+  const oriImage = m < 0 ? 'Inverted' : 'Erect';
+  const sizeImg = Math.abs(m) > 1 ? 'Enlarged' : Math.abs(m) < 1 ? 'Diminished' : 'Same size';
+  const v_disp = isFinite(v_cm) ? Math.abs(v_cm).toFixed(1) : '∞';
+  const m_disp = isFinite(m) ? m.toFixed(2) : '∞';
+
+  document.getElementById('s2-result').innerHTML =
+    `v = ${v_disp} cm (${natImage})<br>m = ${m_disp}<br>Image: ${natImage}, ${oriImage}, ${sizeImg}`;
+
+  let caseText = '';
+  if (u_cm > 2 * F_cm) caseText = 'Object beyond C: Real, inverted, diminished image between F and C';
+  else if (Math.abs(u_cm - 2 * F_cm) < 1) caseText = 'Object at C: Real, inverted, same-size image at C';
+  else if (u_cm > F_cm) caseText = 'Object between C and F: Real, inverted, enlarged image beyond C';
+  else if (Math.abs(u_cm - F_cm) < 1) caseText = 'Object at F: Reflected rays are parallel — image at infinity';
+  else caseText = 'Object between F and P: Virtual, erect, enlarged image behind mirror';
+  document.getElementById('s2-case').textContent = caseText;
+}
+
+/* ══════════════════════════════════════════════
+   SIM 3 — CONVEX MIRROR
+══════════════════════════════════════════════ */
+function updateSim3() {
+  const u_cm = +document.getElementById('s3-u').value;
+  document.getElementById('s3-u-val').textContent = u_cm;
+
+  const F_cm = 20; // positive for convex
+  const canvas = document.getElementById('c3');
+  const ctx = clearCanvas(canvas);
+  const W = canvas.width, H = canvas.height;
+  const ay = H / 2;
+
+  ctx.fillStyle = '#070c17';
+  ctx.fillRect(0, 0, W, H);
+
+  const sc = 7;
+  const F_px = F_cm * sc;
+  const mx = W - 80;
+
+  // For convex mirror: f positive, u negative
+  // v = f*u/(u-f) but with sign: f=+F, u=-u_cm
+  // v = F*(-u_cm)/((-u_cm)-F) = -F*u_cm/(-u_cm-F) = F*u_cm/(u_cm+F)
+  const v_cm = (F_cm * u_cm) / (u_cm + F_cm); // always positive = virtual image behind mirror
+  const m = v_cm / u_cm; // always between 0 and 1 (erect, diminished)
+
+  const Fx = mx + F_px;  // F is behind mirror (right side)
+  const objX = mx - u_cm * sc;
+  const objH = 50;
+  const imgX = mx + v_cm * sc; // behind mirror
+  const imgH = m * objH;
+
+  // Principal axis
+  ctx.strokeStyle = '#1e293b';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([8, 6]);
+  ctx.beginPath();
+  ctx.moveTo(0, ay);
+  ctx.lineTo(W, ay);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  drawConvexMirrorShape(ctx, mx, ay, F_px * 2.5);
+
+  // F (behind mirror - virtual)
+  ctx.fillStyle = '#fbbf24';
+  ctx.beginPath();
+  ctx.arc(Fx, ay, 5, 0, Math.PI * 2);
+  ctx.fill();
+  drawLabel(ctx, 'F', Fx, ay + 18, '#fbbf24', 13);
+
+  // Pole
+  ctx.fillStyle = '#94a3b8';
+  ctx.beginPath();
+  ctx.arc(mx, ay, 4, 0, Math.PI * 2);
+  ctx.fill();
+  drawLabel(ctx, 'P', mx - 14, ay + 16, '#94a3b8', 13);
+
+  // Object
+  if (objX > 0) drawObjectArrow(ctx, objX, ay, objH);
+
+  // Rays
+  if (objX > 0 && objX < mx) {
+    const oTip = { x: objX, y: ay - objH };
+
+    // Ray 1: Parallel to axis → reflects as if coming from F (behind mirror)
+    const hit1 = { x: mx, y: oTip.y };
+    drawRay(ctx, oTip.x, oTip.y, hit1.x, hit1.y, '#f59e0b', false, false);
+    // Reflected: appears to diverge from F (behind mirror)
+    const slope1r = (oTip.y - ay) / (hit1.x - Fx);
+    drawRay(ctx, hit1.x, hit1.y, 0, hit1.y - slope1r * hit1.x, '#f59e0b', false, true);
+    // Dashed extension to F
+    drawRay(ctx, hit1.x, hit1.y, Fx, ay, '#f59e0b', true, false);
+
+    // Ray 2: Toward F behind mirror → reflects parallel
+    const slope2i = (ay - oTip.y) / (Fx - oTip.x);
+    const hit2Y = oTip.y + slope2i * (mx - oTip.x);
+    drawRay(ctx, oTip.x, oTip.y, mx, hit2Y, '#a78bfa', false, false);
+    drawRay(ctx, mx, hit2Y, 0, hit2Y, '#a78bfa', false, true);
+    // Dashed extension behind
+    drawRay(ctx, mx, hit2Y, Fx, ay, '#a78bfa', true, false);
+
+    // Virtual image (behind mirror, dashed)
+    drawImageArrow(ctx, imgX, ay, imgH, '#a78bfa', true);
+  }
+
+  document.getElementById('s3-result').innerHTML =
+    `v = ${v_cm.toFixed(1)} cm (Virtual, behind mirror)<br>m = +${m.toFixed(2)} (Erect, Diminished)<br>Image always between P and F`;
+}
+
+/* ══════════════════════════════════════════════
+   SIM 4 — SNELL'S LAW
+══════════════════════════════════════════════ */
+function updateSim4() {
+  const ang_deg = +document.getElementById('s4-angle').value;
+  document.getElementById('s4-angle-val').textContent = ang_deg + '°';
+  const n2 = +document.getElementById('s4-medium').value;
+  const n1 = 1.0;
+
+  const angle_i = ang_deg * Math.PI / 180;
+  const sinR = (n1 / n2) * Math.sin(angle_i);
+  const tir = sinR > 1;
+  const angle_r = tir ? null : Math.asin(sinR);
+  const angle_r_deg = tir ? null : Math.round(angle_r * 180 / Math.PI);
+
+  const canvas = document.getElementById('c4');
+  const ctx = clearCanvas(canvas);
+  const W = canvas.width, H = canvas.height;
+  const bx = W / 2; // normal x
+  const by = H / 2; // boundary y
+
+  // Top half = air (dark)
+  ctx.fillStyle = '#070c17';
+  ctx.fillRect(0, 0, W, H);
+  // Bottom = medium (tinted blue/cyan)
+  ctx.fillStyle = 'rgba(14,42,71,0.6)';
+  ctx.fillRect(0, by, W, H - by);
+
+  // Boundary line
+  ctx.strokeStyle = '#334155';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([10, 6]);
+  ctx.beginPath();
+  ctx.moveTo(0, by);
+  ctx.lineTo(W, by);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Normal (dashed vertical)
+  ctx.strokeStyle = '#475569';
+  ctx.lineWidth = 1.2;
+  ctx.setLineDash([6, 5]);
+  ctx.beginPath();
+  ctx.moveTo(bx, by - 160);
+  ctx.lineTo(bx, by + 160);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  drawLabel(ctx, 'Normal', bx + 10, by - 145, '#475569', 12, 'left');
+
+  const len = 180;
+  // Incident ray (from upper-left)
+  const incX = bx - len * Math.sin(angle_i);
+  const incY = by - len * Math.cos(angle_i);
+  drawRay(ctx, incX, incY, bx, by, '#fbbf24', false, true);
+
+  if (tir) {
+    // Total internal reflection (conceptual — normally TIR is medium → air, but show concept)
+    drawLabel(ctx, 'Total Internal Reflection would occur at critical angle', W / 2, by + 40, '#f87171', 14);
+    drawLabel(ctx, `Critical angle = ${Math.round(Math.asin(1 / n2) * 180 / Math.PI)}°`, W / 2, by + 62, '#f87171', 14);
+  } else {
+    // Refracted ray
+    const refX = bx + len * Math.sin(angle_r);
+    const refY = by + len * Math.cos(angle_r);
+    drawRay(ctx, bx, by, refX, refY, '#34d399', false, true);
+    drawLabel(ctx, 'Refracted Ray', refX + 8, refY - 10, '#34d399', 12, 'left');
+
+    // Angle arcs
+    ctx.strokeStyle = '#fbbf24';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(bx, by, 55, -Math.PI / 2, -(Math.PI / 2 - angle_i), false);
+    ctx.stroke();
+    drawLabel(ctx, `θ₁=${ang_deg}°`, bx - 60 * Math.sin(angle_i / 2) - 14, by - 60 * Math.cos(angle_i / 2) + 5, '#fbbf24', 13);
+
+    ctx.strokeStyle = '#34d399';
+    ctx.beginPath();
+    ctx.arc(bx, by, 55, Math.PI / 2, Math.PI / 2 + angle_r, true);
+    ctx.stroke();
+    drawLabel(ctx, `θ₂=${angle_r_deg}°`, bx + 60 * Math.sin(angle_r / 2) + 14, by + 60 * Math.cos(angle_r / 2) - 5, '#34d399', 13);
+  }
+
+  drawLabel(ctx, 'Incident Ray', incX + 8, incY + 14, '#fbbf24', 12, 'left');
+
+  // Medium labels
+  drawLabel(ctx, 'Air  (n₁ = 1.00)', 60, by - 20, '#64748b', 13, 'left');
+  drawLabel(ctx, `Medium (n₂ = ${n2})`, 60, by + 24, '#38bdf8', 13, 'left');
+
+  document.getElementById('s4-result').innerHTML = tir
+    ? `θ₁ = ${ang_deg}°<br>TIR occurs! Critical angle = ${Math.round(Math.asin(1/n2)*180/Math.PI)}°`
+    : `θ₁ (incident) = ${ang_deg}°<br>θ₂ (refracted) = ${angle_r_deg}°<br>n₁ sin θ₁ = ${(n1 * Math.sin(angle_i)).toFixed(3)}<br>n₂ sin θ₂ = ${(n2 * Math.sin(angle_r)).toFixed(3)}`;
+}
+
+/* ══════════════════════════════════════════════
+   LENS HELPERS
+══════════════════════════════════════════════ */
+function drawConvexLensShape(ctx, lx, ay, h) {
+  ctx.save();
+  ctx.strokeStyle = '#38bdf8';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(lx, ay - h);
+  ctx.bezierCurveTo(lx + 28, ay - h / 2, lx + 28, ay + h / 2, lx, ay + h);
+  ctx.bezierCurveTo(lx - 28, ay + h / 2, lx - 28, ay - h / 2, lx, ay - h);
+  ctx.closePath();
+  ctx.strokeStyle = 'rgba(56,189,248,0.4)';
+  ctx.fillStyle = 'rgba(56,189,248,0.07)';
+  ctx.fill();
+  ctx.stroke();
+  // Arrows indicating convergence
+  ctx.strokeStyle = '#38bdf8';
+  ctx.lineWidth = 1.5;
+  drawArrowhead(ctx, lx, ay - h - 10, lx, ay - h + 10, '#38bdf8', 7);
+  drawArrowhead(ctx, lx, ay + h + 10, lx, ay + h - 10, '#38bdf8', 7);
+  ctx.restore();
+}
+
+function drawConcaveLensShape(ctx, lx, ay, h) {
+  ctx.save();
+  ctx.strokeStyle = '#a78bfa';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(lx, ay - h);
+  ctx.bezierCurveTo(lx - 22, ay - h / 2, lx - 22, ay + h / 2, lx, ay + h);
+  ctx.bezierCurveTo(lx + 22, ay + h / 2, lx + 22, ay - h / 2, lx, ay - h);
+  ctx.closePath();
+  ctx.strokeStyle = 'rgba(167,139,250,0.4)';
+  ctx.fillStyle = 'rgba(167,139,250,0.07)';
+  ctx.fill();
+  ctx.stroke();
+  ctx.restore();
+}
+
+/* ══════════════════════════════════════════════
+   SIM 5 — CONVEX LENS
+══════════════════════════════════════════════ */
+function updateSim5() {
+  const u_cm = +document.getElementById('s5-u').value;
+  document.getElementById('s5-u-val').textContent = u_cm;
+
+  const F_cm = 20;
+  const canvas = document.getElementById('c5');
+  const ctx = clearCanvas(canvas);
+  const W = canvas.width, H = canvas.height;
+  const ay = H / 2;
+
+  ctx.fillStyle = '#070c17';
+  ctx.fillRect(0, 0, W, H);
+
+  const sc = 6;
+  const F_px = F_cm * sc;
+  const lx = W / 2; // lens x
+
+  // Lens formula: 1/v - 1/u = 1/f (u = -u_cm, f = F_cm)
+  // 1/v = 1/F + 1/u = 1/F - 1/u_cm
+  const denom = F_cm - u_cm; // = 0 when obj at F
+  const v_cm = (Math.abs(denom) < 0.5) ? Infinity : (F_cm * u_cm) / denom;
+  const m = isFinite(v_cm) ? (-v_cm / u_cm) : Infinity;
+  // Note: for convex lens with object beyond F: v positive = real on right side
+  // v_cm here: positive = real (right of lens), negative = virtual (left of lens, same side as obj)
+
+  // Actually: 1/v = 1/f + 1/(-u) = 1/F - 1/u
+  // If u > F: 1/v = 1/F - 1/u > 0 → v > 0 (real, right)
+  // If u < F: 1/v = 1/F - 1/u < 0 → v < 0 (virtual, left = same side as object)
+  // So v_cm sign: + = right side of lens (real), - = left side (virtual)
+
+  const F1x = lx - F_px; // left focal point
+  const F2x = lx + F_px; // right focal point
+  const objX = lx - u_cm * sc;
+  const objH = 50;
+  const imgX = isFinite(v_cm) ? lx + v_cm * sc : null;
+  const imgH = isFinite(m) ? m * objH : null;
+
+  // Principal axis
+  ctx.strokeStyle = '#1e293b';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([8, 6]);
+  ctx.beginPath();
+  ctx.moveTo(0, ay);
+  ctx.lineTo(W, ay);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  drawConvexLensShape(ctx, lx, ay, 90);
+
+  // Focal points
+  if (F1x > 0) {
+    ctx.fillStyle = '#38bdf8';
+    ctx.beginPath();
+    ctx.arc(F1x, ay, 5, 0, Math.PI * 2);
+    ctx.fill();
+    drawLabel(ctx, 'F₁', F1x, ay + 18, '#38bdf8', 13);
+  }
+  ctx.fillStyle = '#38bdf8';
+  ctx.beginPath();
+  ctx.arc(F2x, ay, 5, 0, Math.PI * 2);
+  ctx.fill();
+  drawLabel(ctx, 'F₂', F2x, ay + 18, '#38bdf8', 13);
+
+  // Optical centre
+  ctx.fillStyle = '#94a3b8';
+  ctx.beginPath();
+  ctx.arc(lx, ay, 4, 0, Math.PI * 2);
+  ctx.fill();
+  drawLabel(ctx, 'O', lx + 10, ay + 18, '#94a3b8', 13);
+
+  // Object
+  if (objX > 0 && objX < lx) {
+    drawObjectArrow(ctx, objX, ay, objH);
+  }
+
+  if (objX > 0 && objX < lx && isFinite(v_cm)) {
+    const oTip = { x: objX, y: ay - objH };
+
+    // Ray 1: Parallel to axis → refracts through F₂ (right focal point)
+    const hit1 = { x: lx, y: oTip.y };
+    drawRay(ctx, oTip.x, oTip.y, hit1.x, hit1.y, '#f59e0b', false, false);
+    if (v_cm > 0) {
+      // Real image: ray passes through F2 and continues to image
+      const slope1r = (ay - oTip.y) / (F2x - lx);
+      drawRay(ctx, lx, oTip.y, W, oTip.y + slope1r * (W - lx), '#f59e0b', false, true);
+    } else {
+      // Virtual: extend backward through F2 (behind lens = left side)
+      const slope1r = (ay - oTip.y) / (F2x - lx);
+      drawRay(ctx, lx, oTip.y, W, oTip.y + slope1r * (W - lx), '#f59e0b', false, true);
+    }
+
+    // Ray 2: Through optical centre O → goes straight through
+    drawRay(ctx, oTip.x, oTip.y, lx, ay - objH * m, '#a78bfa', false, false);
+    if (v_cm > 0 && imgX) {
+      drawRay(ctx, lx, ay - objH * m, imgX + 50, ay - objH * m + (50) * (ay - objH * m - (ay - objH * m)) / (imgX - lx + 50), '#a78bfa', false, true);
+    } else if (imgX) {
+      // Virtual: continue ray and also draw extension
+      const slope2 = (ay - objH * m - oTip.y) / (lx - oTip.x);
+      drawRay(ctx, lx, ay - objH * m, W, ay - objH * m + slope2 * (W - lx), '#a78bfa', false, true);
+    }
+
+    // Ray 3: Through F₁ (left focal point) → refracts parallel to axis
+    if (F1x > 0 && F1x < lx) {
+      const slope3i = (ay - oTip.y) / (F1x - oTip.x);
+      const hit3Y = oTip.y + slope3i * (lx - oTip.x);
+      drawRay(ctx, oTip.x, oTip.y, lx, hit3Y, '#34d399', false, false);
+      drawRay(ctx, lx, hit3Y, W, hit3Y, '#34d399', false, true); // parallel to axis
+    }
+
+    // Image
+    if (imgX && imgH !== null && imgX > 0 && imgX < W) {
+      const isVirtual = v_cm < 0;
+      drawImageArrow(ctx, imgX, ay, imgH, isVirtual ? '#a78bfa' : '#34d399', isVirtual);
+    }
+  }
+
+  const natImage = v_cm > 0 ? 'Real' : 'Virtual';
+  const oriImage = m < 0 ? 'Inverted' : 'Erect';
+  const sizeImg = Math.abs(m) > 1.05 ? 'Enlarged' : Math.abs(m) < 0.95 ? 'Diminished' : 'Same size';
+  const v_disp = isFinite(v_cm) ? Math.abs(v_cm).toFixed(1) : '∞';
+  const m_disp = isFinite(m) ? m.toFixed(2) : '∞';
+
+  document.getElementById('s5-result').innerHTML =
+    `v = ${v_disp} cm (${natImage})<br>m = ${m_disp}<br>Image: ${natImage}, ${oriImage}, ${sizeImg}<br>Power = ${(1 / (F_cm / 100)).toFixed(1)} D`;
+
+  let caseText = '';
+  if (u_cm > 2 * F_cm) caseText = 'Object beyond 2F₁: Real, inverted, diminished image between F₂ and 2F₂';
+  else if (Math.abs(u_cm - 2 * F_cm) < 1) caseText = 'Object at 2F₁: Real, inverted, same-size image at 2F₂';
+  else if (u_cm > F_cm) caseText = 'Object between F₁ and 2F₁: Real, inverted, enlarged image beyond 2F₂';
+  else if (Math.abs(u_cm - F_cm) < 1) caseText = 'Object at F₁: Refracted rays are parallel — image at infinity';
+  else caseText = 'Object between F₁ and O: Virtual, erect, enlarged image on same side as object';
+  document.getElementById('s5-case').textContent = caseText;
+}
+
+/* ══════════════════════════════════════════════
+   SIM 6 — CONCAVE LENS
+══════════════════════════════════════════════ */
+function updateSim6() {
+  const u_cm = +document.getElementById('s6-u').value;
+  document.getElementById('s6-u-val').textContent = u_cm;
+
+  const F_cm = -20; // negative for concave lens
+  const canvas = document.getElementById('c6');
+  const ctx = clearCanvas(canvas);
+  const W = canvas.width, H = canvas.height;
+  const ay = H / 2;
+
+  ctx.fillStyle = '#070c17';
+  ctx.fillRect(0, 0, W, H);
+
+  const sc = 6;
+  const F_px = Math.abs(F_cm) * sc;
+  const lx = W * 0.55;
+
+  // Concave lens: f = -F_cm (negative), u = -u_cm
+  // 1/v - 1/u = 1/f → 1/v = 1/f + 1/u = -1/F + (-1/u_cm)... wait
+  // Using: 1/v - 1/(-u_cm) = 1/(-F_abs) → 1/v + 1/u_cm = -1/F_abs → 1/v = -1/F_abs - 1/u_cm < 0
+  // v is always negative → virtual image on same side as object
+  const F_abs = Math.abs(F_cm);
+  const v_cm = -(F_abs * u_cm) / (u_cm + F_abs); // always negative
+  const m = -v_cm / u_cm; // always between 0 and 1
+
+  const F1x = lx + F_px; // right: virtual F₁ (on object side? No...)
+  // For concave lens: F₁ is on the right of lens (same side as refracted rays)
+  //   Actually F₁ of concave lens is on the right, F₂ is on the left
+  //   Virtual focal points
+  const F_right = lx + F_px;
+  const F_left  = lx - F_px;
+  const objX = lx - u_cm * sc;
+  const objH = 50;
+  const imgX = lx + v_cm * sc; // v_cm < 0 so imgX < lx (left of lens = same side as object)
+  const imgH = m * objH;
+
+  // Principal axis
+  ctx.strokeStyle = '#1e293b';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([8, 6]);
+  ctx.beginPath();
+  ctx.moveTo(0, ay);
+  ctx.lineTo(W, ay);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  drawConcaveLensShape(ctx, lx, ay, 90);
+
+  // Focal points (virtual, dashed)
+  ctx.fillStyle = '#a78bfa';
+  ctx.beginPath();
+  ctx.arc(F_right, ay, 5, 0, Math.PI * 2);
+  ctx.fill();
+  drawLabel(ctx, 'F₁', F_right, ay + 18, '#a78bfa', 13);
+  ctx.beginPath();
+  ctx.arc(F_left, ay, 5, 0, Math.PI * 2);
+  ctx.fill();
+  drawLabel(ctx, 'F₂', F_left, ay + 18, '#a78bfa', 13);
+
+  // Optical centre
+  ctx.fillStyle = '#94a3b8';
+  ctx.beginPath();
+  ctx.arc(lx, ay, 4, 0, Math.PI * 2);
+  ctx.fill();
+  drawLabel(ctx, 'O', lx + 10, ay + 18, '#94a3b8', 13);
+
+  // Object
+  if (objX > 0 && objX < lx) {
+    drawObjectArrow(ctx, objX, ay, objH);
+  }
+
+  if (objX > 0 && objX < lx) {
+    const oTip = { x: objX, y: ay - objH };
+
+    // Ray 1: Parallel to axis → diverges as if from F₁ (right focal point)
+    const hit1 = { x: lx, y: oTip.y };
+    drawRay(ctx, oTip.x, oTip.y, hit1.x, hit1.y, '#f59e0b', false, false);
+    // After refraction: appears to come from F₁ (right of lens) → ray diverges
+    const slope1r = (oTip.y - ay) / (hit1.x - F_right);
+    drawRay(ctx, lx, oTip.y, W, oTip.y + slope1r * (W - lx), '#f59e0b', false, true);
+    // Dashed back to F₁
+    drawRay(ctx, lx, oTip.y, F_right, ay, '#f59e0b', true, false);
+
+    // Ray 2: Toward F₂ (left focal point) → refracts parallel to axis
+    const slope2i = (ay - oTip.y) / (F_left - oTip.x);
+    const hit2Y = oTip.y + slope2i * (lx - oTip.x);
+    drawRay(ctx, oTip.x, oTip.y, lx, hit2Y, '#a78bfa', false, false);
+    drawRay(ctx, lx, hit2Y, W, hit2Y, '#a78bfa', false, true);
+
+    // Ray 3: Through optical centre
+    const slope3 = (ay - oTip.y) / (lx - oTip.x);
+    drawRay(ctx, oTip.x, oTip.y, lx, ay, '#34d399', false, false);
+    drawRay(ctx, lx, ay, W, ay + slope3 * (W - lx), '#34d399', false, true);
+
+    // Virtual image (always between F and O on same side as object)
+    if (imgX > 0 && imgX < lx) {
+      drawImageArrow(ctx, imgX, ay, imgH, '#a78bfa', true);
+    }
+  }
+
+  document.getElementById('s6-result').innerHTML =
+    `v = ${Math.abs(v_cm).toFixed(1)} cm (Virtual, same side)<br>m = +${m.toFixed(2)} (Erect, Diminished)<br>Image always between F and O`;
+}
+
+// Init with defaults
+updateSim1();
+</script>
+</body>
+</html>

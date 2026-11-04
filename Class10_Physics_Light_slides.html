@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Class 10 Physics – Light | Slides</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0a0f1e;color:#e2e8f0;font-family:'Segoe UI',Arial,sans-serif;overflow:hidden;width:100vw;height:100vh;}
+.deck{width:100vw;height:100vh;position:relative;}
+.slide{display:none;width:100%;height:100%;position:absolute;top:0;left:0;flex-direction:column;padding:50px 70px;}
+.slide.active{display:flex;}
+/* Background variants */
+.slide-title-bg{background:radial-gradient(ellipse at 40% 30%,#0f2044,#0a0f1e);}
+.slide-dark{background:#070c17;}
+.slide-blue{background:linear-gradient(135deg,#060e1f 60%,#0c1e38);}
+
+/* Typography */
+.chapter-label{font-size:14px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#38bdf8;margin-bottom:10px;}
+.slide-title{font-size:52px;font-weight:800;line-height:1.1;color:#fff;margin-bottom:16px;}
+.slide-subtitle{font-size:22px;color:#64748b;margin-bottom:36px;}
+.slide-heading{font-size:36px;font-weight:700;color:#38bdf8;margin-bottom:24px;border-bottom:2px solid #1e293b;padding-bottom:12px;}
+.slide-heading-sm{font-size:28px;font-weight:700;color:#38bdf8;margin-bottom:18px;}
+
+/* Content boxes */
+.box{border-radius:14px;padding:18px 22px;margin:10px 0;}
+.box-blue{background:rgba(56,189,248,0.08);border:1.5px solid rgba(56,189,248,0.25);}
+.box-green{background:rgba(16,185,129,0.08);border:1.5px solid rgba(16,185,129,0.25);}
+.box-amber{background:rgba(251,191,36,0.08);border:1.5px solid rgba(251,191,36,0.25);}
+.box-purple{background:rgba(167,139,250,0.08);border:1.5px solid rgba(167,139,250,0.25);}
+.box-red{background:rgba(239,68,68,0.08);border:1.5px solid rgba(239,68,68,0.25);}
+.box-dark{background:#0d1527;border:1.5px solid #1e293b;}
+.box-formula{background:#0d1527;border:1.5px solid #334155;border-radius:12px;padding:16px 24px;font-family:'Courier New',monospace;font-size:19px;color:#fbbf24;text-align:center;line-height:1.9;}
+
+/* Lists */
+ul.slide-list{list-style:none;space-y:8px;}
+ul.slide-list li{padding:7px 0;padding-left:22px;position:relative;font-size:18px;line-height:1.5;color:#cbd5e1;}
+ul.slide-list li::before{content:'▹';position:absolute;left:0;color:#38bdf8;}
+ul.slide-list.amber li::before{color:#fbbf24;}
+ul.slide-list.green li::before{color:#34d399;}
+
+/* Grid layouts */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.grid-2-3{display:grid;grid-template-columns:2fr 3fr;gap:28px;}
+
+/* Key-value rows */
+.kv-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #1e293b;font-size:16px;}
+.kv-row:last-child{border:none;}
+.kv-key{color:#94a3b8;}
+.kv-val{color:#fbbf24;font-weight:600;font-family:monospace;}
+
+/* Table */
+table.slide-table{width:100%;border-collapse:collapse;font-size:15px;}
+table.slide-table th{padding:10px 14px;text-align:left;background:#0d1527;color:#38bdf8;border-bottom:2px solid #1e293b;}
+table.slide-table td{padding:9px 14px;border-bottom:1px solid #1e293b;color:#cbd5e1;}
+table.slide-table tr:hover td{background:rgba(56,189,248,0.04);}
+
+/* Badges */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:13px;font-weight:600;}
+.badge-blue{background:rgba(56,189,248,0.15);color:#38bdf8;}
+.badge-green{background:rgba(16,185,129,0.15);color:#34d399;}
+.badge-amber{background:rgba(251,191,36,0.15);color:#fbbf24;}
+.badge-purple{background:rgba(167,139,250,0.15);color:#a78bfa;}
+.badge-red{background:rgba(239,68,68,0.15);color:#f87171;}
+
+/* Nav */
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(13,21,39,0.95);border-top:1px solid #1e293b;padding:12px 28px;display:flex;align-items:center;gap:14px;z-index:100;}
+.nav-btn{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:8px 18px;font-size:14px;border-radius:8px;cursor:pointer;transition:all 0.15s;}
+.nav-btn:hover:not(:disabled){background:#334155;color:#e2e8f0;}
+.nav-btn:disabled{opacity:0.3;cursor:default;}
+.slide-counter{color:#475569;font-size:14px;margin:0 auto;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#38bdf8,#818cf8);transition:width 0.25s;z-index:200;}
+.fs-btn{position:fixed;top:10px;right:10px;background:rgba(30,41,59,0.85);border:1px solid #334155;color:#64748b;padding:7px 12px;font-size:14px;border-radius:7px;cursor:pointer;z-index:999;}
+.fs-btn:hover{color:#e2e8f0;}
+.hdr-nav-btn{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:6px 13px;font-size:13px;border-radius:7px;cursor:pointer;text-decoration:none;white-space:nowrap;}
+.hdr-nav-btn:hover{color:#e2e8f0;background:#334155;}
+.nav-links{display:flex;gap:8px;margin-left:auto;}
+
+/* Diagram styles (SVG-less visual aids using CSS) */
+.ray-box{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;}
+.mirror-diagram{background:#0d1527;border:1.5px solid #1e293b;border-radius:12px;padding:16px;text-align:center;}
+.diagram-label{font-size:13px;color:#64748b;margin-top:6px;}
+
+/* Sign convention */
+.sign-row{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:16px;}
+.sign-plus{color:#34d399;font-weight:bold;font-size:18px;}
+.sign-minus{color:#f87171;font-weight:bold;font-size:18px;}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progress"></div>
+<button class="fs-btn" onclick="document.documentElement.requestFullscreen()">⛶</button>
+
+<div class="deck" id="deck">
+
+<!-- ══ SLIDE 1: TITLE ══ -->
+<div class="slide active slide-title-bg" id="s1">
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+    <div class="chapter-label">Class 10 Physics · Chapter 10</div>
+    <div class="slide-title">Light<br>Reflection &amp;<br>Refraction</div>
+    <div class="slide-subtitle">Understanding mirrors, lenses, and the nature of light</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+      <span class="badge badge-blue">Reflection</span>
+      <span class="badge badge-green">Refraction</span>
+      <span class="badge badge-amber">Curved Mirrors</span>
+      <span class="badge badge-purple">Lenses</span>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;margin-top:auto;">
+    <a class="hdr-nav-btn" href="Class10_Physics_Light_simulations.html" target="_blank">🧪 Simulations</a>
+    <a class="hdr-nav-btn" href="Class10_Physics_Light_interactive.html" target="_blank">🖱 Interactive</a>
+    <a class="hdr-nav-btn" href="index.html">🏠 Dashboard</a>
+  </div>
+</div>
+
+<!-- ══ SLIDE 2: NATURE OF LIGHT ══ -->
+<div class="slide slide-dark" id="s2">
+  <div class="slide-heading">Nature of Light</div>
+  <div class="grid-2" style="flex:1;gap:24px;align-items:start;">
+    <div>
+      <div class="box box-blue" style="margin-bottom:16px;">
+        <div style="font-size:17px;font-weight:600;color:#38bdf8;margin-bottom:8px;">Light travels in a straight line</div>
+        <div style="font-size:15px;color:#94a3b8;">Demonstrated by shadows, eclipses, and pinhole cameras.</div>
+      </div>
+      <ul class="slide-list">
+        <li>Speed of light: <strong style="color:#fbbf24;">3 × 10⁸ m/s</strong> in vacuum</li>
+        <li>Electromagnetic wave (no medium needed)</li>
+        <li>Can reflect, refract, diffract, interfere</li>
+        <li>Exhibits both wave and particle nature</li>
+        <li>Visible spectrum: 400 nm – 700 nm</li>
+      </ul>
+    </div>
+    <div>
+      <div class="box box-dark">
+        <div style="font-size:15px;color:#94a3b8;margin-bottom:12px;font-weight:600;">Refractive Index</div>
+        <div class="box-formula" style="font-size:16px;">n = c / v<br>n = Speed in vacuum / Speed in medium</div>
+        <div style="margin-top:12px;font-size:14px;color:#64748b;">Where c = 3 × 10⁸ m/s, v = speed in medium</div>
+      </div>
+      <div style="margin-top:14px;">
+        <table class="slide-table">
+          <thead><tr><th>Medium</th><th>n (approx.)</th></tr></thead>
+          <tbody>
+            <tr><td>Air / Vacuum</td><td>1.00</td></tr>
+            <tr><td>Water</td><td>1.33</td></tr>
+            <tr><td>Glass</td><td>1.50</td></tr>
+            <tr><td>Diamond</td><td>2.42</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 3: LAW OF REFLECTION ══ -->
+<div class="slide slide-dark" id="s3">
+  <div class="slide-heading">Laws of Reflection</div>
+  <div class="grid-2" style="flex:1;gap:28px;align-items:start;">
+    <div>
+      <div class="box box-green" style="margin-bottom:16px;">
+        <div style="font-size:17px;font-weight:700;color:#34d399;margin-bottom:10px;">Two Laws</div>
+        <ul class="slide-list green" style="margin:0;">
+          <li>Angle of incidence = Angle of reflection<br><span style="font-family:monospace;color:#fbbf24;">∠i = ∠r</span></li>
+          <li>The incident ray, the normal, and the reflected ray all lie in the <strong>same plane</strong></li>
+        </ul>
+      </div>
+      <div class="box box-dark">
+        <div style="font-size:14px;color:#64748b;margin-bottom:8px;font-weight:600;">Key Terms</div>
+        <div class="kv-row"><span class="kv-key">Normal</span><span class="kv-val">⊥ to surface at point of incidence</span></div>
+        <div class="kv-row"><span class="kv-key">∠i</span><span class="kv-val">Between incident ray &amp; normal</span></div>
+        <div class="kv-row"><span class="kv-key">∠r</span><span class="kv-val">Between reflected ray &amp; normal</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="box box-dark">
+        <div style="font-size:15px;color:#94a3b8;font-weight:600;margin-bottom:10px;">Types of Reflection</div>
+        <ul class="slide-list" style="margin:0;">
+          <li><strong style="color:#38bdf8;">Regular (Specular)</strong> — Smooth surface; parallel rays remain parallel (mirrors)</li>
+          <li style="margin-top:8px;"><strong style="color:#a78bfa;">Diffuse</strong> — Rough surface; rays scatter in all directions (walls, paper)</li>
+        </ul>
+      </div>
+      <div class="box box-amber" style="margin-top:14px;">
+        <div style="font-size:15px;color:#fbbf24;font-weight:600;">Remember</div>
+        <div style="font-size:14px;color:#94a3b8;margin-top:6px;">Angles are always measured from the <em>Normal</em>, not from the surface. The normal is perpendicular (90°) to the surface.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 4: SPHERICAL MIRRORS — TERMS ══ -->
+<div class="slide slide-dark" id="s4">
+  <div class="slide-heading">Spherical Mirrors — Key Terms</div>
+  <div class="grid-2" style="flex:1;gap:28px;">
+    <div>
+      <div class="box box-blue" style="margin-bottom:14px;">
+        <div style="font-size:16px;font-weight:700;color:#38bdf8;margin-bottom:8px;">Two Types</div>
+        <div style="display:flex;gap:12px;">
+          <div style="flex:1;text-align:center;padding:12px;background:#0a1a2e;border-radius:10px;">
+            <div style="font-size:28px;">🔵</div>
+            <div style="color:#38bdf8;font-weight:600;margin:4px 0;">Concave</div>
+            <div style="font-size:13px;color:#64748b;">Inward curved<br>Converging mirror</div>
+          </div>
+          <div style="flex:1;text-align:center;padding:12px;background:#0a1a2e;border-radius:10px;">
+            <div style="font-size:28px;">🟡</div>
+            <div style="color:#fbbf24;font-weight:600;margin:4px 0;">Convex</div>
+            <div style="font-size:13px;color:#64748b;">Outward curved<br>Diverging mirror</div>
+          </div>
+        </div>
+      </div>
+      <div class="box box-dark">
+        <div style="font-size:14px;color:#64748b;margin-bottom:8px;font-weight:600;">Important Terms</div>
+        <div class="kv-row"><span class="kv-key">Pole (P)</span><span class="kv-val">Centre of mirror surface</span></div>
+        <div class="kv-row"><span class="kv-key">Centre of Curvature (C)</span><span class="kv-val">Centre of glass sphere</span></div>
+        <div class="kv-row"><span class="kv-key">Radius of Curvature (R)</span><span class="kv-val">Distance P to C</span></div>
+        <div class="kv-row"><span class="kv-key">Principal Focus (F)</span><span class="kv-val">Where parallel rays converge</span></div>
+        <div class="kv-row"><span class="kv-key">Focal Length (f)</span><span class="kv-val">Distance P to F</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="box-formula" style="margin-bottom:14px;">
+        R = 2f &nbsp;⟹&nbsp; f = R/2
+        <div style="font-size:14px;color:#94a3b8;margin-top:8px;">Focal length is half the radius of curvature</div>
+      </div>
+      <div class="box box-dark">
+        <div style="font-size:14px;color:#64748b;margin-bottom:8px;font-weight:600;">New Cartesian Sign Convention</div>
+        <div class="sign-row"><span class="sign-minus">−</span> All distances measured against incident ray direction (left) are negative</div>
+        <div class="sign-row"><span class="sign-plus">+</span> All distances measured with incident ray direction (right) are positive</div>
+        <div class="sign-row"><span class="sign-minus">−</span> Concave mirror focal length: f &lt; 0</div>
+        <div class="sign-row"><span class="sign-plus">+</span> Convex mirror focal length: f &gt; 0</div>
+        <div class="sign-row" style="margin-top:4px;"><span style="color:#64748b;width:18px;">u</span> Object distance always negative (object in front)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 5: MIRROR FORMULA ══ -->
+<div class="slide slide-dark" id="s5">
+  <div class="slide-heading">Mirror Formula &amp; Magnification</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:16px;">
+    <div class="grid-2" style="gap:20px;">
+      <div>
+        <div class="box-formula" style="font-size:21px;margin-bottom:14px;">1/v + 1/u = 1/f</div>
+        <div class="box box-dark" style="font-size:14px;color:#94a3b8;">
+          <strong style="color:#38bdf8;">u</strong> = object distance (always −ve)<br>
+          <strong style="color:#38bdf8;">v</strong> = image distance (−ve = real, +ve = virtual)<br>
+          <strong style="color:#38bdf8;">f</strong> = focal length (−ve concave, +ve convex)
+        </div>
+      </div>
+      <div>
+        <div class="box-formula" style="font-size:21px;margin-bottom:14px;">m = −v/u = h'/h</div>
+        <div class="box box-dark" style="font-size:14px;color:#94a3b8;">
+          <strong style="color:#38bdf8;">m &lt; 0</strong> → Inverted image (real)<br>
+          <strong style="color:#38bdf8;">m &gt; 0</strong> → Erect image (virtual)<br>
+          <strong style="color:#38bdf8;">|m| &gt; 1</strong> → Enlarged &nbsp;|&nbsp; <strong style="color:#38bdf8;">|m| &lt; 1</strong> → Diminished
+        </div>
+      </div>
+    </div>
+    <div>
+      <table class="slide-table">
+        <thead><tr><th>Object Position</th><th>Image Position</th><th>Nature</th><th>Size</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td>Beyond C</td><td>Between F and C</td><td>Real, Inverted</td><td>Diminished</td><td>—</td></tr>
+          <tr><td>At C</td><td>At C</td><td>Real, Inverted</td><td>Same size</td><td>—</td></tr>
+          <tr><td>Between C and F</td><td>Beyond C</td><td>Real, Inverted</td><td>Enlarged</td><td>Shaving/dental mirror</td></tr>
+          <tr><td>At F</td><td>Infinity</td><td>—</td><td>—</td><td>Searchlight, headlight</td></tr>
+          <tr><td>Between F and P</td><td>Behind mirror</td><td>Virtual, Erect</td><td>Enlarged</td><td>Magnifying mirror</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 6: CONCAVE vs CONVEX MIRROR USES ══ -->
+<div class="slide slide-dark" id="s6">
+  <div class="slide-heading">Mirror Uses in Daily Life</div>
+  <div class="grid-2" style="flex:1;gap:28px;align-items:start;">
+    <div>
+      <div class="slide-heading-sm" style="color:#38bdf8;border:none;margin-bottom:12px;">🔵 Concave Mirror Uses</div>
+      <ul class="slide-list">
+        <li>Shaving / make-up mirrors — virtual, erect, enlarged image</li>
+        <li>Dentists' mirror — enlarged view of teeth</li>
+        <li>Concave dish in solar furnace — focuses heat</li>
+        <li>Headlights, torches, searchlights — parallel beam</li>
+        <li>Astronomical telescopes (reflectors)</li>
+      </ul>
+    </div>
+    <div>
+      <div class="slide-heading-sm" style="color:#fbbf24;border:none;margin-bottom:12px;">🟡 Convex Mirror Uses</div>
+      <ul class="slide-list amber">
+        <li>Rear-view mirrors in vehicles — wider field of view, always upright image</li>
+        <li>Security mirrors in shops — view large area</li>
+        <li>Rear-view mirrors on motorcycles &amp; trucks</li>
+        <li>Road bends — convex mirrors placed at blind corners</li>
+      </ul>
+      <div class="box box-amber" style="margin-top:16px;">
+        <div style="font-size:15px;color:#fbbf24;font-weight:600;">Why convex for rear-view?</div>
+        <div style="font-size:14px;color:#94a3b8;margin-top:6px;">Always forms virtual, erect, diminished image → wider field of view than a plane mirror of the same size.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 7: REFRACTION ══ -->
+<div class="slide slide-dark" id="s7">
+  <div class="slide-heading">Refraction of Light</div>
+  <div class="grid-2" style="flex:1;gap:28px;align-items:start;">
+    <div>
+      <div class="box box-blue" style="margin-bottom:14px;">
+        <div style="font-size:17px;font-weight:700;color:#38bdf8;margin-bottom:8px;">Definition</div>
+        <div style="font-size:15px;color:#94a3b8;">Bending of light when it passes from one transparent medium into another due to change in speed.</div>
+      </div>
+      <div class="box box-dark">
+        <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:8px;">Snell's Law</div>
+        <div class="box-formula" style="font-size:19px;">n₁ sin θ₁ = n₂ sin θ₂</div>
+        <div style="font-size:14px;color:#94a3b8;margin-top:8px;">n₁, n₂ = refractive indices<br>θ₁ = angle of incidence<br>θ₂ = angle of refraction</div>
+      </div>
+    </div>
+    <div>
+      <div class="box box-dark" style="margin-bottom:14px;">
+        <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:10px;">Rules of Refraction</div>
+        <ul class="slide-list" style="margin:0;">
+          <li>Rarer → Denser (e.g. air → glass): bends <strong style="color:#34d399;">toward normal</strong>, θ₂ &lt; θ₁</li>
+          <li>Denser → Rarer (e.g. glass → air): bends <strong style="color:#f87171;">away from normal</strong>, θ₂ &gt; θ₁</li>
+          <li>Normal incidence (θ₁ = 0): no bending</li>
+        </ul>
+      </div>
+      <div class="box box-green">
+        <div style="font-size:15px;color:#34d399;font-weight:600;margin-bottom:8px;">Everyday Examples</div>
+        <ul class="slide-list green" style="margin:0;font-size:15px;">
+          <li>Pencil appears bent in water</li>
+          <li>Pool appears shallower than actual depth</li>
+          <li>Stars twinkle (atmospheric refraction)</li>
+          <li>Advance sunrise / delayed sunset</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 8: TOTAL INTERNAL REFLECTION ══ -->
+<div class="slide slide-dark" id="s8">
+  <div class="slide-heading">Total Internal Reflection (TIR)</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:16px;">
+    <div class="grid-2" style="gap:24px;align-items:start;">
+      <div>
+        <div class="box box-red" style="margin-bottom:12px;">
+          <div style="font-size:16px;font-weight:700;color:#f87171;margin-bottom:8px;">Conditions for TIR</div>
+          <ul class="slide-list" style="margin:0;">
+            <li>Light must travel from <strong>denser → rarer</strong> medium</li>
+            <li>Angle of incidence must exceed the <strong>Critical Angle (C)</strong></li>
+          </ul>
+        </div>
+        <div class="box-formula">sin C = n₂/n₁ = 1/n (glass-air)<br><div style="font-size:14px;color:#94a3b8;margin-top:6px;">For glass (n=1.5): C ≈ 42°</div></div>
+      </div>
+      <div>
+        <div class="box box-dark">
+          <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:10px;">Applications of TIR</div>
+          <ul class="slide-list" style="margin:0;font-size:15px;">
+            <li><strong style="color:#38bdf8;">Optical fibres</strong> — data transmission at speed of light; TIR keeps light inside the fibre</li>
+            <li><strong style="color:#38bdf8;">Endoscope</strong> — medical imaging; flexible fibre bundles</li>
+            <li><strong style="color:#38bdf8;">Mirage</strong> — hot road appears wet; layers of hot air refract and TIR sunlight</li>
+            <li><strong style="color:#38bdf8;">Diamonds sparkle</strong> — high refractive index (2.42) gives small critical angle (~24°)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="box box-blue">
+      <div style="font-size:15px;color:#38bdf8;font-weight:600;margin-bottom:6px;">Optical Fibre — How it Works</div>
+      <div style="font-size:14px;color:#94a3b8;">Light enters one end of a glass fibre and undergoes repeated TIR along the walls until it exits at the other end. No light escapes — extremely efficient. Used in <strong style="color:#e2e8f0;">internet cables, medical scopes, decorative lights.</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 9: LENSES — INTRO ══ -->
+<div class="slide slide-dark" id="s9">
+  <div class="slide-heading">Lenses — Types &amp; Key Terms</div>
+  <div class="grid-2" style="flex:1;gap:28px;align-items:start;">
+    <div>
+      <div class="box box-blue" style="margin-bottom:14px;">
+        <div style="display:flex;gap:14px;">
+          <div style="flex:1;text-align:center;padding:12px;background:#0a1a2e;border-radius:10px;">
+            <div style="font-size:28px;">🔍</div>
+            <div style="color:#38bdf8;font-weight:600;margin:4px 0;">Convex (Converging)</div>
+            <div style="font-size:13px;color:#64748b;">Thicker at centre<br>Positive focal length</div>
+          </div>
+          <div style="flex:1;text-align:center;padding:12px;background:#0a1a2e;border-radius:10px;">
+            <div style="font-size:28px;">🔎</div>
+            <div style="color:#a78bfa;font-weight:600;margin:4px 0;">Concave (Diverging)</div>
+            <div style="font-size:13px;color:#64748b;">Thicker at edges<br>Negative focal length</div>
+          </div>
+        </div>
+      </div>
+      <div class="box box-dark">
+        <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:8px;">Key Terms</div>
+        <div class="kv-row"><span class="kv-key">Optical Centre (O)</span><span class="kv-val">Centre of lens</span></div>
+        <div class="kv-row"><span class="kv-key">Principal Axis</span><span class="kv-val">Line through O ⊥ to lens</span></div>
+        <div class="kv-row"><span class="kv-key">Principal Focus (F)</span><span class="kv-val">Parallel ray convergence point</span></div>
+        <div class="kv-row"><span class="kv-key">Focal Length (f)</span><span class="kv-val">O to F distance</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="box-formula" style="margin-bottom:14px;">
+        Lens Formula:<br>1/v − 1/u = 1/f<br>
+        <div style="font-size:14px;color:#94a3b8;margin-top:8px;">Magnification: m = v/u = h'/h</div>
+      </div>
+      <div class="box box-dark">
+        <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:8px;">Sign Convention (NC)</div>
+        <div class="sign-row"><span class="sign-minus">u</span> Always negative (object on left)</div>
+        <div class="sign-row"><span class="sign-plus">v</span> Positive = real (right of lens)</div>
+        <div class="sign-row"><span class="sign-minus">v</span> Negative = virtual (left of lens)</div>
+        <div class="sign-row"><span class="sign-plus">f</span> Positive for convex lens</div>
+        <div class="sign-row"><span class="sign-minus">f</span> Negative for concave lens</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 10: CONVEX LENS IMAGE TABLE ══ -->
+<div class="slide slide-dark" id="s10">
+  <div class="slide-heading">Convex Lens — Image Formation</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
+    <table class="slide-table">
+      <thead>
+        <tr>
+          <th>Object Position</th>
+          <th>Image Position</th>
+          <th>Nature</th>
+          <th>Size</th>
+          <th>Application</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Beyond 2F₁</td><td>Between F₂ and 2F₂</td><td><span class="badge badge-green">Real</span> <span class="badge badge-red">Inverted</span></td><td>Diminished</td><td>Camera, human eye</td></tr>
+        <tr><td>At 2F₁</td><td>At 2F₂</td><td><span class="badge badge-green">Real</span> <span class="badge badge-red">Inverted</span></td><td>Same size</td><td>—</td></tr>
+        <tr><td>Between F₁ and 2F₁</td><td>Beyond 2F₂</td><td><span class="badge badge-green">Real</span> <span class="badge badge-red">Inverted</span></td><td>Enlarged</td><td>Film projector</td></tr>
+        <tr><td>At F₁</td><td>At infinity</td><td>—</td><td>—</td><td>Slide projector, spotlight</td></tr>
+        <tr><td>Between F₁ and O</td><td>Same side as object</td><td><span class="badge badge-purple">Virtual</span> <span class="badge badge-amber">Erect</span></td><td>Enlarged</td><td>Magnifying glass, reading lens</td></tr>
+      </tbody>
+    </table>
+    <div class="grid-2" style="gap:16px;margin-top:4px;">
+      <div class="box box-green">
+        <div style="font-size:15px;color:#34d399;font-weight:600;margin-bottom:6px;">Convex Lens Applications</div>
+        <ul class="slide-list green" style="margin:0;font-size:14px;">
+          <li>Magnifying glass (object inside F)</li>
+          <li>Camera and human eye (object beyond 2F)</li>
+          <li>Film projector (object between F and 2F)</li>
+          <li>Corrects hypermetropia (far-sightedness)</li>
+        </ul>
+      </div>
+      <div class="box box-purple">
+        <div style="font-size:15px;color:#a78bfa;font-weight:600;margin-bottom:6px;">Concave Lens — Always</div>
+        <ul class="slide-list" style="margin:0;font-size:14px;">
+          <li>Virtual, erect, diminished image</li>
+          <li>Image between F and O (same side as object)</li>
+          <li>Used to correct myopia (short-sightedness)</li>
+          <li>f is always negative</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 11: POWER OF A LENS ══ -->
+<div class="slide slide-dark" id="s11">
+  <div class="slide-heading">Power of a Lens</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:18px;">
+    <div class="grid-2" style="gap:28px;align-items:start;">
+      <div>
+        <div class="box-formula" style="margin-bottom:16px;font-size:22px;">
+          P = 1/f<br>
+          <div style="font-size:14px;color:#94a3b8;margin-top:8px;">f in metres, P in Dioptres (D)</div>
+        </div>
+        <div class="box box-dark">
+          <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:8px;">Key Points</div>
+          <div class="kv-row"><span class="kv-key">Unit of Power</span><span class="kv-val">Dioptre (D)</span></div>
+          <div class="kv-row"><span class="kv-key">Convex lens</span><span class="kv-val">P &gt; 0 (positive)</span></div>
+          <div class="kv-row"><span class="kv-key">Concave lens</span><span class="kv-val">P &lt; 0 (negative)</span></div>
+          <div class="kv-row"><span class="kv-key">Shorter f</span><span class="kv-val">Greater power</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="box box-blue" style="margin-bottom:14px;">
+          <div style="font-size:16px;font-weight:700;color:#38bdf8;margin-bottom:8px;">Combined Lenses</div>
+          <div class="box-formula" style="font-size:17px;">P = P₁ + P₂ + P₃ + ...</div>
+          <div style="font-size:14px;color:#94a3b8;margin-top:8px;">Total power of lenses in contact is the algebraic sum of individual powers.</div>
+        </div>
+        <div class="box box-amber">
+          <div style="font-size:15px;color:#fbbf24;font-weight:600;margin-bottom:6px;">Examples</div>
+          <div style="font-size:14px;color:#94a3b8;line-height:1.8;">
+            f = +50 cm = +0.5 m → P = +2 D<br>
+            f = −25 cm = −0.25 m → P = −4 D<br>
+            f = +20 cm = +0.2 m → P = +5 D
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="box box-dark">
+      <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:8px;">Spectacle Lens Prescription</div>
+      <div style="font-size:14px;color:#94a3b8;">Optometrists prescribe lenses in Dioptres. A prescription of <span style="color:#34d399;">+2 D</span> means a convex lens of focal length 50 cm (corrects hypermetropia). A prescription of <span style="color:#f87171;">−3 D</span> means a concave lens of focal length 33 cm (corrects myopia).</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 12: HUMAN EYE ══ -->
+<div class="slide slide-dark" id="s12">
+  <div class="slide-heading">The Human Eye</div>
+  <div class="grid-2" style="flex:1;gap:28px;align-items:start;">
+    <div>
+      <div class="box box-dark" style="margin-bottom:14px;">
+        <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:8px;">Parts &amp; Functions</div>
+        <div class="kv-row"><span class="kv-key">Cornea</span><span class="kv-val">Outer transparent layer; refracts light</span></div>
+        <div class="kv-row"><span class="kv-key">Iris</span><span class="kv-val">Controls pupil size (aperture)</span></div>
+        <div class="kv-row"><span class="kv-key">Pupil</span><span class="kv-val">Opening; adjusts light intake</span></div>
+        <div class="kv-row"><span class="kv-key">Lens</span><span class="kv-val">Flexible; fine-tunes focus</span></div>
+        <div class="kv-row"><span class="kv-key">Retina</span><span class="kv-val">Screen; rods &amp; cones detect light</span></div>
+        <div class="kv-row"><span class="kv-key">Optic nerve</span><span class="kv-val">Carries signals to brain</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="box box-blue" style="margin-bottom:14px;">
+        <div style="font-size:16px;font-weight:700;color:#38bdf8;margin-bottom:8px;">Accommodation</div>
+        <div style="font-size:14px;color:#94a3b8;">Ciliary muscles change the focal length of the eye lens by squeezing or relaxing it — allowing the eye to focus on both near and far objects.</div>
+      </div>
+      <div class="box box-dark">
+        <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:8px;">Range of Vision</div>
+        <div class="kv-row"><span class="kv-key">Near Point</span><span class="kv-val">25 cm (least distance of distinct vision)</span></div>
+        <div class="kv-row"><span class="kv-key">Far Point</span><span class="kv-val">Infinity (normal eye)</span></div>
+      </div>
+      <div class="box box-green" style="margin-top:14px;">
+        <div style="font-size:14px;color:#34d399;font-weight:600;">Image on Retina</div>
+        <div style="font-size:14px;color:#94a3b8;margin-top:6px;">Image formed is real, inverted — brain interprets it as upright.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 13: DEFECTS OF VISION ══ -->
+<div class="slide slide-dark" id="s13">
+  <div class="slide-heading">Defects of Vision &amp; Correction</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
+    <div class="grid-3" style="gap:16px;">
+      <div class="box box-red">
+        <div style="font-size:16px;font-weight:700;color:#f87171;margin-bottom:8px;">Myopia</div>
+        <div style="font-size:13px;color:#94a3b8;margin-bottom:8px;">(Short-sightedness)</div>
+        <ul class="slide-list" style="margin:0;font-size:14px;">
+          <li>Cannot see distant objects clearly</li>
+          <li>Image forms in front of retina</li>
+          <li>Far point moves closer than infinity</li>
+          <li><strong style="color:#f87171;">Correction:</strong> Concave lens (−ve power)</li>
+        </ul>
+      </div>
+      <div class="box box-blue">
+        <div style="font-size:16px;font-weight:700;color:#38bdf8;margin-bottom:8px;">Hypermetropia</div>
+        <div style="font-size:13px;color:#94a3b8;margin-bottom:8px;">(Far-sightedness)</div>
+        <ul class="slide-list" style="margin:0;font-size:14px;">
+          <li>Cannot see near objects clearly</li>
+          <li>Image forms behind retina</li>
+          <li>Near point moves beyond 25 cm</li>
+          <li><strong style="color:#38bdf8;">Correction:</strong> Convex lens (+ve power)</li>
+        </ul>
+      </div>
+      <div class="box box-amber">
+        <div style="font-size:16px;font-weight:700;color:#fbbf24;margin-bottom:8px;">Presbyopia</div>
+        <div style="font-size:13px;color:#94a3b8;margin-bottom:8px;">(Age-related)</div>
+        <ul class="slide-list amber" style="margin:0;font-size:14px;">
+          <li>Both near and far vision affected</li>
+          <li>Ciliary muscles weaken with age</li>
+          <li>Lens loses flexibility</li>
+          <li><strong style="color:#fbbf24;">Correction:</strong> Bifocal lenses</li>
+        </ul>
+      </div>
+    </div>
+    <div class="box box-dark">
+      <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:8px;">Astigmatism</div>
+      <div style="font-size:14px;color:#94a3b8;">Cornea is not perfectly spherical — objects appear blurred or distorted. Corrected with cylindrical lenses.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 14: DISPERSION & SPECTRUM ══ -->
+<div class="slide slide-dark" id="s14">
+  <div class="slide-heading">Dispersion of Light</div>
+  <div class="grid-2" style="flex:1;gap:28px;align-items:start;">
+    <div>
+      <div class="box box-blue" style="margin-bottom:14px;">
+        <div style="font-size:17px;font-weight:700;color:#38bdf8;margin-bottom:8px;">What is Dispersion?</div>
+        <div style="font-size:15px;color:#94a3b8;">Splitting of white light into its component colours by a prism. Each colour has a different wavelength and refracts differently.</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+        <span class="badge" style="background:rgba(239,68,68,0.2);color:#f87171;">Violet</span>
+        <span class="badge badge-blue">Indigo</span>
+        <span class="badge" style="background:rgba(59,130,246,0.2);color:#60a5fa;">Blue</span>
+        <span class="badge badge-green">Green</span>
+        <span class="badge" style="background:rgba(234,179,8,0.2);color:#facc15;">Yellow</span>
+        <span class="badge badge-amber">Orange</span>
+        <span class="badge badge-red">Red</span>
+      </div>
+      <div class="box-formula" style="font-size:17px;">VIBGYOR<br><div style="font-size:14px;color:#94a3b8;margin-top:6px;">Violet bends most, Red bends least</div></div>
+    </div>
+    <div>
+      <div class="box box-dark" style="margin-bottom:14px;">
+        <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:8px;">Why Different Bending?</div>
+        <div style="font-size:14px;color:#94a3b8;">Different wavelengths travel at slightly different speeds in glass. Violet (shortest λ) is slowed most → bends most. Red (longest λ) bends least.</div>
+      </div>
+      <div class="box box-green">
+        <div style="font-size:15px;color:#34d399;font-weight:600;margin-bottom:8px;">Rainbow</div>
+        <ul class="slide-list green" style="margin:0;font-size:14px;">
+          <li>Sunlight + water droplets = natural prism</li>
+          <li>Dispersion + TIR inside droplets</li>
+          <li>Red appears on outside (top), Violet inside</li>
+          <li>Seen when sun is behind observer</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SLIDE 15: QUICK REVISION ══ -->
+<div class="slide slide-dark" id="s15">
+  <div class="slide-heading">Quick Revision — Key Formulas</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
+    <div class="grid-3" style="gap:14px;">
+      <div class="box-formula" style="font-size:17px;">Mirror Formula<br>1/v + 1/u = 1/f<br><div style="font-size:13px;color:#94a3b8;margin-top:4px;">m = −v/u</div></div>
+      <div class="box-formula" style="font-size:17px;">Lens Formula<br>1/v − 1/u = 1/f<br><div style="font-size:13px;color:#94a3b8;margin-top:4px;">m = v/u</div></div>
+      <div class="box-formula" style="font-size:17px;">Power of Lens<br>P = 1/f (metres)<br><div style="font-size:13px;color:#94a3b8;margin-top:4px;">Unit: Dioptre (D)</div></div>
+    </div>
+    <div class="grid-2" style="gap:14px;">
+      <div class="box-formula" style="font-size:16px;">Snell's Law<br>n₁ sin θ₁ = n₂ sin θ₂<br><div style="font-size:13px;color:#94a3b8;margin-top:4px;">n = c/v</div></div>
+      <div class="box-formula" style="font-size:16px;">Focal Length &amp; Radius<br>f = R/2<br><div style="font-size:13px;color:#94a3b8;margin-top:4px;">R = 2f</div></div>
+    </div>
+    <div class="box box-dark">
+      <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-around;padding:4px 0;">
+        <div style="text-align:center;padding:8px 16px;background:#0a1a2e;border-radius:10px;min-width:130px;">
+          <div style="font-size:22px;">🪞</div><div style="font-size:13px;color:#38bdf8;font-weight:600;margin:4px 0;">Concave Mirror</div>
+          <div style="font-size:12px;color:#64748b;">f &lt; 0 &nbsp;|&nbsp; Converging</div>
+        </div>
+        <div style="text-align:center;padding:8px 16px;background:#0a1a2e;border-radius:10px;min-width:130px;">
+          <div style="font-size:22px;">🟡</div><div style="font-size:13px;color:#fbbf24;font-weight:600;margin:4px 0;">Convex Mirror</div>
+          <div style="font-size:12px;color:#64748b;">f &gt; 0 &nbsp;|&nbsp; Diverging</div>
+        </div>
+        <div style="text-align:center;padding:8px 16px;background:#0a1a2e;border-radius:10px;min-width:130px;">
+          <div style="font-size:22px;">🔍</div><div style="font-size:13px;color:#38bdf8;font-weight:600;margin:4px 0;">Convex Lens</div>
+          <div style="font-size:12px;color:#64748b;">f &gt; 0 &nbsp;|&nbsp; Converging</div>
+        </div>
+        <div style="text-align:center;padding:8px 16px;background:#0a1a2e;border-radius:10px;min-width:130px;">
+          <div style="font-size:22px;">🔎</div><div style="font-size:13px;color:#a78bfa;font-weight:600;margin:4px 0;">Concave Lens</div>
+          <div style="font-size:12px;color:#64748b;">f &lt; 0 &nbsp;|&nbsp; Diverging</div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:auto;">
+      <a class="hdr-nav-btn" href="Class10_Physics_Light_simulations.html" target="_blank" style="font-size:15px;padding:10px 20px;">🧪 Try Simulations</a>
+      &nbsp;
+      <a class="hdr-nav-btn" href="Class10_Physics_Light_interactive.html" target="_blank" style="font-size:15px;padding:10px 20px;">🖱 Interactive Study</a>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- Navigation -->
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()" disabled>◀ Prev</button>
+  <span class="slide-counter" id="counter">1 / 15</span>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()">Next ▶</button>
+  <div class="nav-links">
+    <a class="hdr-nav-btn" href="Class10_Physics_Light_simulations.html" target="_blank">🧪 Simulations</a>
+    <a class="hdr-nav-btn" href="Class10_Physics_Light_interactive.html" target="_blank">🖱 Interactive</a>
+    <a class="hdr-nav-btn" href="index.html">🏠</a>
+  </div>
+</div>
+
+<script>
+const TOTAL = 15;
+let cur = 1;
+
+function showSlide(n) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.getElementById('s' + n).classList.add('active');
+  document.getElementById('counter').textContent = n + ' / ' + TOTAL;
+  document.getElementById('prevBtn').disabled = n === 1;
+  document.getElementById('nextBtn').disabled = n === TOTAL;
+  document.getElementById('progress').style.width = ((n / TOTAL) * 100) + '%';
+  cur = n;
+}
+
+function nextSlide() { if (cur < TOTAL) showSlide(cur + 1); }
+function prevSlide() { if (cur > 1) showSlide(cur - 1); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextSlide();
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   prevSlide();
+});
+
+showSlide(1);
+</script>
+</body>
+</html>
