@@ -485,7 +485,7 @@ function drawSim1(){
   }
 
   /* particles */
-  s1.particles.forEach(p=>{if(p.isDead){}else p.draw(ctx);});
+  s1.particles.forEach(p=>{if(!p.isDead()) p.draw(ctx);});
 
   /* flash for explosive metals */
   if(s1.explodes&&s1.reacting&&s1.time<8){
@@ -552,6 +552,7 @@ function dipNail(){
   document.getElementById('btn-dip').disabled=true;
   document.getElementById('time-wrap').style.display='block';
   document.getElementById('eq2').classList.remove('hidden');
+  drawSim2();
 }
 
 function setDisplacementTime(val){
@@ -563,6 +564,7 @@ function setDisplacementTime(val){
   else if(pct<0.4)document.getElementById('obs2').textContent='Solution starting to turn lighter blue. Small reddish spots appearing on nail.';
   else if(pct<0.7)document.getElementById('obs2').textContent='Solution turning green (FeSO₄ forming). Clear copper deposits visible on iron nail!';
   else document.getElementById('obs2').textContent='Solution is light green. Nail is coated with red-brown copper metal. Reaction nearly complete.';
+  drawSim2();
 }
 
 function resetSim2(){
