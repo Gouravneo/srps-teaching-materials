@@ -170,17 +170,18 @@ input[type=range]::-webkit-slider-thumb{width:20px;height:20px;border-radius:50%
   <div class="sim-wrap">
     <div class="sim-canvas-area"><canvas id="c3" width="820" height="560"></canvas></div>
     <div class="sim-panel">
-      <div class="panel-title">Follow the Steps</div>
-      <div class="info-box" id="ion-info-box">Na has <strong style="color:#fbbf24;">1</strong> outer electron (2,8,1). Cl needs <strong style="color:#86efac;">1</strong> more electron (2,8,7).<br><br>Click the button to transfer the electron.</div>
-      <button class="action-btn amber" id="btn-transfer" onclick="transferElectron()">⚡ Transfer Electron</button>
-      <button class="action-btn blue" id="btn-attract" onclick="attractIons()" disabled>🔗 Form Ionic Bond</button>
+      <div class="panel-title">🧪 Follow the Steps</div>
+      <div class="info-box" id="ion-info-box"><strong style="color:#fbbf24;">Na</strong> (2,8,1) has <strong>1 outer electron</strong> to give.<br><strong style="color:#86efac;">Cl</strong> (2,8,7) needs <strong>1 more electron</strong>.<br><br>Watch the electrons orbit, then click <em>Move Closer</em>!</div>
+      <button class="action-btn amber" id="btn-closer" onclick="sim3MoveCloser()">🔜 Step 1 — Move Closer</button>
+      <button class="action-btn amber" id="btn-transfer" onclick="transferElectron()" disabled>⚡ Step 2 — Transfer Electron</button>
+      <button class="action-btn blue" id="btn-attract" onclick="attractIons()" disabled>🔗 Step 3 — Form Ionic Bond</button>
       <button class="action-btn reset" onclick="resetSim3()">↺ Reset</button>
       <div id="eq3" class="eq-box hidden"></div>
       <div id="obs3" class="obs-box hidden"></div>
       <div class="info-box" style="margin-top:10px;font-size:15px;">
         <strong>Rule:</strong> Metals LOSE electrons → cations (+)<br>
         Non-metals GAIN electrons → anions (−)<br><br>
-        <strong>Why?</strong> To achieve stable noble gas configuration (8 outer electrons = octet)
+        <strong>Octet rule:</strong> All atoms want 8 outer electrons (stable noble gas configuration)
       </div>
     </div>
   </div>
@@ -675,71 +676,138 @@ function drawSim2(){
 }
 
 /* ══════════════════════════════════════════════
-   SIM 3 — IONIC BOND
+   SIM 3 — IONIC BOND (orbiting electrons)
 ══════════════════════════════════════════════ */
-let s3={phase:0,electronX:0,electronY:0,electronTarget:{x:0,y:0},transferring:false,attracting:false,naX:220,clX:600,ionFormed:false,bondFormed:false,angle:0,time:0};
-let eAnim=null;
+let s3={phase:0,t:0,naX:175,clX:645,innerA:0,midA:0,naOutA:0,clOutA:0,eX:0,eY:0,eTx:0,eTy:0,sparkles:[]};
+
+function sim3MoveCloser(){
+  if(s3.phase!==0)return;
+  s3.phase=1;
+  document.getElementById('btn-closer').disabled=true;
+  document.getElementById('ion-info-box').innerHTML='<strong>Atoms approaching each other...</strong><br>Notice the electrons keep orbiting as they move!';
+}
+
+function lightenC(hex,amt){
+  const r=Math.min(255,parseInt(hex.slice(1,3),16)+amt);
+  const g=Math.min(255,parseInt(hex.slice(3,5),16)+amt);
+  const b=Math.min(255,parseInt(hex.slice(5,7),16)+amt);
+  return`rgb(${r},${g},${b})`;
+}
+
+function drawOrbAtom(ctx,cx,cy,sym,nucClr,shells,angles,charge){
+  const R=[32,55,88];
+  shells.forEach((cnt,si)=>{
+    if(!cnt)return;
+    ctx.beginPath();ctx.arc(cx,cy,R[si],0,Math.PI*2);
+    ctx.setLineDash([3,6]);ctx.strokeStyle='rgba(148,163,184,0.25)';ctx.lineWidth=1;ctx.stroke();ctx.setLineDash([]);
+  });
+  /* nucleus */
+  const ng=ctx.createRadialGradient(cx-6,cy-6,0,cx,cy,R[0]);
+  ng.addColorStop(0,lightenC(nucClr,70));ng.addColorStop(0.6,nucClr);ng.addColorStop(1,'rgba(0,0,0,0.5)');
+  ctx.beginPath();ctx.arc(cx,cy,R[0],0,Math.PI*2);ctx.fillStyle=ng;ctx.fill();
+  /* cute face — eyes */
+  ctx.fillStyle='rgba(0,0,0,0.5)';
+  ctx.beginPath();ctx.arc(cx-10,cy-7,3.5,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(cx+10,cy-7,3.5,0,Math.PI*2);ctx.fill();
+  /* smile */
+  ctx.beginPath();ctx.arc(cx,cy+5,10,0.18,Math.PI-0.18);
+  ctx.strokeStyle='rgba(0,0,0,0.5)';ctx.lineWidth=2.5;ctx.stroke();
+  /* symbol */
+  ctx.font='bold 15px Segoe UI';ctx.fillStyle='rgba(255,255,255,0.95)';
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(sym,cx,cy+16);
+  /* electrons */
+  shells.forEach((cnt,si)=>{
+    if(!cnt)return;
+    const r=R[si],base=angles[si];
+    const eClr=si===shells.length-1&&si>0?'#f87171':'#fb923c';
+    for(let i=0;i<cnt;i++){
+      const a=base+(Math.PI*2*i/cnt);
+      const ex=cx+Math.cos(a)*r,ey=cy+Math.sin(a)*r;
+      const eg=ctx.createRadialGradient(ex,ey,0,ex,ey,9);
+      eg.addColorStop(0,eClr);eg.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.beginPath();ctx.arc(ex,ey,9,0,Math.PI*2);ctx.fillStyle=eg;ctx.fill();
+      ctx.beginPath();ctx.arc(ex,ey,4.5,0,Math.PI*2);ctx.fillStyle=eClr;ctx.fill();
+    }
+  });
+  /* charge badge */
+  if(charge){
+    const bClr=charge==='⁺'?'#fbbf24':'#86efac';
+    ctx.font='bold 22px Segoe UI';ctx.fillStyle=bClr;ctx.textAlign='center';ctx.textBaseline='alphabetic';
+    ctx.fillText(sym+charge,cx,cy-102);
+    ctx.font='14px Segoe UI';ctx.fillStyle='#64748b';
+    ctx.fillText(charge==='⁺'?'cation (+)':'anion (−)',cx,cy-80);
+  }
+}
 
 function transferElectron(){
-  if(s3.phase!==0)return;
-  s3.phase=1;s3.transferring=true;
+  if(s3.phase!==2)return;
+  s3.phase=3;
+  const canvas=document.getElementById('c3'),cy=canvas.height/2-10;
+  s3.eX=s3.naX+Math.cos(s3.naOutA)*88;s3.eY=cy+Math.sin(s3.naOutA)*88;
+  s3.eTx=s3.clX+Math.cos(s3.clOutA+Math.PI)*88;s3.eTy=cy+Math.sin(s3.clOutA+Math.PI)*88;
   document.getElementById('btn-transfer').disabled=true;
-  document.getElementById('eq3').textContent='Na (2,8,1) → Na⁺ + e⁻';
-  document.getElementById('eq3').classList.remove('hidden');
-  document.getElementById('obs3').textContent='Electron leaves Na outermost shell...';
-  document.getElementById('obs3').classList.remove('hidden');
+  document.getElementById('ion-info-box').innerHTML='<strong style="color:#f87171;">⚡ Electron transferring!</strong><br>Na\'s outer electron flies across to Cl...';
 }
 
 function attractIons(){
-  if(s3.phase!==2)return;
-  s3.phase=3;s3.attracting=true;
+  if(s3.phase!==4)return;
+  s3.phase=5;
   document.getElementById('btn-attract').disabled=true;
-  document.getElementById('eq3').textContent='Na⁺ + Cl⁻ → NaCl (ionic compound)';
-  document.getElementById('obs3').textContent='Opposite charges attract — ionic bond forms!';
+  document.getElementById('ion-info-box').innerHTML='<strong style="color:#38bdf8;">🔗 Bond forming!</strong><br>Na⁺ and Cl⁻ rush toward each other — opposite charges attract!';
 }
 
 function resetSim3(){
-  s3={phase:0,electronX:0,electronY:0,electronTarget:{x:0,y:0},transferring:false,attracting:false,naX:220,clX:600,ionFormed:false,bondFormed:false,angle:0,time:0};
-  document.getElementById('btn-transfer').disabled=false;
-  document.getElementById('btn-attract').disabled=true;
+  s3={phase:0,t:0,naX:175,clX:645,innerA:0,midA:0,naOutA:0,clOutA:0,eX:0,eY:0,eTx:0,eTy:0,sparkles:[]};
+  ['btn-closer','btn-transfer','btn-attract'].forEach(id=>{
+    document.getElementById(id).disabled=(id!=='btn-closer');
+  });
+  document.getElementById('ion-info-box').innerHTML='<strong style="color:#fbbf24;">Na</strong> (2,8,1) has <strong>1 outer electron</strong> to give.<br><strong style="color:#86efac;">Cl</strong> (2,8,7) needs <strong>1 more electron</strong>.<br><br>Watch the electrons orbit, then click <em>Move Closer</em>!';
   document.getElementById('eq3').classList.add('hidden');
   document.getElementById('obs3').classList.add('hidden');
-  document.getElementById('ion-info-box').textContent='Na has 1 outer electron (2,8,1). Cl needs 1 more electron (2,8,7). Click the button to transfer the electron.';
 }
 
-function drawAtom(ctx,cx,cy,symbol,shells,color,label,showGap,gapIdx){
-  const radii=[22,40,60,82];
-  /* nucleus */
-  const grad=ctx.createRadialGradient(cx,cy,0,cx,cy,22);
-  grad.addColorStop(0,color);grad.addColorStop(1,'rgba(0,0,0,0.5)');
-  ctx.beginPath();ctx.arc(cx,cy,22,0,Math.PI*2);ctx.fillStyle=grad;ctx.fill();
-  ctx.font='bold 18px Segoe UI';ctx.fillStyle='rgba(0,0,0,0.8)';ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText(symbol,cx,cy);
-
-  /* shells */
-  shells.forEach((count,si)=>{
-    const r=radii[si];
-    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
-    ctx.strokeStyle=`rgba(100,116,139,0.3)`;ctx.lineWidth=1;ctx.stroke();
-    const total=showGap&&si===shells.length-1?count+1:count;
-    for(let i=0;i<total;i++){
-      const skip=showGap&&si===shells.length-1&&i===gapIdx;
-      const angle=(2*Math.PI*i/total)-Math.PI/2;
-      const ex=cx+Math.cos(angle)*r,ey=cy+Math.sin(angle)*r;
-      if(skip){
-        ctx.beginPath();ctx.arc(ex,ey,5,0,Math.PI*2);
-        ctx.strokeStyle=`rgba(${color.match(/\d+/g).join(',')},0.5)`;ctx.lineWidth=1.5;ctx.setLineDash([2,2]);ctx.stroke();ctx.setLineDash([]);
-      } else {
-        ctx.beginPath();ctx.arc(ex,ey,5,0,Math.PI*2);
-        ctx.fillStyle=color;ctx.fill();
-        ctx.strokeStyle='rgba(255,255,255,0.3)';ctx.lineWidth=1;ctx.stroke();
-      }
+function updateSim3(){
+  s3.t++;
+  s3.innerA+=0.07;s3.midA+=0.028;s3.naOutA+=0.022;s3.clOutA+=0.019;
+  const canvas=document.getElementById('c3'),cy=canvas.height/2-10;
+  if(s3.phase===1){
+    if(s3.naX<268){s3.naX+=1.8;s3.clX-=1.8;}
+    else{
+      s3.phase=2;
+      document.getElementById('btn-transfer').disabled=false;
+      document.getElementById('ion-info-box').innerHTML='<strong>Close enough!</strong><br>Na\'s outer electron can jump to Cl now.<br>Click <em>Step 2 — Transfer Electron</em>!';
     }
-  });
-
-  /* label */
-  ctx.font='15px Segoe UI';ctx.fillStyle='#94a3b8';ctx.textAlign='center';ctx.textBaseline='top';
-  ctx.fillText(label,cx,cy+radii[shells.length-1]+8);
+  }
+  if(s3.phase===3){
+    if(s3.eX===0){s3.eX=s3.naX+Math.cos(s3.naOutA)*88;s3.eY=cy+Math.sin(s3.naOutA)*88;}
+    s3.eX+=(s3.eTx-s3.eX)*0.07;s3.eY+=(s3.eTy-s3.eY)*0.07;
+    if(Math.abs(s3.eX-s3.eTx)<5&&Math.abs(s3.eY-s3.eTy)<5){
+      s3.phase=4;
+      document.getElementById('btn-attract').disabled=false;
+      document.getElementById('ion-info-box').innerHTML='<strong style="color:#fbbf24;">Na⁺</strong> lost 1e⁻ → positive cation!<br><strong style="color:#86efac;">Cl⁻</strong> gained 1e⁻ → negative anion!';
+      document.getElementById('obs3').textContent='✅ Ions formed! Opposite charges attract. Click "Step 3 — Form Ionic Bond"!';
+      document.getElementById('obs3').classList.remove('hidden');
+    }
+  }
+  if(s3.phase===5){
+    if(s3.clX-s3.naX>120){s3.naX+=2.5;s3.clX-=2.5;}
+    else{
+      s3.phase=6;
+      const cx2=canvas.width/2;
+      for(let i=0;i<50;i++){
+        const a=Math.random()*Math.PI*2,spd=2+Math.random()*6;
+        const cols=[[251,191,36],[56,189,248],[134,239,172],[248,113,113]];
+        const c=cols[Math.floor(Math.random()*cols.length)];
+        s3.sparkles.push({x:cx2,y:cy,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd,
+          r:c[0],g:c[1],b:c[2],sz:3+Math.random()*5,life:70,maxLife:70});
+      }
+      document.getElementById('eq3').textContent='Na + Cl  →  Na⁺ + Cl⁻  →  NaCl (sodium chloride)';
+      document.getElementById('eq3').classList.remove('hidden');
+      document.getElementById('obs3').textContent='✅ Ionic bond formed! NaCl = table salt. High melting point, conducts when dissolved in water.';
+    }
+  }
+  s3.sparkles=s3.sparkles.filter(sp=>sp.life>0);
+  s3.sparkles.forEach(sp=>{sp.x+=sp.vx;sp.y+=sp.vy;sp.vy+=0.08;sp.life--;});
 }
 
 function drawSim3(){
@@ -750,102 +818,48 @@ function drawSim3(){
   bg.addColorStop(0,'#120a2e');bg.addColorStop(1,'#0a0f1e');
   ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
   ctx.textBaseline='alphabetic';
-
-  const ph=s3.phase,cx=W/2,cy=H/2-20;
-  const naX=s3.naX,clX=s3.clX;
-
-  if(ph<3){
-    /* Na atom */
-    const naShells=ph>=1?[2,8]:[2,8,1];
-    const naLabel=ph>=1?'Na⁺ (2,8)':'Na (2,8,1)';
-    const naColor=ph>=1?'rgba(251,191,36,1)':'rgba(251,191,36,0.8)';
-    drawAtom(ctx,naX,cy,'Na',naShells,naColor,naLabel,false,0);
-    if(ph>=1){
-      ctx.font='bold 22px Segoe UI';ctx.fillStyle='#fbbf24';ctx.textAlign='center';
-      ctx.fillText('Na⁺',naX,cy-90);
-      ctx.font='16px Segoe UI';ctx.fillStyle='#64748b';
-      ctx.fillText('Positive ion (cation)',naX,cy-68);
+  const ph=s3.phase,cy=H/2-10;
+  const A=[s3.innerA,s3.midA,s3.naOutA];
+  const CA=[s3.innerA,s3.midA,s3.clOutA];
+  if(ph<5){
+    const naS=ph>=3?[2,8,0]:[2,8,1];
+    const clS=ph>=4?[2,8,8]:[2,8,7];
+    drawOrbAtom(ctx,s3.naX,cy,'Na','#b45309',naS,A,ph>=4?'⁺':null);
+    drawOrbAtom(ctx,s3.clX,cy,'Cl','#166534',clS,CA,ph>=4?'⁻':null);
+    if(ph===3){
+      const eg=ctx.createRadialGradient(s3.eX,s3.eY,0,s3.eX,s3.eY,12);
+      eg.addColorStop(0,'#f87171');eg.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.beginPath();ctx.arc(s3.eX,s3.eY,12,0,Math.PI*2);ctx.fillStyle=eg;ctx.fill();
+      ctx.beginPath();ctx.arc(s3.eX,s3.eY,5,0,Math.PI*2);ctx.fillStyle='#f87171';ctx.fill();
+      ctx.font='bold 9px Arial';ctx.fillStyle='white';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText('e⁻',s3.eX,s3.eY);ctx.textBaseline='alphabetic';
     }
-
-    /* Cl atom */
-    const clShells=ph>=2?[2,8,8]:[2,8,7];
-    const clLabel=ph>=2?'Cl⁻ (2,8,8)':'Cl (2,8,7)';
-    const clColor=ph>=2?'rgba(134,239,172,1)':'rgba(134,239,172,0.8)';
-    drawAtom(ctx,clX,cy,'Cl',clShells,clColor,clLabel,ph<2,0);
-    if(ph>=2){
-      ctx.font='bold 22px Segoe UI';ctx.fillStyle='#86efac';ctx.textAlign='center';
-      ctx.fillText('Cl⁻',clX,cy-90);
-      ctx.font='16px Segoe UI';ctx.fillStyle='#64748b';
-      ctx.fillText('Negative ion (anion)',clX,cy-68);
+    if(ph===4){
+      ctx.font='28px Arial';ctx.fillStyle='rgba(56,189,248,0.7)';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText('→              ←',(s3.naX+s3.clX)/2,cy+120);ctx.textBaseline='alphabetic';
     }
-
-    /* flying electron */
-    if(ph===1&&s3.transferring){
-      ctx.beginPath();ctx.arc(s3.electronX,s3.electronY,7,0,Math.PI*2);
-      ctx.fillStyle='#fbbf24';ctx.fill();
-      ctx.strokeStyle='rgba(255,255,255,0.5)';ctx.lineWidth=1.5;ctx.stroke();
-      ctx.font='bold 10px Segoe UI';ctx.fillStyle='#0f172a';ctx.textAlign='center';ctx.textBaseline='middle';
-      ctx.fillText('e⁻',s3.electronX,s3.electronY);
-      ctx.textBaseline='alphabetic';
-    }
-
-    /* electric field lines when ions formed */
-    if(ph===2){
-      for(let a=0;a<6;a++){
-        const ang=a*Math.PI/3;
-        ctx.beginPath();ctx.moveTo(naX+70*Math.cos(ang),cy+70*Math.sin(ang));
-        ctx.lineTo(clX-70*Math.cos(ang),cy-70*Math.sin(ang));
-        ctx.strokeStyle='rgba(147,197,253,0.15)';ctx.lineWidth=1.5;ctx.stroke();
-      }
-      ctx.font='18px Segoe UI';ctx.fillStyle='#38bdf8';ctx.textAlign='center';
-      ctx.fillText('← electrostatic attraction →',cx,cy+110);
-      document.getElementById('btn-attract').disabled=false;
-      document.getElementById('obs3').textContent='Na⁺ and Cl⁻ formed! They attract each other. Click "Form Ionic Bond".';
+    if(ph===0){
+      ctx.font='17px Segoe UI';ctx.fillStyle='rgba(100,116,139,0.8)';ctx.textAlign='center';
+      ctx.fillText('← 1 outer electron                              7 outer electrons →',W/2,cy+140);
     }
   }
-
-  /* phase 3: ions coming together */
-  if(ph===3){
-    const progress=Math.min(1,(s3.time-0)/60);
-    const gap=280*(1-progress)+60;
-    const nax=cx-gap/2,clx=cx+gap/2;
-    drawAtom(ctx,nax,cy,'Na',[2,8],'rgba(251,191,36,1)','Na⁺',false,0);
-    drawAtom(ctx,clx,cy,'Cl',[2,8,8],'rgba(134,239,172,1)','Cl⁻',false,0);
-    if(progress>0.9){
-      ctx.font='bold 28px Segoe UI';ctx.fillStyle='#fbbf24';ctx.textAlign='center';
-      ctx.fillText('NaCl formed!',cx,cy-100);
-      ctx.font='20px Segoe UI';ctx.fillStyle='#86efac';
-      ctx.fillText('Ionic bond — electrostatic attraction',cx,cy-72);
-      /* glow */
-      const glow=ctx.createRadialGradient(cx,cy,0,cx,cy,100);
-      glow.addColorStop(0,'rgba(251,191,36,0.15)');
-      glow.addColorStop(1,'rgba(0,0,0,0)');
-      ctx.fillStyle=glow;ctx.fillRect(cx-120,cy-120,240,240);
-      document.getElementById('eq3').textContent='Na + Cl → NaCl (sodium chloride — table salt)';
-      document.getElementById('obs3').textContent='✅ Ionic bond formed! NaCl crystal lattice. High melting point, conducts when dissolved in water.';
+  if(ph>=5){
+    const cx2=W/2;
+    const gap=ph===6?120:Math.max(120,s3.clX-s3.naX);
+    drawOrbAtom(ctx,cx2-gap/2,cy,'Na','#b45309',[2,8,0],A,'⁺');
+    drawOrbAtom(ctx,cx2+gap/2,cy,'Cl','#166534',[2,8,8],CA,'⁻');
+    if(ph===6){
+      ctx.font='bold 32px Segoe UI';ctx.fillStyle='#fbbf24';ctx.textAlign='center';
+      ctx.fillText('🎉 NaCl Ionic Bond Formed!',cx2,cy-130);
+      s3.sparkles.forEach(sp=>{
+        const a=sp.life/sp.maxLife;
+        const sg=ctx.createRadialGradient(sp.x,sp.y,0,sp.x,sp.y,sp.sz+3);
+        sg.addColorStop(0,`rgba(${sp.r},${sp.g},${sp.b},${a})`);sg.addColorStop(1,'rgba(0,0,0,0)');
+        ctx.beginPath();ctx.arc(sp.x,sp.y,sp.sz,0,Math.PI*2);ctx.fillStyle=sg;ctx.fill();
+      });
     }
   }
   ctx.textAlign='left';ctx.textBaseline='alphabetic';
-}
-
-function updateSim3(){
-  const canvas=document.getElementById('c3');
-  const naX=s3.naX,cy=canvas.height/2-20;
-  const clX=s3.clX;
-  /* electron start pos: outermost orbit of Na (r≈82, angle=-90°) */
-  if(s3.phase===1&&s3.transferring){
-    if(s3.electronX===0){s3.electronX=naX;s3.electronY=cy-82;}
-    const tx=clX,ty=cy-82;
-    s3.electronX+=(tx-s3.electronX)*0.05;
-    s3.electronY+=(ty-s3.electronY)*0.05;
-    if(Math.abs(s3.electronX-tx)<5){
-      s3.phase=2;s3.transferring=false;
-      document.getElementById('obs3').textContent='Electron reached Cl! Na⁺ and Cl⁻ formed.';
-    }
-  }
-  if(s3.phase===3){
-    s3.time++;
-  }
 }
 
 /* ══════════════════════════════════════════════
