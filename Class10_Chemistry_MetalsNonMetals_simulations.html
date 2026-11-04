@@ -522,6 +522,13 @@ function drawSim1(){
     ctx.fillStyle='rgba(100,116,139,0.5)';ctx.font='20px Segoe UI';ctx.textAlign='center';
     ctx.fillText('← Select a metal from the panel',W/2,H/2);
   }
+  /* No Reaction text for unreactive metals */
+  if(s1.done&&s1.metal&&s1.metal.speed===0){
+    ctx.font='bold 28px Segoe UI';ctx.fillStyle='#f87171';ctx.textAlign='center';
+    ctx.fillText('⚠️ No Reaction!',W/2,H/2-40);
+    ctx.font='17px Segoe UI';ctx.fillStyle='rgba(248,113,113,0.7)';
+    ctx.fillText(s1.metal.name+' does not react with dilute HCl',W/2,H/2+2);
+  }
 
   ctx.textAlign='left';
 }
@@ -702,7 +709,7 @@ function drawSim2(){
 /* ══════════════════════════════════════════════
    SIM 3 — IONIC BOND (orbiting electrons)
 ══════════════════════════════════════════════ */
-let s3={phase:0,t:0,naX:175,clX:645,innerA:0,midA:0,naOutA:0,clOutA:0,eX:0,eY:0,eTx:0,eTy:0,sparkles:[]};
+let s3={phase:0,t:0,naX:175,clX:645,innerA:0,midA:0,naOutA:0,clOutA:0,eX:0,eY:0,eTx:0,eTy:0,sparkles:[],naclAngle:0};
 
 function sim3MoveCloser(){
   if(s3.phase!==0)return;
@@ -781,7 +788,7 @@ function attractIons(){
 }
 
 function resetSim3(){
-  s3={phase:0,t:0,naX:175,clX:645,innerA:0,midA:0,naOutA:0,clOutA:0,eX:0,eY:0,eTx:0,eTy:0,sparkles:[]};
+  s3={phase:0,t:0,naX:175,clX:645,innerA:0,midA:0,naOutA:0,clOutA:0,eX:0,eY:0,eTx:0,eTy:0,sparkles:[],naclAngle:0};
   ['btn-closer','btn-transfer','btn-attract'].forEach(id=>{
     document.getElementById(id).disabled=(id!=='btn-closer');
   });
@@ -792,7 +799,8 @@ function resetSim3(){
 
 function updateSim3(){
   s3.t++;
-  s3.innerA+=0.07;s3.midA+=0.028;s3.naOutA+=0.022;s3.clOutA+=0.019;
+  s3.innerA+=0.016;s3.midA+=0.011;s3.naOutA+=0.008;s3.clOutA+=0.007;
+  if(s3.phase===6) s3.naclAngle+=0.008;
   const canvas=document.getElementById('c3'),cy=canvas.height/2-10;
   if(s3.phase===1){
     if(s3.naX<268){s3.naX+=1.8;s3.clX-=1.8;}
@@ -870,8 +878,13 @@ function drawSim3(){
   if(ph>=5){
     const cx2=W/2;
     const gap=ph===6?120:Math.max(120,s3.clX-s3.naX);
-    drawOrbAtom(ctx,cx2-gap/2,cy,'Na','#b45309',[2,8,0],A,'⁺');
-    drawOrbAtom(ctx,cx2+gap/2,cy,'Cl','#166534',[2,8,8],CA,'⁻');
+    const halfGap=gap/2;
+    const naX2=ph===6?cx2+Math.cos(s3.naclAngle+Math.PI)*halfGap:cx2-halfGap;
+    const naY2=ph===6?cy+Math.sin(s3.naclAngle+Math.PI)*halfGap*0.4:cy;
+    const clX2=ph===6?cx2+Math.cos(s3.naclAngle)*halfGap:cx2+halfGap;
+    const clY2=ph===6?cy+Math.sin(s3.naclAngle)*halfGap*0.4:cy;
+    drawOrbAtom(ctx,naX2,naY2,'Na','#b45309',[2,8,0],A,'⁺');
+    drawOrbAtom(ctx,clX2,clY2,'Cl','#166534',[2,8,8],CA,'⁻');
     if(ph===6){
       ctx.font='bold 32px Segoe UI';ctx.fillStyle='#fbbf24';ctx.textAlign='center';
       ctx.fillText('🎉 NaCl Ionic Bond Formed!',cx2,cy-130);
@@ -1119,9 +1132,9 @@ function drawSim5(){
   ctx.fillStyle='#334155';ctx.fillRect(0,H-62,W,3);
 
   const tubes=[
-    {x:W*0.2,label:'Tube A',sublabel:'Dry air (no moisture)',col:'#38bdf8',waterH:0,sealed:'dry',rustF:0},
-    {x:W*0.5,label:'Tube B',sublabel:'Boiled water (no O₂)',col:'#86efac',waterH:120,sealed:'water',rustF:0},
-    {x:W*0.8,label:'Tube C',sublabel:'Water + Air (both!)',col:'#f87171',waterH:80,sealed:'open',rustF:Math.min(1,s5.days/8)},
+    {x:W*0.2,label:'Tube A',sublabel:'Dry air (no moisture)',col:'#38bdf8',rgb:'56,189,248',waterH:0,sealed:'dry',rustF:0},
+    {x:W*0.5,label:'Tube B',sublabel:'Boiled water (no O₂)',col:'#86efac',rgb:'134,239,172',waterH:120,sealed:'water',rustF:0},
+    {x:W*0.8,label:'Tube C',sublabel:'Water + Air (both!)',col:'#f87171',rgb:'248,113,113',waterH:80,sealed:'open',rustF:Math.min(1,s5.days/8)},
   ];
 
   tubes.forEach(t=>{
@@ -1136,7 +1149,7 @@ function drawSim5(){
     ctx.quadraticCurveTo(tx-TW/2,ty+TH,tx,ty+TH+10);
     ctx.quadraticCurveTo(tx+TW/2,ty+TH,tx+TW/2,ty+TH-24);
     ctx.lineTo(tx+TW/2,ty);
-    ctx.strokeStyle=`rgba(${t.col.match(/\d+/g)||'100,180,255'},0.5)`;ctx.lineWidth=3;ctx.stroke();
+    ctx.strokeStyle=`rgba(${t.rgb},0.5)`;ctx.lineWidth=3;ctx.stroke();
     ctx.shadowBlur=0;
 
     /* highlight */
@@ -1196,6 +1209,10 @@ function drawSim5(){
   /* day counter */
   ctx.font='bold 24px Segoe UI';ctx.fillStyle='#fbbf24';ctx.textAlign='center';
   ctx.fillText('Day '+s5.days,W/2,40);
+  if(s5.days===0){
+    ctx.fillStyle='rgba(100,116,139,0.6)';ctx.font='16px Segoe UI';
+    ctx.fillText('Use the slider below to advance time and observe rusting',W/2,H/2+30);
+  }
   ctx.textAlign='left';
 }
 
