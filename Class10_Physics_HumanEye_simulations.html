@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Class 10 Physics – Human Eye | Lab Simulations</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0a0f1e;color:#e2e8f0;font-family:'Segoe UI',Arial,sans-serif;overflow:hidden;width:100vw;height:100vh;user-select:none;}
+.scene{display:none;width:100vw;height:100vh;flex-direction:column;}
+.scene.active{display:flex;}
+#home{align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 30%,#0f2044,#0a0f1e);}
+.home-title{font-size:44px;color:#38bdf8;font-weight:bold;text-align:center;margin-bottom:6px;}
+.home-sub{font-size:19px;color:#64748b;margin-bottom:34px;text-align:center;}
+.exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:960px;}
+.exp-card{background:rgba(30,41,59,0.8);border:2px solid #1e293b;border-radius:14px;padding:22px 16px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.exp-card:hover{transform:translateY(-5px);border-color:#38bdf8;background:rgba(14,42,71,0.9);}
+.exp-icon{font-size:46px;margin-bottom:10px;}
+.exp-title{font-size:17px;color:#38bdf8;font-weight:bold;margin-bottom:5px;}
+.exp-desc{font-size:13px;color:#64748b;line-height:1.4;}
+.sim-wrap{display:flex;flex:1;overflow:hidden;}
+.sim-canvas-area{flex:1;position:relative;display:flex;align-items:center;justify-content:center;background:#070c17;}
+.sim-canvas-area canvas{display:block;}
+.sim-panel{width:340px;background:#0d1527;border-left:1px solid #1e293b;display:flex;flex-direction:column;padding:18px;overflow-y:auto;}
+.sim-header{background:#0d1527;border-bottom:1px solid #1e293b;padding:11px 20px;display:flex;align-items:center;gap:14px;}
+.back-btn{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:7px 14px;font-size:16px;border-radius:7px;cursor:pointer;}
+.back-btn:hover{color:#e2e8f0;background:#334155;}
+.sim-name{font-size:21px;color:#38bdf8;font-weight:bold;}
+.sim-chapter{font-size:13px;color:#475569;margin-left:auto;}
+.panel-title{font-size:17px;color:#fbbf24;font-weight:bold;margin-bottom:8px;margin-top:14px;}
+.panel-title:first-child{margin-top:0;}
+.slider-wrap{margin:8px 0;}
+.slider-wrap label{font-size:14px;color:#94a3b8;display:block;margin-bottom:3px;}
+input[type=range]{width:100%;height:6px;border-radius:3px;background:#1e293b;outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{width:18px;height:18px;border-radius:50%;background:#38bdf8;cursor:pointer;-webkit-appearance:none;}
+.eq-box{background:#1e293b;border-radius:8px;padding:11px 13px;margin:7px 0;font-family:'Courier New',monospace;font-size:14px;color:#fbbf24;border-left:3px solid #fbbf24;line-height:1.6;}
+.obs-box{background:#071a10;border-radius:8px;padding:11px 13px;margin:7px 0;font-size:14px;color:#86efac;border-left:3px solid #10b981;line-height:1.6;}
+.info-box{background:#1e3a5f;border-radius:8px;padding:11px 13px;margin:7px 0;font-size:13px;color:#93c5fd;line-height:1.6;}
+.warn-box{background:#1a1000;border-radius:8px;padding:11px 13px;margin:7px 0;font-size:13px;color:#fbbf24;border-left:3px solid #f59e0b;line-height:1.6;}
+.toggle-row{display:flex;gap:8px;margin:8px 0;}
+.tog-btn{flex:1;padding:9px 6px;border-radius:8px;border:2px solid #1e293b;font-size:13px;font-weight:bold;cursor:pointer;background:#1e293b;color:#64748b;transition:all 0.15s;}
+.tog-btn.active{border-color:#38bdf8;color:#38bdf8;background:rgba(56,189,248,0.1);}
+.fs-btn{position:fixed;top:10px;right:10px;background:rgba(30,41,59,0.85);border:1px solid #334155;color:#64748b;padding:7px 12px;font-size:14px;border-radius:7px;cursor:pointer;z-index:999;}
+.fs-btn:hover{color:#e2e8f0;}
+.hdr-nav-btn{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:6px 13px;font-size:13px;border-radius:7px;cursor:pointer;text-decoration:none;white-space:nowrap;}
+.hdr-nav-btn:hover{color:#e2e8f0;background:#334155;}
+select.input-sel{background:#1e293b;border:1px solid #334155;color:#e2e8f0;padding:8px 10px;border-radius:8px;font-size:14px;width:100%;margin:6px 0;}
+</style>
+</head>
+<body>
+<button class="fs-btn" onclick="document.documentElement.requestFullscreen()">⛶</button>
+
+<!-- HOME -->
+<div class="scene active" id="home">
+  <div class="home-title">👁️ Human Eye &amp; Colourful World</div>
+  <div class="home-sub">Class 10 Physics · Chapter 10 · Interactive Lab Simulations</div>
+  <div class="exp-grid">
+    <div class="exp-card" onclick="goSim('sim1')">
+      <div class="exp-icon">👁️</div>
+      <div class="exp-title">Eye Anatomy</div>
+      <div class="exp-desc">Parts of the human eye and how light forms an image on the retina</div>
+    </div>
+    <div class="exp-card" onclick="goSim('sim2')">
+      <div class="exp-icon">🔭</div>
+      <div class="exp-title">Accommodation</div>
+      <div class="exp-desc">How ciliary muscles change lens curvature to focus near and far objects</div>
+    </div>
+    <div class="exp-card" onclick="goSim('sim3')">
+      <div class="exp-icon">🩺</div>
+      <div class="exp-title">Vision Defects</div>
+      <div class="exp-desc">Myopia, hypermetropia — ray diagrams and correction with lenses</div>
+    </div>
+    <div class="exp-card" onclick="goSim('sim4')">
+      <div class="exp-icon">🌅</div>
+      <div class="exp-title">Atmospheric Refraction</div>
+      <div class="exp-desc">Twinkling stars, advance sunrise, and apparent shift of celestial objects</div>
+    </div>
+    <div class="exp-card" onclick="goSim('sim5')">
+      <div class="exp-icon">🌈</div>
+      <div class="exp-title">Dispersion &amp; Rainbow</div>
+      <div class="exp-desc">Prism dispersion, VIBGYOR spectrum, and rainbow formation</div>
+    </div>
+    <div class="exp-card" onclick="goSim('sim6')">
+      <div class="exp-icon">💙</div>
+      <div class="exp-title">Scattering of Light</div>
+      <div class="exp-desc">Tyndall effect, blue sky, red sunset — why different colours scatter differently</div>
+    </div>
+  </div>
+  <div style="margin-top:28px;display:flex;gap:14px;">
+    <a class="hdr-nav-btn" href="Class10_Physics_HumanEye_slides.html" target="_blank">📊 Slides</a>
+    <a class="hdr-nav-btn" href="Class10_Physics_HumanEye_interactive.html" target="_blank">🖱 Interactive</a>
+    <a class="hdr-nav-btn" href="index.html">🏠 Dashboard</a>
+  </div>
+</div>
+
+<!-- SIM 1: EYE ANATOMY -->
+<div class="scene" id="sim1">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="sim-name">👁️ Eye Anatomy</div>
+    <div class="sim-chapter">Class 10 · Ch 10</div>
+    <a class="hdr-nav-btn" href="index.html">🏠</a>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c1" width="700" height="480"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">Click a Part to Learn</div>
+      <div class="obs-box" id="s1-part">👆 Click on any part of the eye diagram to see its function.</div>
+      <div class="panel-title">Light Path</div>
+      <div class="info-box">
+        Object → <strong>Cornea</strong> (main refraction) → <strong>Aqueous Humour</strong> → <strong>Iris/Pupil</strong> (aperture) → <strong>Lens</strong> (fine focus) → <strong>Vitreous Humour</strong> → <strong>Retina</strong> (image formed, inverted) → <strong>Optic Nerve</strong> → Brain
+      </div>
+      <div class="panel-title">Key Facts</div>
+      <div class="eq-box">Near point = 25 cm<br>Far point = ∞ (normal)<br>f varies: ~2.3 – 2.0 cm</div>
+      <div class="info-box">The image on the retina is <strong>real and inverted</strong>. The brain corrects this so we perceive the world upright.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SIM 2: ACCOMMODATION -->
+<div class="scene" id="sim2">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="sim-name">🔭 Accommodation</div>
+    <div class="sim-chapter">Class 10 · Ch 10</div>
+    <a class="hdr-nav-btn" href="index.html">🏠</a>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c2" width="700" height="480"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">Object Distance</div>
+      <div class="slider-wrap">
+        <label>Distance: <strong id="s2-dist-val">100</strong> cm</label>
+        <input type="range" id="s2-dist" min="25" max="500" value="100" oninput="updateSim2()">
+      </div>
+      <div class="panel-title">Lens State</div>
+      <div class="obs-box" id="s2-state">—</div>
+      <div class="eq-box">Accommodation range:<br>25 cm (near) → ∞ (far)</div>
+      <div class="info-box">
+        <strong>Near object:</strong> Ciliary muscles contract → lens thickens → shorter focal length → more converging power.<br><br>
+        <strong>Far object:</strong> Ciliary muscles relax → lens flattens → longer focal length → less converging power.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SIM 3: VISION DEFECTS -->
+<div class="scene" id="sim3">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="sim-name">🩺 Vision Defects &amp; Correction</div>
+    <div class="sim-chapter">Class 10 · Ch 10</div>
+    <a class="hdr-nav-btn" href="index.html">🏠</a>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c3" width="700" height="480"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">Defect</div>
+      <div class="toggle-row">
+        <button class="tog-btn active" id="d3-myopia" onclick="setDefect('myopia')">Myopia</button>
+        <button class="tog-btn" id="d3-hyper" onclick="setDefect('hyper')">Hypermetropia</button>
+      </div>
+      <div class="panel-title">Correction Lens</div>
+      <div class="toggle-row">
+        <button class="tog-btn active" id="d3-none" onclick="setCorrection('none')">No lens</button>
+        <button class="tog-btn" id="d3-corrected" onclick="setCorrection('corrected')">With lens</button>
+      </div>
+      <div class="panel-title">Details</div>
+      <div class="obs-box" id="s3-detail">—</div>
+      <div class="info-box" id="s3-info">—</div>
+    </div>
+  </div>
+</div>
+
+<!-- SIM 4: ATMOSPHERIC REFRACTION -->
+<div class="scene" id="sim4">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="sim-name">🌅 Atmospheric Refraction</div>
+    <div class="sim-chapter">Class 10 · Ch 10</div>
+    <a class="hdr-nav-btn" href="index.html">🏠</a>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c4" width="700" height="480"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">Phenomenon</div>
+      <select class="input-sel" id="s4-phenom" onchange="updateSim4()">
+        <option value="sunrise">Advance Sunrise / Delayed Sunset</option>
+        <option value="star">Twinkling of Stars</option>
+        <option value="flat">Sun appears oval at horizon</option>
+      </select>
+      <div class="panel-title">Explanation</div>
+      <div class="obs-box" id="s4-explain">—</div>
+      <div class="info-box" id="s4-info">—</div>
+      <div class="eq-box">Advance sunrise: ~2 min early<br>Delayed sunset: ~2 min late<br>Total extra daylight: ~4 min</div>
+    </div>
+  </div>
+</div>
+
+<!-- SIM 5: DISPERSION & RAINBOW -->
+<div class="scene" id="sim5">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="sim-name">🌈 Dispersion &amp; Rainbow</div>
+    <div class="sim-chapter">Class 10 · Ch 10</div>
+    <a class="hdr-nav-btn" href="index.html">🏠</a>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c5" width="700" height="480"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">View</div>
+      <div class="toggle-row">
+        <button class="tog-btn active" id="d5-prism" onclick="setSim5('prism')">Prism</button>
+        <button class="tog-btn" id="d5-rainbow" onclick="setSim5('rainbow')">Rainbow</button>
+      </div>
+      <div class="panel-title">Incident Angle (prism)</div>
+      <div class="slider-wrap">
+        <label>Angle: <strong id="s5-angle-val">45°</strong></label>
+        <input type="range" id="s5-angle" min="30" max="70" value="45" oninput="updateSim5()">
+      </div>
+      <div class="panel-title">Spectrum</div>
+      <div class="obs-box">VIBGYOR (Violet bends most, Red least)<br>Violet: ~400 nm &nbsp;|&nbsp; Red: ~700 nm</div>
+      <div class="info-box" id="s5-info">—</div>
+    </div>
+  </div>
+</div>
+
+<!-- SIM 6: SCATTERING -->
+<div class="scene" id="sim6">
+  <div class="sim-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="sim-name">💙 Scattering of Light</div>
+    <div class="sim-chapter">Class 10 · Ch 10</div>
+    <a class="hdr-nav-btn" href="index.html">🏠</a>
+  </div>
+  <div class="sim-wrap">
+    <div class="sim-canvas-area"><canvas id="c6" width="700" height="480"></canvas></div>
+    <div class="sim-panel">
+      <div class="panel-title">Scenario</div>
+      <select class="input-sel" id="s6-scene" onchange="updateSim6()">
+        <option value="sky">Blue Sky (daytime)</option>
+        <option value="sunset">Red Sunset / Sunrise</option>
+        <option value="tyndall">Tyndall Effect (colloidal beam)</option>
+      </select>
+      <div class="panel-title">Explanation</div>
+      <div class="obs-box" id="s6-explain">—</div>
+      <div class="eq-box" id="s6-formula">Rayleigh scattering:<br>I ∝ 1/λ⁴</div>
+      <div class="info-box" id="s6-info">—</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══ NAVIGATION ══ */
+let sim3Defect = 'myopia', sim3Correction = 'none', sim5View = 'prism';
+
+function goSim(id) {
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const draws = { sim1: drawSim1, sim2: updateSim2, sim3: updateSim3,
+                  sim4: updateSim4, sim5: updateSim5, sim6: updateSim6 };
+  if (draws[id]) draws[id]();
+}
+function goHome() {
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+  document.getElementById('home').classList.add('active');
+}
+
+/* ══ HELPERS ══ */
+function cls(canvas) {
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#070c17';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  return ctx;
+}
+function label(ctx, txt, x, y, col='#94a3b8', sz=13, align='center') {
+  ctx.save(); ctx.fillStyle = col; ctx.font = `bold ${sz}px Segoe UI`; ctx.textAlign = align;
+  ctx.fillText(txt, x, y); ctx.restore();
+}
+function arrow(ctx, x1, y1, x2, y2, col, lw=1.8, dash=false) {
+  ctx.save(); ctx.strokeStyle = col; ctx.lineWidth = lw;
+  if (dash) ctx.setLineDash([6,4]);
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+  ctx.setLineDash([]);
+  const a = Math.atan2(y2-y1,x2-x1);
+  ctx.fillStyle = col;
+  ctx.beginPath(); ctx.moveTo(x2,y2);
+  ctx.lineTo(x2-10*Math.cos(a-0.4),y2-10*Math.sin(a-0.4));
+  ctx.lineTo(x2-10*Math.cos(a+0.4),y2-10*Math.sin(a+0.4));
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+
+/* ══ SIM 1: EYE ANATOMY ══ */
+const eyeParts = [
+  { name: 'Cornea', x: 390, y: 240, r: 18, col: '#38bdf8',
+    info: 'Cornea: Transparent outer layer. Responsible for ~70% of the eye\'s refracting power. Light enters and bends here first.' },
+  { name: 'Iris', x: 365, y: 220, r: 10, col: '#a78bfa',
+    info: 'Iris: Coloured muscular diaphragm. Controls the size of the pupil to regulate the amount of light entering the eye.' },
+  { name: 'Pupil', x: 365, y: 240, r: 8, col: '#000',
+    info: 'Pupil: Circular opening in the iris. Dilates in dim light and constricts in bright light. Acts as the aperture.' },
+  { name: 'Lens', x: 340, y: 240, r: 15, col: '#fbbf24',
+    info: 'Crystalline Lens: Flexible biconvex lens. Ciliary muscles change its shape to adjust focal length (accommodation). Refracts ~30% of total refraction.' },
+  { name: 'Retina', x: 230, y: 240, r: 20, col: '#34d399',
+    info: 'Retina: Light-sensitive inner layer. Contains rods (low-light, B&W) and cones (colour vision). Image forms here — real and inverted.' },
+  { name: 'Optic Nerve', x: 200, y: 270, r: 10, col: '#f87171',
+    info: 'Optic Nerve: Transmits electrical signals from retina to the brain. The blind spot (optic disc) has no rods/cones.' },
+  { name: 'Ciliary Muscles', x: 320, y: 210, r: 10, col: '#fb923c',
+    info: 'Ciliary Muscles: Contract (near objects) to thicken lens, relax (far objects) to flatten lens. Enable accommodation.' },
+];
+
+function drawSim1() {
+  const canvas = document.getElementById('c1');
+  const ctx = cls(canvas);
+  const cx = 350, cy = 240, Rx = 160, Ry = 120;
+
+  // Eye outline (ellipse)
+  ctx.save();
+  ctx.strokeStyle = '#334155';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, Rx, Ry, 0, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(10,20,40,0.6)';
+  ctx.fill(); ctx.stroke();
+  ctx.restore();
+
+  // Vitreous chamber fill
+  ctx.fillStyle = 'rgba(14,42,71,0.3)';
+  ctx.beginPath();
+  ctx.ellipse(cx-20, cy, 130, 100, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  // Retina arc (back inner wall)
+  ctx.save();
+  ctx.strokeStyle = '#34d399';
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.arc(cx+30, cy, 150, Math.PI*0.75, Math.PI*1.25);
+  ctx.stroke();
+  ctx.restore();
+
+  // Cornea arc (front)
+  ctx.save();
+  ctx.strokeStyle = '#38bdf8';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.arc(cx+90, cy, 70, Math.PI*0.72, Math.PI*1.28);
+  ctx.stroke();
+  ctx.restore();
+
+  // Lens (yellow ellipse)
+  ctx.save();
+  ctx.fillStyle = 'rgba(251,191,36,0.3)';
+  ctx.strokeStyle = '#fbbf24';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.ellipse(340, cy, 18, 40, 0, 0, Math.PI*2);
+  ctx.fill(); ctx.stroke();
+  ctx.restore();
+
+  // Iris/pupil
+  ctx.save();
+  ctx.fillStyle = 'rgba(99,102,241,0.4)';
+  ctx.strokeStyle = '#a78bfa';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.ellipse(365, cy, 8, 30, 0, 0, Math.PI*2);
+  ctx.fill(); ctx.stroke();
+  // Pupil (dark centre)
+  ctx.fillStyle = '#050a14';
+  ctx.beginPath();
+  ctx.ellipse(365, cy, 4, 14, 0, 0, Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+
+  // Optic nerve
+  ctx.save();
+  ctx.strokeStyle = '#f87171';
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.moveTo(195, cy+20); ctx.lineTo(130, cy+40);
+  ctx.stroke();
+  ctx.restore();
+
+  // Ciliary muscle hints
+  ctx.save();
+  ctx.strokeStyle = '#fb923c';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([4,3]);
+  ctx.beginPath();
+  ctx.moveTo(340, cy-45); ctx.lineTo(360, cy-32);
+  ctx.moveTo(340, cy+45); ctx.lineTo(360, cy+32);
+  ctx.stroke(); ctx.setLineDash([]);
+  ctx.restore();
+
+  // Light ray entering
+  arrow(ctx, 580, cy-20, 395, cy-10, '#fbbf24', 2);
+  arrow(ctx, 580, cy,    395, cy,    '#fbbf24', 2);
+  arrow(ctx, 580, cy+20, 395, cy+10, '#fbbf24', 2);
+  label(ctx, 'Object', 590, cy-28, '#fbbf24', 12, 'left');
+
+  // Converged rays to retina
+  arrow(ctx, 340, cy-10, 215, cy+5, '#fbbf24', 1.5, true);
+  arrow(ctx, 340, cy+10, 215, cy-5, '#fbbf24', 1.5, true);
+  label(ctx, 'Image\n(inverted)', 200, cy-30, '#34d399', 11);
+
+  // Part labels
+  label(ctx, 'Cornea', 420, cy-80, '#38bdf8', 12);
+  ctx.save(); ctx.strokeStyle='#38bdf8'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+  ctx.beginPath(); ctx.moveTo(415, cy-74); ctx.lineTo(395, cy-15); ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+
+  label(ctx, 'Lens', 320, cy-65, '#fbbf24', 12);
+  ctx.save(); ctx.strokeStyle='#fbbf24'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+  ctx.beginPath(); ctx.moveTo(330, cy-59); ctx.lineTo(340, cy-40); ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+
+  label(ctx, 'Retina', 165, cy-80, '#34d399', 12);
+  ctx.save(); ctx.strokeStyle='#34d399'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+  ctx.beginPath(); ctx.moveTo(185, cy-73); ctx.lineTo(205, cy-20); ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+
+  label(ctx, 'Iris', 365, cy+65, '#a78bfa', 12);
+  label(ctx, 'Optic Nerve', 160, cy+80, '#f87171', 12);
+  label(ctx, 'Ciliary M.', 290, cy-68, '#fb923c', 11);
+
+  label(ctx, 'Click panel labels for details', cx, 460, '#475569', 12);
+
+  // Interactive hotspots — draw circles
+  eyeParts.forEach(p => {
+    ctx.save();
+    ctx.strokeStyle = p.col;
+    ctx.lineWidth = 1.5;
+    ctx.globalAlpha = 0.4;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    ctx.stroke();
+    ctx.restore();
+  });
+}
+
+document.getElementById('c1').addEventListener('click', e => {
+  const rect = e.target.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  for (const p of eyeParts) {
+    if ((mx-p.x)**2 + (my-p.y)**2 < (p.r+10)**2) {
+      document.getElementById('s1-part').innerHTML = `<strong style="color:${p.col}">${p.name}</strong><br>${p.info}`;
+      return;
+    }
+  }
+});
+
+drawSim1();
+
+/* ══ SIM 2: ACCOMMODATION ══ */
+function updateSim2() {
+  const dist = +document.getElementById('s2-dist').value;
+  document.getElementById('s2-dist-val').textContent = dist >= 500 ? '∞' : dist;
+
+  const canvas = document.getElementById('c2');
+  const ctx = cls(canvas);
+  const W = canvas.width, H = canvas.height;
+
+  // Near/far ratio for lens thickness
+  const tNear = 36, tFar = 20; // lens semi-height
+  const frac = Math.max(0, Math.min(1, (dist - 25) / (500 - 25)));
+  const lensThick = tNear + (tFar - tNear) * frac;
+  const power_label = dist <= 25 ? 'Maximum' : dist >= 500 ? 'Minimum' : 'Intermediate';
+
+  // Eye outline
+  const ex = 400, ey = H/2, eRx = 150, eRy = 110;
+  ctx.save();
+  ctx.strokeStyle = '#334155'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.ellipse(ex, ey, eRx, eRy, 0, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(10,20,40,0.5)'; ctx.fill(); ctx.stroke();
+  ctx.restore();
+
+  // Retina
+  ctx.save(); ctx.strokeStyle = '#34d399'; ctx.lineWidth = 5;
+  ctx.beginPath(); ctx.arc(ex+30, ey, 140, Math.PI*0.78, Math.PI*1.22); ctx.stroke();
+  ctx.restore();
+
+  // Cornea
+  ctx.save(); ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.arc(ex+95, ey, 65, Math.PI*0.75, Math.PI*1.25); ctx.stroke();
+  ctx.restore();
+
+  // Lens — shape changes with distance
+  const lx = ex+10;
+  ctx.save();
+  ctx.fillStyle = 'rgba(251,191,36,0.25)'; ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 2.5;
+  const lw = lensThick * 0.55;
+  ctx.beginPath();
+  ctx.moveTo(lx, ey - lensThick);
+  ctx.bezierCurveTo(lx+lw, ey-lensThick/2, lx+lw, ey+lensThick/2, lx, ey+lensThick);
+  ctx.bezierCurveTo(lx-lw, ey+lensThick/2, lx-lw, ey-lensThick/2, lx, ey-lensThick);
+  ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.restore();
+
+  // Object
+  const objX = dist >= 500 ? 30 : Math.max(30, ex + eRx + 20 - dist * 0.6);
+  ctx.save();
+  ctx.strokeStyle = '#e2e8f0'; ctx.fillStyle = '#e2e8f0'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(objX, ey); ctx.lineTo(objX, ey-45); ctx.stroke();
+  // arrowhead
+  ctx.beginPath(); ctx.moveTo(objX,ey-45); ctx.lineTo(objX-7,ey-30); ctx.lineTo(objX+7,ey-30); ctx.closePath(); ctx.fill();
+  label(ctx, 'Object', objX, ey+18, '#94a3b8', 12);
+  ctx.restore();
+
+  // Rays converging to retina
+  const retX = ex - 110, retY = ey;
+  const topHit = { x: ex+90, y: ey-40 };
+  const botHit = { x: ex+90, y: ey+40 };
+  arrow(ctx, objX, ey-45, topHit.x, topHit.y, '#38bdf8', 1.5);
+  arrow(ctx, objX, ey-45, botHit.x, botHit.y, '#38bdf8', 1.5);
+  arrow(ctx, topHit.x, topHit.y, retX+10, retY+8, '#38bdf8', 1.5, true);
+  arrow(ctx, botHit.x, botHit.y, retX+10, retY-8, '#38bdf8', 1.5, true);
+
+  label(ctx, 'Retina', retX-10, ey-80, '#34d399', 12);
+  label(ctx, `Ciliary muscles: ${frac < 0.3 ? 'Contracted' : frac > 0.7 ? 'Relaxed' : 'Partially relaxed'}`, ex, 440, '#fb923c', 13);
+  label(ctx, `Lens: ${frac < 0.3 ? 'Thick (short f)' : frac > 0.7 ? 'Thin (long f)' : 'Intermediate'}`, ex, 460, '#fbbf24', 13);
+
+  document.getElementById('s2-state').innerHTML =
+    `Ciliary muscles: <strong>${frac < 0.3 ? 'Contracted' : frac > 0.7 ? 'Relaxed' : 'Partial'}</strong><br>` +
+    `Lens shape: <strong>${frac < 0.3 ? 'Thick' : frac > 0.7 ? 'Thin' : 'Medium'}</strong><br>` +
+    `Converging power: <strong>${power_label}</strong>`;
+}
+
+/* ══ SIM 3: VISION DEFECTS ══ */
+function setDefect(d) {
+  sim3Defect = d;
+  document.getElementById('d3-myopia').classList.toggle('active', d==='myopia');
+  document.getElementById('d3-hyper').classList.toggle('active', d==='hyper');
+  updateSim3();
+}
+function setCorrection(c) {
+  sim3Correction = c;
+  document.getElementById('d3-none').classList.toggle('active', c==='none');
+  document.getElementById('d3-corrected').classList.toggle('active', c==='corrected');
+  updateSim3();
+}
+
+function updateSim3() {
+  const canvas = document.getElementById('c3');
+  const ctx = cls(canvas);
+  const W = canvas.width, H = canvas.height;
+  const isMyopia = sim3Defect === 'myopia';
+  const corrected = sim3Correction === 'corrected';
+
+  // Eye
+  const ex = 460, ey = H/2, eRx = 120, eRy = 90;
+  ctx.save(); ctx.strokeStyle = '#334155'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.ellipse(ex, ey, eRx, eRy, 0, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(10,20,40,0.5)'; ctx.fill(); ctx.stroke();
+  ctx.restore();
+
+  // Retina position: in myopia the eyeball is elongated (retina further back)
+  const retOffset = isMyopia ? -85 : -100; // from centre
+  const retX = ex + retOffset;
+
+  ctx.save(); ctx.strokeStyle = '#34d399'; ctx.lineWidth = 5;
+  ctx.beginPath(); ctx.arc(ex+20, ey, eRx-10, Math.PI*0.78, Math.PI*1.22); ctx.stroke();
+  ctx.restore();
+
+  // Cornea + lens
+  ctx.save(); ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.arc(ex+75, ey, 55, Math.PI*0.75, Math.PI*1.25); ctx.stroke();
+  ctx.restore();
+
+  // Correction lens
+  const lensX = ex + 110;
+  if (corrected) {
+    if (isMyopia) {
+      // Concave lens
+      ctx.save(); ctx.strokeStyle = '#a78bfa'; ctx.lineWidth = 2.5;
+      ctx.fillStyle = 'rgba(167,139,250,0.1)';
+      ctx.beginPath();
+      ctx.moveTo(lensX, ey-55);
+      ctx.bezierCurveTo(lensX+16, ey-28, lensX+16, ey+28, lensX, ey+55);
+      ctx.bezierCurveTo(lensX-16, ey+28, lensX-16, ey-28, lensX, ey-55);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      label(ctx, 'Concave lens', lensX, ey+72, '#a78bfa', 12);
+      ctx.restore();
+    } else {
+      // Convex lens
+      ctx.save(); ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 2.5;
+      ctx.fillStyle = 'rgba(56,189,248,0.1)';
+      ctx.beginPath();
+      ctx.moveTo(lensX, ey-55);
+      ctx.bezierCurveTo(lensX-20, ey-28, lensX-20, ey+28, lensX, ey+55);
+      ctx.bezierCurveTo(lensX+20, ey+28, lensX+20, ey-28, lensX, ey-55);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      label(ctx, 'Convex lens', lensX, ey+72, '#38bdf8', 12);
+      ctx.restore();
+    }
+  }
+
+  // Incoming parallel rays (distant object)
+  const rayY1 = ey - 35, rayY2 = ey, rayY3 = ey + 35;
+  const startX = corrected ? lensX + 80 : lensX + 20;
+  [rayY1, rayY2, rayY3].forEach(ry => {
+    ctx.save(); ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(W - 20, ry);
+    ctx.lineTo(corrected ? lensX + 5 : ex + 85, ry);
+    ctx.stroke(); ctx.restore();
+  });
+
+  // Convergence point
+  const convX = isMyopia
+    ? (corrected ? retX : retX + 20)   // myopia uncorrected: in front of retina
+    : (corrected ? retX : retX - 20);  // hypermetropia uncorrected: behind retina
+
+  const retY = ey;
+  // Refracted rays meeting at convergence point
+  const hitX = ex + 80;
+  [[rayY1, convX, convX > retX ? retY+6 : retY-6],
+   [rayY2, convX, retY],
+   [rayY3, convX, convX > retX ? retY-6 : retY+6]].forEach(([ry, cx2, ry2]) => {
+    ctx.save(); ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(hitX, ry); ctx.lineTo(cx2, ry2);
+    if (cx2 !== retX) {
+      ctx.setLineDash([5,4]); ctx.moveTo(cx2, ry2); ctx.lineTo(retX, ry2+( ry2-retY)*0.1);
+    }
+    ctx.stroke(); ctx.restore();
+  });
+
+  // Focal point dot
+  ctx.fillStyle = corrected ? '#34d399' : '#f87171';
+  ctx.beginPath(); ctx.arc(convX, retY, 5, 0, Math.PI*2); ctx.fill();
+
+  // Retina label
+  label(ctx, 'Retina', retX-15, ey-55, '#34d399', 12);
+
+  // Info
+  const defName = isMyopia ? 'Myopia (Short-sightedness)' : 'Hypermetropia (Far-sightedness)';
+  const defDetail = isMyopia
+    ? `Image forms in front of retina.\nFar objects appear blurred.\nEyeball too long, or lens too converging.`
+    : `Image forms behind retina.\nNear objects appear blurred.\nEyeball too short, or lens too weak.`;
+  const corInfo = isMyopia
+    ? 'Concave (diverging) lens diverges rays so they converge exactly on retina.'
+    : 'Convex (converging) lens increases convergence so rays meet on retina.';
+
+  document.getElementById('s3-detail').innerHTML = defDetail.replace(/\n/g,'<br>');
+  document.getElementById('s3-info').innerHTML = corrected ? corInfo : (isMyopia
+    ? '👆 Enable "With lens" to see concave lens correction.'
+    : '👆 Enable "With lens" to see convex lens correction.');
+
+  label(ctx, defName, W/2 - 60, 26, isMyopia ? '#f87171' : '#38bdf8', 14);
+  label(ctx, corrected ? '✓ Corrected' : '✗ Uncorrected', W/2 - 60, 44, corrected ? '#34d399' : '#f87171', 13);
+  label(ctx, 'Distant object (parallel rays →)', W - 50, ey - 50, '#fbbf24', 12, 'right');
+}
+
+/* ══ SIM 4: ATMOSPHERIC REFRACTION ══ */
+function updateSim4() {
+  const phenom = document.getElementById('s4-phenom').value;
+  const canvas = document.getElementById('c4');
+  const ctx = cls(canvas);
+  const W = canvas.width, H = canvas.height;
+
+  if (phenom === 'sunrise') {
+    // Draw Earth horizon, atmosphere layers, and sun path
+    // Horizon
+    ctx.save();
+    ctx.fillStyle = '#0d1f0d';
+    ctx.fillRect(0, H*0.65, W, H*0.35);
+    ctx.strokeStyle = '#1a4a1a'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0, H*0.65); ctx.lineTo(W, H*0.65); ctx.stroke();
+    ctx.restore();
+
+    // Atmosphere layers (gradient)
+    for (let i = 0; i < 6; i++) {
+      const y = H*0.65 - i*50;
+      ctx.save();
+      ctx.globalAlpha = 0.08 + i*0.02;
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillRect(0, y-50, W, 50);
+      ctx.restore();
+      label(ctx, `Layer ${i+1} (n=${(1.0003+i*0.0001).toFixed(4)})`, 15, y-10, '#1e3a5f', 11, 'left');
+    }
+
+    // Actual sun position (below horizon)
+    const sunActualX = 60, sunActualY = H*0.72;
+    ctx.save(); ctx.globalAlpha=0.4; ctx.fillStyle='#fbbf24';
+    ctx.beginPath(); ctx.arc(sunActualX, sunActualY, 22, 0, Math.PI*2); ctx.fill();
+    ctx.restore();
+    label(ctx, 'Actual\nSun', sunActualX, sunActualY+32, '#fbbf24', 11);
+
+    // Apparent sun position (above horizon)
+    const sunAppX = 100, sunAppY = H*0.60;
+    ctx.save(); ctx.fillStyle='#fbbf24';
+    ctx.beginPath(); ctx.arc(sunAppX, sunAppY, 22, 0, Math.PI*2); ctx.fill();
+    ctx.restore();
+    label(ctx, 'Apparent\nSun', sunAppX+28, sunAppY, '#fbbf24', 11, 'left');
+
+    // Curved ray path
+    ctx.save(); ctx.strokeStyle='#fbbf24'; ctx.lineWidth=2; ctx.setLineDash([6,4]);
+    ctx.beginPath();
+    ctx.moveTo(sunActualX+20, sunActualY-10);
+    ctx.quadraticCurveTo(W/2, H*0.4, W-30, H/2-10);
+    ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+
+    // Observer eye
+    ctx.save(); ctx.fillStyle='#38bdf8';
+    ctx.beginPath(); ctx.arc(W-30, H/2, 10, 0, Math.PI*2); ctx.fill();
+    label(ctx, '👁 Observer', W-28, H/2+20, '#38bdf8', 12, 'right');
+    ctx.restore();
+
+    label(ctx, 'Sun is below horizon but we see it above — refraction bends light upward', W/2, H-16, '#94a3b8', 12);
+
+    document.getElementById('s4-explain').innerHTML = 'Sun appears ~2 min before it actually rises, and stays visible ~2 min after it actually sets. Total extra daylight ≈ 4 minutes.';
+    document.getElementById('s4-info').innerHTML = 'As sunlight passes through progressively denser atmospheric layers near the horizon, it continuously bends toward the Earth. The observer\'s eye traces the ray back in a straight line, placing the sun above its actual position.';
+
+  } else if (phenom === 'star') {
+    // Turbulent atmosphere + star twinkling
+    label(ctx, 'Turbulent Atmosphere', W/2, 30, '#38bdf8', 16);
+    label(ctx, '(Layers constantly moving, changing density)', W/2, 50, '#475569', 13);
+
+    // Star at top
+    ctx.save(); ctx.fillStyle='#fff';
+    ctx.font='28px serif'; ctx.textAlign='center';
+    ctx.fillText('★', W/2, 90);
+    ctx.restore();
+    label(ctx, 'Star (actual position, fixed)', W/2, 108, '#94a3b8', 12);
+
+    // Wavy atmosphere bands
+    for (let i=0; i<5; i++) {
+      const y = 130 + i*50;
+      ctx.save(); ctx.strokeStyle=`rgba(56,189,248,${0.15+i*0.05})`; ctx.lineWidth=30;
+      ctx.beginPath(); ctx.moveTo(0,y);
+      for (let x=0; x<=W; x+=30) {
+        ctx.lineTo(x, y + Math.sin(x*0.1 + i)*8);
+      }
+      ctx.stroke(); ctx.restore();
+    }
+
+    // Zigzag ray paths showing refraction
+    const colors = ['#fbbf24','#34d399','#f87171'];
+    colors.forEach((col,ci) => {
+      ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=1.8;
+      ctx.beginPath(); ctx.moveTo(W/2, 100);
+      let cx2=W/2, cy2=100;
+      for (let i=0;i<8;i++) {
+        const nx = cx2 + (Math.random()-0.5)*20;
+        const ny = cy2 + 42;
+        ctx.lineTo(nx,ny); cx2=nx; cy2=ny;
+      }
+      ctx.lineTo(W/2 + ci*18 - 18, H-30);
+      ctx.stroke(); ctx.restore();
+    });
+
+    label(ctx, '👁 Observer', W/2, H-14, '#38bdf8', 13);
+    label(ctx, 'Light refracts randomly in turbulent layers → apparent position shifts rapidly → star twinkles', W/2, H+10, '#94a3b8', 11);
+
+    document.getElementById('s4-explain').innerHTML = 'Stars twinkle because atmospheric turbulence constantly changes the refractive index of air layers. The apparent position shifts rapidly, making the star appear to flicker.';
+    document.getElementById('s4-info').innerHTML = 'Planets do NOT twinkle significantly — they are extended discs, so random shifts average out. Stars are point sources, so any shift is noticeable.';
+
+  } else {
+    // Sun flat at horizon
+    label(ctx, 'Sun appears oval/flattened at horizon', W/2, 30, '#fbbf24', 15);
+
+    // Horizon
+    ctx.fillStyle = '#0d1f0d'; ctx.fillRect(0, H*0.6, W, H*0.4);
+    ctx.strokeStyle = '#1a4a1a'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(0,H*0.6); ctx.lineTo(W,H*0.6); ctx.stroke();
+
+    // True circular sun (actual)
+    ctx.save(); ctx.globalAlpha=0.3; ctx.fillStyle='#fbbf24';
+    ctx.beginPath(); ctx.ellipse(W*0.3, H*0.56, 35, 35, 0, 0, Math.PI*2); ctx.fill();
+    ctx.restore();
+    label(ctx, 'True circle', W*0.3, H*0.56+50, '#fbbf24', 11);
+
+    // Apparent flattened sun
+    ctx.save(); ctx.fillStyle='#fbbf24';
+    ctx.beginPath(); ctx.ellipse(W*0.65, H*0.57, 42, 28, 0, 0, Math.PI*2); ctx.fill();
+    ctx.restore();
+    label(ctx, 'Apparent (flattened)', W*0.65, H*0.57+42, '#fbbf24', 11);
+
+    // Atmosphere label
+    for (let i=0;i<4;i++) {
+      ctx.save(); ctx.globalAlpha=0.06+i*0.02; ctx.fillStyle='#38bdf8';
+      ctx.fillRect(0, H*0.6-i*55-55, W, 55); ctx.restore();
+    }
+
+    document.getElementById('s4-explain').innerHTML = 'The bottom edge of the sun (closer to horizon) refracts more than the top edge. This compresses the vertical diameter, making the sun look oval.';
+    document.getElementById('s4-info').innerHTML = 'This is because lower rays travel through more atmosphere and denser air near the surface, bending more than higher rays. The horizontal diameter is unaffected.';
+  }
+}
+
+/* ══ SIM 5: DISPERSION & RAINBOW ══ */
+function setSim5(v) {
+  sim5View = v;
+  document.getElementById('d5-prism').classList.toggle('active', v==='prism');
+  document.getElementById('d5-rainbow').classList.toggle('active', v==='rainbow');
+  updateSim5();
+}
+
+function updateSim5() {
+  const ang = +document.getElementById('s5-angle').value;
+  document.getElementById('s5-angle-val').textContent = ang + '°';
+  const canvas = document.getElementById('c5');
+  const ctx = cls(canvas);
+  const W = canvas.width, H = canvas.height;
+
+  if (sim5View === 'prism') {
+    // Draw prism triangle
+    const px = W*0.4, py = H*0.5;
+    const pts = [
+      {x: px, y: py-130},
+      {x: px-130, y: py+80},
+      {x: px+130, y: py+80}
+    ];
+    ctx.save();
+    ctx.fillStyle = 'rgba(56,189,248,0.07)';
+    ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y);
+    pts.forEach(p => ctx.lineTo(p.x,p.y));
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.restore();
+
+    // White incident ray
+    const entryX = px - 90, entryY = py - 20;
+    arrow(ctx, 80, entryY - 20, entryX, entryY, '#fff', 2.5);
+    label(ctx, 'White light', 50, entryY - 30, '#94a3b8', 12, 'left');
+
+    // Dispersed spectrum (7 colours)
+    const specColors = ['#8b5cf6','#6366f1','#3b82f6','#22c55e','#eab308','#f97316','#ef4444'];
+    const specNames  = ['Violet','Indigo','Blue','Green','Yellow','Orange','Red'];
+    const baseAng = 25, spread = 2.5;
+    const exitX = px + 70, exitY = py + 20;
+    specColors.forEach((col, i) => {
+      const angleRad = (baseAng + i*spread - spread*3) * Math.PI/180;
+      const len = 160;
+      const ex2 = exitX + len * Math.cos(angleRad);
+      const ey2 = exitY + len * Math.sin(angleRad);
+      ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(entryX, entryY);
+      ctx.lineTo(exitX, exitY); ctx.lineTo(ex2, ey2); ctx.stroke();
+      label(ctx, specNames[i], ex2+8, ey2, col, 12, 'left');
+      ctx.restore();
+    });
+
+    // Prism angle label
+    label(ctx, `Angle: ${ang}°`, px+10, py+100, '#38bdf8', 13);
+    label(ctx, 'VIBGYOR', W*0.75, py-60, '#fbbf24', 14);
+
+    document.getElementById('s5-info').innerHTML = 'White light is a mixture of all colours. Glass slows each wavelength differently: violet (shortest λ) slows most and bends most; red (longest λ) bends least — causing dispersion.';
+
+  } else {
+    // Rainbow diagram
+    label(ctx, 'Rainbow Formation', W/2, 24, '#38bdf8', 16);
+
+    // Sun rays (from left)
+    for (let i=-2;i<=2;i++) {
+      ctx.save(); ctx.strokeStyle='#fbbf24'; ctx.lineWidth=1.5; ctx.globalAlpha=0.6;
+      ctx.beginPath(); ctx.moveTo(0, H/2 + i*30); ctx.lineTo(180, H/2 + i*30); ctx.stroke();
+      ctx.restore();
+    }
+    label(ctx, '☀ Sunlight', 10, H/2 - 80, '#fbbf24', 13, 'left');
+
+    // Water droplet
+    const dx = 280, dy = H/2;
+    ctx.save();
+    ctx.fillStyle='rgba(56,189,248,0.3)'; ctx.strokeStyle='#38bdf8'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.arc(dx, dy, 40, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.restore();
+    label(ctx, 'Water\ndroplet', dx, dy+56, '#38bdf8', 12);
+
+    // Inside droplet: refraction in, TIR, refraction out
+    // Simplified: show entry, back reflection, exit
+    const specColors6 = ['#8b5cf6','#3b82f6','#22c55e','#eab308','#f97316','#ef4444'];
+    const names6 = ['Violet','Blue','Green','Yellow','Orange','Red'];
+    specColors6.forEach((col,i) => {
+      const offset = i*5 - 12;
+      const inY = dy - 15 + offset;
+      // entry refraction
+      ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=1.8;
+      ctx.beginPath(); ctx.moveTo(180, inY); ctx.lineTo(dx-30, inY+offset*0.4);
+      // internal path
+      ctx.lineTo(dx+28, inY+8+i*3);
+      // back wall TIR
+      ctx.lineTo(dx-25, inY+20+i*2);
+      // exit
+      ctx.lineTo(dx-50-i*8, inY+40+i*6);
+      ctx.stroke();
+      label(ctx, names6[i], dx-56-i*8-20, inY+42+i*6, col, 11, 'right');
+      ctx.restore();
+    });
+
+    // Observer + eye
+    ctx.save(); ctx.fillStyle='#38bdf8';
+    ctx.beginPath(); ctx.arc(W-50, H*0.65, 10, 0, Math.PI*2); ctx.fill();
+    label(ctx, '👁 Observer\n(Sun behind)', W-50, H*0.65+24, '#38bdf8', 11);
+    ctx.restore();
+
+    label(ctx, 'Red: outer arc (42°) — Violet: inner arc (40°)', W/2, H-16, '#94a3b8', 12);
+    document.getElementById('s5-info').innerHTML = 'Rainbow = Dispersion + TIR inside water droplets. Each droplet sends only one colour to the observer\'s eye at a given angle. Red appears at top (42°), violet at bottom (40°). Observer must have sun behind them.';
+  }
+}
+
+/* ══ SIM 6: SCATTERING ══ */
+function updateSim6() {
+  const scene = document.getElementById('s6-scene').value;
+  const canvas = document.getElementById('c6');
+  const ctx = cls(canvas);
+  const W = canvas.width, H = canvas.height;
+
+  if (scene === 'sky') {
+    // Blue sky: white sunlight, particles scatter blue most
+    // Sky gradient
+    const sky = ctx.createLinearGradient(0,0,0,H*0.75);
+    sky.addColorStop(0,'#1e3a8a'); sky.addColorStop(0.5,'#3b82f6'); sky.addColorStop(1,'#93c5fd');
+    ctx.fillStyle = sky; ctx.fillRect(0,0,W,H*0.75);
+    // Ground
+    ctx.fillStyle='#1a2e0a'; ctx.fillRect(0,H*0.75,W,H*0.25);
+
+    // Sun (white/yellow)
+    ctx.save(); ctx.fillStyle='#fff';
+    ctx.beginPath(); ctx.arc(W-60,60,28,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+    label(ctx,'☀ Sunlight\n(all colours)',W-55,100,'#fbbf24',12);
+
+    // Scatter particles and blue arrows
+    for(let i=0;i<12;i++){
+      const px2=80+i*50, py2=80+Math.sin(i)*40;
+      ctx.save(); ctx.fillStyle='rgba(56,189,248,0.6)';
+      ctx.beginPath(); ctx.arc(px2,py2,4,0,Math.PI*2); ctx.fill();
+      // blue scatter arrows in many directions
+      for(let d=0;d<4;d++){
+        const a=d*Math.PI/2+Math.PI/4;
+        ctx.strokeStyle='#38bdf8'; ctx.lineWidth=1.2;
+        ctx.beginPath(); ctx.moveTo(px2,py2); ctx.lineTo(px2+18*Math.cos(a),py2+18*Math.sin(a)); ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // Observer
+    ctx.fillStyle='#e2e8f0';
+    ctx.font='22px serif'; ctx.textAlign='center'; ctx.fillText('🧍',W/2,H*0.72);
+    label(ctx,'Observer looking up',W/2,H*0.72+28,'#94a3b8',12);
+
+    document.getElementById('s6-explain').innerHTML = 'Nitrogen and oxygen molecules in the atmosphere scatter blue light (~450 nm) much more than red light (~700 nm) because scattering ∝ 1/λ⁴.';
+    document.getElementById('s6-info').innerHTML = 'Blue is scattered ~10× more than red (since (700/450)⁴ ≈ 5.8). The scattered blue light comes from all directions → sky appears blue.';
+    document.getElementById('s6-formula').innerHTML = 'Rayleigh scattering:<br>I ∝ 1/λ⁴<br>Shorter λ → more scattering';
+
+  } else if (scene === 'sunset') {
+    // Red sunset: long path through atmosphere scatters everything except red
+    const sky2 = ctx.createLinearGradient(0,0,W,0);
+    sky2.addColorStop(0,'#1e1e2e'); sky2.addColorStop(0.5,'#7c2d12'); sky2.addColorStop(1,'#ef4444');
+    ctx.fillStyle=sky2; ctx.fillRect(0,0,W,H*0.72);
+    ctx.fillStyle='#111'; ctx.fillRect(0,H*0.72,W,H*0.28);
+
+    // Horizon sun
+    ctx.save(); ctx.fillStyle='#f97316';
+    ctx.beginPath(); ctx.ellipse(W-50,H*0.72,45,30,0,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+    label(ctx,'Sun at horizon','#f97316',W-50,H*0.72+40,'#f97316',12);
+
+    // Long path lines (blue scattered away)
+    for(let i=0;i<6;i++){
+      const ry=H*0.3+i*30;
+      ctx.save(); ctx.strokeStyle=`rgba(59,130,246,${0.6-i*0.1})`; ctx.lineWidth=1.5;
+      ctx.setLineDash([8,6]);
+      ctx.beginPath(); ctx.moveTo(W-80,ry); ctx.lineTo(W/2-100+i*30,ry+20); ctx.stroke();
+      ctx.setLineDash([]); ctx.restore();
+    }
+    // Remaining red/orange
+    for(let i=0;i<4;i++){
+      const ry=H*0.4+i*20;
+      ctx.save(); ctx.strokeStyle=`rgba(239,68,68,0.9)`; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(W-80,ry); ctx.lineTo(100,ry-10); ctx.stroke(); ctx.restore();
+    }
+
+    label(ctx,'Blue/violet scattered out →','#3b82f6',W/2,H*0.22,16);
+    label(ctx,'Red/orange passes through →','#ef4444',W/2,H*0.42,16);
+    ctx.font='22px serif'; ctx.textAlign='center'; ctx.fillText('🧍',80,H*0.72-5);
+    label(ctx,'Observer',80,H*0.72+20,'#94a3b8',12);
+
+    document.getElementById('s6-explain').innerHTML = 'At sunset/sunrise, sunlight travels through a much longer path of atmosphere. Blue light is scattered away. Only red and orange (longer λ, less scattered) reach the observer.';
+    document.getElementById('s6-info').innerHTML = 'The same 1/λ⁴ law — but now the long path means repeated scattering removes blue entirely. Red and orange remain.';
+    document.getElementById('s6-formula').innerHTML = 'Long atmospheric path:<br>Blue scattered away<br>Red/orange survives';
+
+  } else {
+    // Tyndall effect
+    label(ctx,'Tyndall Effect — Colloidal Solution','#38bdf8',W/2,24,'#38bdf8',15);
+    // Beam path
+    const beamY = H/2;
+    // Dark area outside beam
+    ctx.fillStyle='rgba(5,10,20,0.9)'; ctx.fillRect(60,80,W-120,H-120);
+    ctx.strokeStyle='#1e293b'; ctx.lineWidth=1;
+    ctx.strokeRect(60,80,W-120,H-120);
+
+    // Scattered light cone
+    const beamStartX=60, beamEndX=W-60;
+    const grad=ctx.createLinearGradient(beamStartX,0,beamEndX,0);
+    grad.addColorStop(0,'rgba(56,189,248,0.0)');
+    grad.addColorStop(0.3,'rgba(56,189,248,0.4)');
+    grad.addColorStop(0.7,'rgba(56,189,248,0.3)');
+    grad.addColorStop(1,'rgba(56,189,248,0.1)');
+    ctx.fillStyle=grad;
+    ctx.beginPath(); ctx.moveTo(beamStartX,beamY-15); ctx.lineTo(beamEndX,beamY-20);
+    ctx.lineTo(beamEndX,beamY+20); ctx.lineTo(beamStartX,beamY+15); ctx.closePath(); ctx.fill();
+
+    // Particle dots
+    for(let i=0;i<30;i++){
+      const px2=beamStartX+30+Math.random()*(beamEndX-beamStartX-60);
+      const py2=beamY+(Math.random()-0.5)*30;
+      ctx.fillStyle='rgba(56,189,248,0.8)';
+      ctx.beginPath(); ctx.arc(px2,py2,3,0,Math.PI*2); ctx.fill();
+    }
+
+    // Light source
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(45,beamY,15,0,Math.PI*2); ctx.fill();
+    label(ctx,'Light source','45','#94a3b8',45,beamY+28,'#94a3b8',11);
+    // Note on the right
+    label(ctx,'Scattered light','#38bdf8',W/2,beamY-40,'#38bdf8',13);
+    label(ctx,'(visible sideways)','#38bdf8',W/2,beamY-24,'#64748b',12);
+
+    // Eye looking from side
+    ctx.font='20px serif'; ctx.textAlign='center'; ctx.fillText('👁',W/2,beamY+80);
+    label(ctx,'Observer (sideways)',W/2,beamY+100,'#94a3b8',12);
+
+    label(ctx,'Colloidal particles scatter light → beam becomes visible','#94a3b8',W/2,H-16,'#94a3b8',12);
+
+    document.getElementById('s6-explain').innerHTML = 'The Tyndall effect: colloidal particles (1–100 nm) scatter visible light. A beam of light becomes visible when passing through a colloid (like milk, smoke, or fog).';
+    document.getElementById('s6-info').innerHTML = 'True solutions do not show Tyndall effect (particles too small). Suspensions are opaque. Only colloids show it.';
+    document.getElementById('s6-formula').innerHTML = 'Tyndall Effect:<br>Colloid size ~ λ of light<br>Beam becomes visible';
+  }
+}
+
+// Init
+updateSim2(); updateSim3(); updateSim4(); updateSim5(); updateSim6();
+</script>
+</body>
+</html>

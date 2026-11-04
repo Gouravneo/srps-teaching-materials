@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Class 10 Physics – Human Eye | Slides</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0a0f1e;color:#e2e8f0;font-family:'Segoe UI',Arial,sans-serif;overflow:hidden;width:100vw;height:100vh;}
+.deck{width:100vw;height:100vh;position:relative;}
+.slide{display:none;width:100%;height:100%;position:absolute;top:0;left:0;flex-direction:column;padding:48px 68px 80px;}
+.slide.active{display:flex;}
+.slide-dark{background:#070c17;}
+.slide-title-bg{background:radial-gradient(ellipse at 40% 30%,#0f2044,#0a0f1e);}
+.chapter-label{font-size:13px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#38bdf8;margin-bottom:10px;}
+.slide-title{font-size:50px;font-weight:800;line-height:1.1;color:#fff;margin-bottom:14px;}
+.slide-subtitle{font-size:21px;color:#64748b;margin-bottom:34px;}
+.slide-heading{font-size:34px;font-weight:700;color:#38bdf8;margin-bottom:20px;border-bottom:2px solid #1e293b;padding-bottom:10px;}
+.slide-heading-sm{font-size:26px;font-weight:700;color:#38bdf8;margin-bottom:14px;}
+.box{border-radius:14px;padding:16px 20px;margin:9px 0;}
+.box-blue{background:rgba(56,189,248,0.07);border:1.5px solid rgba(56,189,248,0.25);}
+.box-green{background:rgba(16,185,129,0.07);border:1.5px solid rgba(16,185,129,0.25);}
+.box-amber{background:rgba(251,191,36,0.07);border:1.5px solid rgba(251,191,36,0.25);}
+.box-purple{background:rgba(167,139,250,0.07);border:1.5px solid rgba(167,139,250,0.25);}
+.box-red{background:rgba(239,68,68,0.07);border:1.5px solid rgba(239,68,68,0.25);}
+.box-dark{background:#0d1527;border:1.5px solid #1e293b;}
+.box-formula{background:#0d1527;border:1.5px solid #334155;border-radius:12px;padding:14px 22px;font-family:'Courier New',monospace;font-size:18px;color:#fbbf24;text-align:center;line-height:1.9;}
+ul.slide-list{list-style:none;}
+ul.slide-list li{padding:6px 0;padding-left:20px;position:relative;font-size:17px;line-height:1.5;color:#cbd5e1;}
+ul.slide-list li::before{content:'▹';position:absolute;left:0;color:#38bdf8;}
+ul.slide-list.amber li::before{color:#fbbf24;}
+ul.slide-list.green li::before{color:#34d399;}
+ul.slide-list.red li::before{color:#f87171;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.kv-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1e293b;font-size:15px;}
+.kv-row:last-child{border:none;}
+.kv-key{color:#94a3b8;}.kv-val{color:#fbbf24;font-weight:600;font-family:monospace;}
+table.slide-table{width:100%;border-collapse:collapse;font-size:14px;}
+table.slide-table th{padding:9px 13px;text-align:left;background:#0d1527;color:#38bdf8;border-bottom:2px solid #1e293b;}
+table.slide-table td{padding:8px 13px;border-bottom:1px solid #1e293b;color:#cbd5e1;}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;}
+.badge-blue{background:rgba(56,189,248,0.15);color:#38bdf8;}
+.badge-green{background:rgba(16,185,129,0.15);color:#34d399;}
+.badge-amber{background:rgba(251,191,36,0.15);color:#fbbf24;}
+.badge-red{background:rgba(239,68,68,0.15);color:#f87171;}
+.badge-purple{background:rgba(167,139,250,0.15);color:#a78bfa;}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(13,21,39,0.95);border-top:1px solid #1e293b;padding:11px 26px;display:flex;align-items:center;gap:14px;z-index:100;}
+.nav-btn{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:7px 18px;font-size:14px;border-radius:8px;cursor:pointer;transition:all 0.15s;}
+.nav-btn:hover:not(:disabled){background:#334155;color:#e2e8f0;}
+.nav-btn:disabled{opacity:0.3;cursor:default;}
+.slide-counter{color:#475569;font-size:14px;margin:0 auto;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#38bdf8,#818cf8);transition:width 0.25s;z-index:200;}
+.fs-btn{position:fixed;top:10px;right:10px;background:rgba(30,41,59,0.85);border:1px solid #334155;color:#64748b;padding:7px 12px;font-size:14px;border-radius:7px;cursor:pointer;z-index:999;}
+.hdr-nav-btn{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:6px 13px;font-size:13px;border-radius:7px;cursor:pointer;text-decoration:none;white-space:nowrap;}
+.hdr-nav-btn:hover{color:#e2e8f0;background:#334155;}
+.nav-links{display:flex;gap:8px;margin-left:auto;}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progress"></div>
+<button class="fs-btn" onclick="document.documentElement.requestFullscreen()">⛶</button>
+<div class="deck" id="deck">
+
+<!-- SLIDE 1: TITLE -->
+<div class="slide active slide-title-bg" id="s1">
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+    <div class="chapter-label">Class 10 Physics · Chapter 10</div>
+    <div class="slide-title">Human Eye &amp;<br>The Colourful World</div>
+    <div class="slide-subtitle">Vision, defects, atmospheric refraction, dispersion &amp; scattering</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+      <span class="badge badge-blue">Eye Anatomy</span>
+      <span class="badge badge-green">Vision Defects</span>
+      <span class="badge badge-amber">Atmospheric Refraction</span>
+      <span class="badge badge-purple">Dispersion</span>
+      <span class="badge badge-red">Scattering</span>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;margin-top:auto;">
+    <a class="hdr-nav-btn" href="Class10_Physics_HumanEye_simulations.html" target="_blank">🧪 Simulations</a>
+    <a class="hdr-nav-btn" href="Class10_Physics_HumanEye_interactive.html" target="_blank">🖱 Interactive</a>
+    <a class="hdr-nav-btn" href="index.html">🏠 Dashboard</a>
+  </div>
+</div>
+
+<!-- SLIDE 2: EYE ANATOMY -->
+<div class="slide slide-dark" id="s2">
+  <div class="slide-heading">Parts of the Human Eye</div>
+  <div class="grid-2" style="flex:1;gap:24px;align-items:start;">
+    <div>
+      <div class="box box-dark">
+        <div class="kv-row"><span class="kv-key">Cornea</span><span class="kv-val">Outer transparent layer; ~70% refraction</span></div>
+        <div class="kv-row"><span class="kv-key">Iris</span><span class="kv-val">Coloured muscle; controls pupil size</span></div>
+        <div class="kv-row"><span class="kv-key">Pupil</span><span class="kv-val">Opening; adjusts light intake (aperture)</span></div>
+        <div class="kv-row"><span class="kv-key">Lens</span><span class="kv-val">Flexible biconvex; fine focus (~30%)</span></div>
+        <div class="kv-row"><span class="kv-key">Retina</span><span class="kv-val">Rods &amp; cones; screen for image</span></div>
+        <div class="kv-row"><span class="kv-key">Optic Nerve</span><span class="kv-val">Carries signals to brain; blind spot</span></div>
+        <div class="kv-row"><span class="kv-key">Ciliary Muscles</span><span class="kv-val">Change lens shape (accommodation)</span></div>
+        <div class="kv-row" style="border:none;"><span class="kv-key">Yellow Spot (Macula)</span><span class="kv-val">Region of sharpest vision</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="box box-blue" style="margin-bottom:12px;">
+        <div style="font-size:16px;font-weight:700;color:#38bdf8;margin-bottom:8px;">Light Path Through Eye</div>
+        <div style="font-size:14px;color:#94a3b8;line-height:1.9;">
+          Object → <strong style="color:#38bdf8;">Cornea</strong> → Aqueous Humour → <strong style="color:#a78bfa;">Pupil</strong> → <strong style="color:#fbbf24;">Lens</strong> → Vitreous Humour → <strong style="color:#34d399;">Retina</strong> → <strong style="color:#f87171;">Optic Nerve</strong> → Brain
+        </div>
+      </div>
+      <div class="box box-green">
+        <div style="font-size:15px;color:#34d399;font-weight:600;margin-bottom:6px;">Retina Details</div>
+        <ul class="slide-list green" style="margin:0;font-size:14px;">
+          <li><strong>Rods (~120 million)</strong> — sensitive to dim light; black &amp; white</li>
+          <li><strong>Cones (~6 million)</strong> — colour vision; need bright light</li>
+          <li>Image formed: Real, Inverted — brain corrects perception</li>
+        </ul>
+      </div>
+      <div class="box-formula" style="margin-top:12px;font-size:16px;">
+        Near point = 25 cm &nbsp;|&nbsp; Far point = ∞
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: ACCOMMODATION -->
+<div class="slide slide-dark" id="s3">
+  <div class="slide-heading">Accommodation of the Eye</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
+    <div class="box box-blue">
+      <div style="font-size:17px;font-weight:700;color:#38bdf8;margin-bottom:8px;">Definition</div>
+      <div style="font-size:15px;color:#94a3b8;">The ability of the eye lens to adjust its focal length to focus on objects at different distances, by changing its curvature using ciliary muscles.</div>
+    </div>
+    <div class="grid-2" style="gap:20px;">
+      <div class="box box-green">
+        <div style="font-size:16px;font-weight:700;color:#34d399;margin-bottom:8px;">👁 Near Object (&lt;25 cm)</div>
+        <ul class="slide-list green" style="margin:0;font-size:14px;">
+          <li>Ciliary muscles <strong>contract</strong></li>
+          <li>Lens becomes <strong>thicker</strong> (more curved)</li>
+          <li>Focal length <strong>decreases</strong></li>
+          <li>Greater converging power</li>
+        </ul>
+      </div>
+      <div class="box box-amber">
+        <div style="font-size:16px;font-weight:700;color:#fbbf24;margin-bottom:8px;">🔭 Far Object (&gt;25 cm)</div>
+        <ul class="slide-list amber" style="margin:0;font-size:14px;">
+          <li>Ciliary muscles <strong>relax</strong></li>
+          <li>Lens becomes <strong>thinner</strong> (less curved)</li>
+          <li>Focal length <strong>increases</strong></li>
+          <li>Less converging power needed</li>
+        </ul>
+      </div>
+    </div>
+    <div class="box box-dark">
+      <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:8px;">Range of Accommodation</div>
+      <div class="kv-row"><span class="kv-key">Minimum object distance (Near Point)</span><span class="kv-val">25 cm (normal adult)</span></div>
+      <div class="kv-row" style="border:none;"><span class="kv-key">Maximum object distance (Far Point)</span><span class="kv-val">Infinity (normal eye)</span></div>
+    </div>
+    <div class="box box-purple">
+      <div style="font-size:14px;color:#a78bfa;font-weight:600;">Presbyopia (age-related loss of accommodation)</div>
+      <div style="font-size:14px;color:#94a3b8;margin-top:6px;">Ciliary muscles weaken with age. The lens loses flexibility. Both near and far vision may be affected. Corrected with bifocal lenses.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4: MYOPIA -->
+<div class="slide slide-dark" id="s4">
+  <div class="slide-heading">Myopia (Short-sightedness)</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
+    <div class="grid-2" style="gap:22px;">
+      <div>
+        <div class="box box-red" style="margin-bottom:12px;">
+          <div style="font-size:16px;font-weight:700;color:#f87171;margin-bottom:8px;">Defect</div>
+          <ul class="slide-list red" style="margin:0;font-size:14px;">
+            <li>Cannot see <strong>distant objects</strong> clearly</li>
+            <li>Image forms <strong>in front</strong> of retina</li>
+            <li>Far point moves closer than infinity</li>
+          </ul>
+        </div>
+        <div class="box box-dark">
+          <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:6px;">Causes</div>
+          <ul class="slide-list" style="margin:0;font-size:14px;">
+            <li>Eyeball too long (front-to-back)</li>
+            <li>Lens too converging (thick)</li>
+            <li>Cornea too curved</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="box box-green">
+          <div style="font-size:16px;font-weight:700;color:#34d399;margin-bottom:8px;">✓ Correction</div>
+          <div style="font-size:15px;color:#94a3b8;margin-bottom:8px;">Concave (diverging) lens — negative power</div>
+          <ul class="slide-list green" style="margin:0;font-size:14px;">
+            <li>Concave lens diverges rays before they enter the eye</li>
+            <li>Eye's lens then converges them onto the retina</li>
+            <li>Far point of myopic eye acts as virtual object</li>
+          </ul>
+        </div>
+        <div class="box-formula" style="margin-top:12px;font-size:16px;">
+          Lens power = −1/d<br>
+          <div style="font-size:13px;color:#94a3b8;margin-top:4px;">d = far point distance (in metres)</div>
+        </div>
+      </div>
+    </div>
+    <div class="box box-dark">
+      <div style="font-size:13px;color:#64748b;font-weight:600;margin-bottom:4px;">Example</div>
+      <div style="font-size:14px;color:#94a3b8;">A person can see clearly up to 2 m (far point). Concave lens needed:<br>P = −1/2 = <span style="color:#fbbf24;font-weight:bold;">−0.5 D</span> (focal length = −2 m)</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: HYPERMETROPIA -->
+<div class="slide slide-dark" id="s5">
+  <div class="slide-heading">Hypermetropia (Far-sightedness)</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
+    <div class="grid-2" style="gap:22px;">
+      <div>
+        <div class="box box-blue" style="margin-bottom:12px;">
+          <div style="font-size:16px;font-weight:700;color:#38bdf8;margin-bottom:8px;">Defect</div>
+          <ul class="slide-list" style="margin:0;font-size:14px;">
+            <li>Cannot see <strong>near objects</strong> clearly</li>
+            <li>Image forms <strong>behind</strong> the retina</li>
+            <li>Near point is farther than 25 cm</li>
+          </ul>
+        </div>
+        <div class="box box-dark">
+          <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:6px;">Causes</div>
+          <ul class="slide-list" style="margin:0;font-size:14px;">
+            <li>Eyeball too short</li>
+            <li>Lens too weak (flat)</li>
+            <li>Cornea less curved</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="box box-green">
+          <div style="font-size:16px;font-weight:700;color:#34d399;margin-bottom:8px;">✓ Correction</div>
+          <div style="font-size:15px;color:#94a3b8;margin-bottom:8px;">Convex (converging) lens — positive power</div>
+          <ul class="slide-list green" style="margin:0;font-size:14px;">
+            <li>Convex lens converges rays additionally</li>
+            <li>Eye's lens can then bring image onto retina</li>
+            <li>Convex lens forms virtual image at the near point</li>
+          </ul>
+        </div>
+        <div class="box-formula" style="margin-top:12px;font-size:16px;">
+          P = 1/f &nbsp;(positive power)<br>
+          <div style="font-size:13px;color:#94a3b8;margin-top:4px;">Convex lens with appropriate focal length</div>
+        </div>
+      </div>
+    </div>
+    <div class="box box-dark">
+      <div style="font-size:13px;color:#64748b;font-weight:600;margin-bottom:4px;">Comparison</div>
+      <table class="slide-table" style="font-size:13px;">
+        <thead><tr><th>Feature</th><th>Myopia</th><th>Hypermetropia</th></tr></thead>
+        <tbody>
+          <tr><td>Blurred vision</td><td>Distant objects</td><td>Near objects</td></tr>
+          <tr><td>Image position</td><td>In front of retina</td><td>Behind retina</td></tr>
+          <tr><td>Eye shape</td><td>Elongated (too long)</td><td>Short (too short)</td></tr>
+          <tr><td>Correction</td><td>Concave lens (−ve)</td><td>Convex lens (+ve)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: ALL DEFECTS SUMMARY -->
+<div class="slide slide-dark" id="s6">
+  <div class="slide-heading">All Defects of Vision</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
+    <div class="grid-3" style="gap:14px;">
+      <div class="box box-red">
+        <div style="font-size:15px;font-weight:700;color:#f87171;margin-bottom:7px;">Myopia</div>
+        <div style="font-size:13px;color:#94a3b8;">Short-sightedness<br>Image in front of retina<br>Far point &lt; ∞<br><strong style="color:#f87171;">Concave lens</strong></div>
+      </div>
+      <div class="box box-blue">
+        <div style="font-size:15px;font-weight:700;color:#38bdf8;margin-bottom:7px;">Hypermetropia</div>
+        <div style="font-size:13px;color:#94a3b8;">Far-sightedness<br>Image behind retina<br>Near point &gt; 25 cm<br><strong style="color:#38bdf8;">Convex lens</strong></div>
+      </div>
+      <div class="box box-purple">
+        <div style="font-size:15px;font-weight:700;color:#a78bfa;margin-bottom:7px;">Presbyopia</div>
+        <div style="font-size:13px;color:#94a3b8;">Age-related<br>Ciliary muscles weaken<br>Both near &amp; far affected<br><strong style="color:#a78bfa;">Bifocal lens</strong></div>
+      </div>
+    </div>
+    <div class="box box-amber">
+      <div style="font-size:15px;font-weight:700;color:#fbbf24;margin-bottom:7px;">Astigmatism</div>
+      <div style="font-size:14px;color:#94a3b8;">Cornea not perfectly spherical — objects appear blurred/distorted in one direction. Corrected with <strong style="color:#fbbf24;">cylindrical lenses</strong>.</div>
+    </div>
+    <div class="box box-dark">
+      <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:8px;">Key Principle</div>
+      <div style="font-size:14px;color:#94a3b8;line-height:1.8;">All corrections work by ensuring the final image falls <strong style="color:#34d399;">exactly on the retina</strong>. The corrective lens compensates for the eye's inability to focus.</div>
+    </div>
+    <div class="box-formula" style="font-size:16px;">
+      Myopia: P = −1/far point (m) &nbsp;|&nbsp; Hypermetropia: P = 1/f (convex)
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: REFRACTION THROUGH GLASS SLAB -->
+<div class="slide slide-dark" id="s7">
+  <div class="slide-heading">Refraction Through a Glass Slab</div>
+  <div class="grid-2" style="flex:1;gap:28px;align-items:start;">
+    <div>
+      <div class="box box-blue" style="margin-bottom:14px;">
+        <div style="font-size:16px;font-weight:700;color:#38bdf8;margin-bottom:8px;">Key Result</div>
+        <div style="font-size:15px;color:#94a3b8;">The emergent ray is <strong>parallel</strong> to the incident ray but <strong>laterally displaced</strong> (shifted sideways).</div>
+      </div>
+      <div class="box box-dark">
+        <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:6px;">Why?</div>
+        <ul class="slide-list" style="margin:0;font-size:14px;">
+          <li>At entry (air→glass): bends toward normal</li>
+          <li>At exit (glass→air): bends away from normal</li>
+          <li>Both refractions cancel direction change</li>
+          <li>But net lateral shift remains</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="box box-green">
+        <div style="font-size:15px;color:#34d399;font-weight:600;margin-bottom:8px;">Lateral Displacement Factors</div>
+        <ul class="slide-list green" style="margin:0;font-size:14px;">
+          <li>Increases with slab <strong>thickness</strong></li>
+          <li>Increases with <strong>angle of incidence</strong></li>
+          <li>Increases with <strong>higher refractive index</strong></li>
+          <li>Zero for normal incidence (∠i = 0)</li>
+        </ul>
+      </div>
+      <div class="box box-dark" style="margin-top:12px;">
+        <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:6px;">Application</div>
+        <div style="font-size:14px;color:#94a3b8;">This is why a pen in water appears shifted when viewed from the side. Also why objects seen through thick glass appear displaced.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: ATMOSPHERIC REFRACTION -->
+<div class="slide slide-dark" id="s8">
+  <div class="slide-heading">Atmospheric Refraction</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
+    <div class="box box-blue">
+      <div style="font-size:16px;font-weight:700;color:#38bdf8;margin-bottom:8px;">What is it?</div>
+      <div style="font-size:15px;color:#94a3b8;">Refraction of light as it passes through Earth's atmosphere, which has gradually varying density (and hence refractive index) with altitude.</div>
+    </div>
+    <div class="grid-2" style="gap:16px;">
+      <div class="box box-dark">
+        <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:8px;">Key Effects</div>
+        <ul class="slide-list" style="margin:0;font-size:14px;">
+          <li><strong style="color:#fbbf24;">Advance Sunrise</strong> — Sun visible ~2 min before actual sunrise</li>
+          <li><strong style="color:#fbbf24;">Delayed Sunset</strong> — Sun visible ~2 min after actual sunset</li>
+          <li><strong style="color:#38bdf8;">Extra daylight</strong> — ~4 extra minutes total per day</li>
+          <li><strong style="color:#a78bfa;">Sun appears oval</strong> at horizon — vertical refraction more than horizontal</li>
+        </ul>
+      </div>
+      <div class="box box-dark">
+        <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:8px;">Twinkling of Stars</div>
+        <ul class="slide-list" style="margin:0;font-size:14px;">
+          <li>Stars are point sources far away</li>
+          <li>Atmospheric turbulence constantly changes refractive index</li>
+          <li>Apparent position of star shifts rapidly</li>
+          <li>This rapid flickering = twinkling</li>
+          <li><strong style="color:#34d399;">Planets do NOT twinkle</strong> — extended disc, shifts average out</li>
+        </ul>
+      </div>
+    </div>
+    <div class="box box-amber">
+      <div style="font-size:14px;color:#fbbf24;font-weight:600;margin-bottom:4px;">Remember</div>
+      <div style="font-size:14px;color:#94a3b8;">Light from the Sun (or stars) travels from rarer medium (space) to denser medium (lower atmosphere), bending <strong>toward Earth's surface</strong>. The apparent position is always higher than the actual position.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: DISPERSION OF LIGHT -->
+<div class="slide slide-dark" id="s9">
+  <div class="slide-heading">Dispersion of Light</div>
+  <div class="grid-2" style="flex:1;gap:24px;align-items:start;">
+    <div>
+      <div class="box box-blue" style="margin-bottom:14px;">
+        <div style="font-size:16px;font-weight:700;color:#38bdf8;margin-bottom:8px;">Definition</div>
+        <div style="font-size:15px;color:#94a3b8;">Splitting of white light into its component colours by a prism, due to different wavelengths having different refractive indices in glass.</div>
+      </div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;">
+        <span class="badge" style="background:rgba(99,102,241,0.2);color:#818cf8;">Violet</span>
+        <span class="badge badge-blue">Indigo</span>
+        <span class="badge" style="background:rgba(59,130,246,0.2);color:#60a5fa;">Blue</span>
+        <span class="badge badge-green">Green</span>
+        <span class="badge" style="background:rgba(234,179,8,0.2);color:#facc15;">Yellow</span>
+        <span class="badge badge-amber">Orange</span>
+        <span class="badge badge-red">Red</span>
+      </div>
+      <div class="box-formula" style="font-size:17px;">VIBGYOR<br><div style="font-size:13px;color:#94a3b8;margin-top:4px;">Violet bends most ↑ | Red bends least ↓</div></div>
+    </div>
+    <div>
+      <div class="box box-dark" style="margin-bottom:12px;">
+        <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:8px;">Why Different Bending?</div>
+        <div style="font-size:14px;color:#94a3b8;line-height:1.7;">
+          Shorter wavelength → higher refractive index in glass → slower speed → more bending.<br><br>
+          Violet (λ ≈ 400 nm): n ≈ 1.53<br>
+          Red (λ ≈ 700 nm): n ≈ 1.51<br><br>
+          The difference causes the colours to diverge.
+        </div>
+      </div>
+      <div class="box box-green">
+        <div style="font-size:15px;color:#34d399;font-weight:600;margin-bottom:6px;">Recombination</div>
+        <div style="font-size:14px;color:#94a3b8;">A second inverted prism can recombine the VIBGYOR spectrum back into white light — proving white light is a mixture of all colours.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10: RAINBOW -->
+<div class="slide slide-dark" id="s10">
+  <div class="slide-heading">Rainbow — Natural Dispersion</div>
+  <div class="grid-2" style="flex:1;gap:24px;align-items:start;">
+    <div>
+      <div class="box box-blue" style="margin-bottom:12px;">
+        <div style="font-size:16px;font-weight:700;color:#38bdf8;margin-bottom:8px;">Formation Steps</div>
+        <ul class="slide-list" style="margin:0;font-size:14px;">
+          <li>Sunlight enters a water droplet</li>
+          <li><strong>Refraction</strong> at entry — dispersion starts</li>
+          <li><strong>Total Internal Reflection</strong> at back wall</li>
+          <li><strong>Refraction</strong> again at exit — dispersion increases</li>
+          <li>Different colours exit at different angles</li>
+          <li>Red: 42° &nbsp;|&nbsp; Violet: 40° (from Sun-observer line)</li>
+        </ul>
+      </div>
+      <div class="box-formula" style="font-size:16px;">Red: outer arc (42°)<br>Violet: inner arc (40°)</div>
+    </div>
+    <div>
+      <div class="box box-green" style="margin-bottom:12px;">
+        <div style="font-size:15px;color:#34d399;font-weight:600;margin-bottom:6px;">Conditions to See Rainbow</div>
+        <ul class="slide-list green" style="margin:0;font-size:14px;">
+          <li>Sun must be <strong>behind</strong> the observer</li>
+          <li>Rain/water droplets <strong>in front</strong></li>
+          <li>Usually seen in morning (facing west) or afternoon (facing east)</li>
+        </ul>
+      </div>
+      <div class="box box-amber">
+        <div style="font-size:15px;color:#fbbf24;font-weight:600;margin-bottom:6px;">Double Rainbow</div>
+        <div style="font-size:14px;color:#94a3b8;">A secondary (fainter) rainbow forms outside the primary one with colours reversed — light undergoes two internal reflections inside the droplet.</div>
+      </div>
+      <div class="box box-dark" style="margin-top:10px;">
+        <div style="font-size:14px;color:#94a3b8;">Each droplet sends only <strong>one colour</strong> to the observer's eye at a given angle. Millions of droplets together produce the full arc.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11: SCATTERING OF LIGHT -->
+<div class="slide slide-dark" id="s11">
+  <div class="slide-heading">Scattering of Light</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
+    <div class="box box-blue">
+      <div style="font-size:16px;font-weight:700;color:#38bdf8;margin-bottom:8px;">Rayleigh Scattering Law</div>
+      <div class="box-formula" style="font-size:19px;">I ∝ 1/λ⁴<br><div style="font-size:13px;color:#94a3b8;margin-top:6px;">Intensity of scattered light ∝ 1/(wavelength)⁴</div></div>
+      <div style="font-size:14px;color:#94a3b8;margin-top:8px;">Shorter wavelength → scattered much more intensely. Blue (λ≈450 nm) scattered ~5.8× more than red (λ≈700 nm).</div>
+    </div>
+    <div class="grid-3" style="gap:14px;">
+      <div class="box box-dark">
+        <div style="font-size:15px;font-weight:700;color:#38bdf8;margin-bottom:7px;">💙 Blue Sky</div>
+        <div style="font-size:13px;color:#94a3b8;">Sunlight passes through atmosphere. Blue light scatters in all directions from gas molecules. We see scattered blue from all directions → sky looks blue.</div>
+      </div>
+      <div class="box box-dark">
+        <div style="font-size:15px;font-weight:700;color:#f97316;margin-bottom:7px;">🌅 Red Sunset</div>
+        <div style="font-size:13px;color:#94a3b8;">Near horizon, sunlight travels longer path. Blue, violet, green scatter away. Only red and orange (long λ, least scattered) reach observer → red/orange sky.</div>
+      </div>
+      <div class="box box-dark">
+        <div style="font-size:15px;font-weight:700;color:#38bdf8;margin-bottom:7px;">🔦 Tyndall Effect</div>
+        <div style="font-size:13px;color:#94a3b8;">Colloidal particles scatter visible light. A beam of light becomes visible in smoke, fog, or milk (colloids). True solutions do not show this.</div>
+      </div>
+    </div>
+    <div class="box box-dark">
+      <div style="font-size:13px;color:#64748b;font-weight:600;margin-bottom:4px;">Examples of Tyndall Effect</div>
+      <div style="font-size:14px;color:#94a3b8;">Light beam in dusty room, car headlights in fog, light through glass of milk, blue colour of ice seen from certain angles.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12: WHY SKY IS BLUE -->
+<div class="slide slide-dark" id="s12">
+  <div class="slide-heading">Explaining Common Phenomena</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
+    <div class="grid-2" style="gap:16px;">
+      <div class="box box-blue">
+        <div style="font-size:15px;font-weight:700;color:#38bdf8;margin-bottom:7px;">💙 Why is the sky blue?</div>
+        <div style="font-size:14px;color:#94a3b8;line-height:1.7;">Air molecules preferentially scatter shorter wavelengths (blue). The scattered blue light fills the sky from all directions. Near the horizon, more atmosphere is traversed → less blue remains.</div>
+      </div>
+      <div class="box box-red">
+        <div style="font-size:15px;font-weight:700;color:#f87171;margin-bottom:7px;">🌅 Why are sunsets red?</div>
+        <div style="font-size:14px;color:#94a3b8;line-height:1.7;">At sunrise/sunset, light travels through maximum atmosphere length. Blue, violet, green are scattered away. Red/orange (scattered least) dominate → red sky.</div>
+      </div>
+      <div class="box box-dark">
+        <div style="font-size:15px;font-weight:700;color:#94a3b8;margin-bottom:7px;">⭐ Why do stars twinkle?</div>
+        <div style="font-size:14px;color:#94a3b8;line-height:1.7;">Stars are distant point sources. Atmospheric turbulence shifts their apparent position rapidly → apparent brightness fluctuates → twinkling.</div>
+      </div>
+      <div class="box box-dark">
+        <div style="font-size:15px;font-weight:700;color:#94a3b8;margin-bottom:7px;">🪐 Why don't planets twinkle?</div>
+        <div style="font-size:14px;color:#94a3b8;line-height:1.7;">Planets are closer — they appear as discs, not points. Random shifts from many parts of the disc average out → stable apparent brightness → no twinkling.</div>
+      </div>
+    </div>
+    <div class="box box-green">
+      <div style="font-size:14px;color:#34d399;font-weight:600;">Quick Memory Aid</div>
+      <div style="font-size:14px;color:#94a3b8;margin-top:4px;">Blue sky = scattering nearby &nbsp;|&nbsp; Red sunset = scattering far away &nbsp;|&nbsp; Twinkling = atmospheric turbulence &nbsp;|&nbsp; Rainbow = dispersion + TIR in droplets</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 13: POWER OF LENS REVIEW -->
+<div class="slide slide-dark" id="s13">
+  <div class="slide-heading">Vision Correction — Power of Lens</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
+    <div class="grid-2" style="gap:20px;">
+      <div>
+        <div class="box-formula" style="margin-bottom:14px;font-size:19px;">
+          P = 1/f (metres)<br>
+          <div style="font-size:14px;color:#94a3b8;margin-top:6px;">Dioptre (D)</div>
+        </div>
+        <div class="box box-dark">
+          <div class="kv-row"><span class="kv-key">Myopia (concave)</span><span class="kv-val">P &lt; 0 (negative)</span></div>
+          <div class="kv-row" style="border:none;"><span class="kv-key">Hypermetropia (convex)</span><span class="kv-val">P &gt; 0 (positive)</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="box box-dark">
+          <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:8px;">Worked Examples</div>
+          <div style="font-size:14px;color:#94a3b8;line-height:2;">
+            <span style="color:#f87171;font-weight:600;">Myopia:</span> Far point = 50 cm<br>
+            P = −1/0.5 = <span style="color:#fbbf24;font-weight:bold;">−2 D</span><br><br>
+            <span style="color:#38bdf8;font-weight:600;">Hypermetropia:</span> Near point = 1 m (should be 25 cm)<br>
+            Lens must form virtual image at 1 m for object at 25 cm<br>
+            1/f = 1/(−1) − 1/(−0.25) = −1 + 4 = 3<br>
+            P = <span style="color:#fbbf24;font-weight:bold;">+3 D</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="box box-amber">
+      <div style="font-size:14px;color:#fbbf24;font-weight:600;margin-bottom:4px;">Optometrist Prescription</div>
+      <div style="font-size:14px;color:#94a3b8;">Lenses are prescribed in Dioptres. A positive prescription corrects hypermetropia; negative corrects myopia. Bifocals have two regions of different power.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 14: GLASS PRISM & SPECTRUM -->
+<div class="slide slide-dark" id="s14">
+  <div class="slide-heading">Glass Prism &amp; Visible Spectrum</div>
+  <div class="grid-2" style="flex:1;gap:24px;align-items:start;">
+    <div>
+      <div class="box box-dark" style="margin-bottom:12px;">
+        <div style="font-size:14px;color:#64748b;font-weight:600;margin-bottom:8px;">Visible Spectrum Wavelengths</div>
+        <table class="slide-table" style="font-size:13px;">
+          <thead><tr><th>Colour</th><th>Wavelength (nm)</th><th>Deviation</th></tr></thead>
+          <tbody>
+            <tr><td style="color:#ef4444;">Red</td><td>620–750</td><td>Least</td></tr>
+            <tr><td style="color:#f97316;">Orange</td><td>590–620</td><td>↓</td></tr>
+            <tr><td style="color:#eab308;">Yellow</td><td>570–590</td><td>↓</td></tr>
+            <tr><td style="color:#22c55e;">Green</td><td>495–570</td><td>↓</td></tr>
+            <tr><td style="color:#3b82f6;">Blue</td><td>450–495</td><td>↓</td></tr>
+            <tr><td style="color:#6366f1;">Indigo</td><td>425–450</td><td>↓</td></tr>
+            <tr><td style="color:#8b5cf6;">Violet</td><td>380–425</td><td>Most</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="box box-blue" style="margin-bottom:12px;">
+        <div style="font-size:15px;font-weight:700;color:#38bdf8;margin-bottom:7px;">Two-Prism Experiment</div>
+        <ul class="slide-list" style="margin:0;font-size:14px;">
+          <li>Prism 1 disperses white light → VIBGYOR</li>
+          <li>Prism 2 (inverted) recombines → white light</li>
+          <li>Proves white light = all colours mixed</li>
+        </ul>
+      </div>
+      <div class="box box-green">
+        <div style="font-size:15px;font-weight:700;color:#34d399;margin-bottom:7px;">Newton's Experiment</div>
+        <div style="font-size:14px;color:#94a3b8;">Newton first showed in 1666 that white light from the sun is a mixture of all colours. He used a second prism to recombine the spectrum back into white light.</div>
+      </div>
+      <div class="box box-dark" style="margin-top:10px;">
+        <div style="font-size:13px;color:#64748b;font-weight:600;margin-bottom:4px;">Angle of Deviation</div>
+        <div style="font-size:13px;color:#94a3b8;">Violet deviates most → highest refractive index in glass for violet light. Angular dispersion = deviation of violet − deviation of red.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 15: QUICK REVISION -->
+<div class="slide slide-dark" id="s15">
+  <div class="slide-heading">Quick Revision — Key Points</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
+    <div class="grid-3" style="gap:12px;">
+      <div class="box-formula" style="font-size:15px;">Near point = 25 cm<br>Far point = ∞ (normal)<br>f = R/2</div>
+      <div class="box-formula" style="font-size:15px;">Myopia: P = −1/d(m)<br>Concave lens<br>Far point &lt; ∞</div>
+      <div class="box-formula" style="font-size:15px;">Hypermetropia<br>Convex lens (+P)<br>Near point &gt; 25 cm</div>
+    </div>
+    <div class="grid-2" style="gap:12px;">
+      <div class="box box-dark" style="font-size:13px;color:#94a3b8;line-height:1.9;">
+        <strong style="color:#38bdf8;">Atmospheric refraction:</strong> Advance sunrise/delayed sunset (2 min each), twinkling of stars, oval sun at horizon<br>
+        <strong style="color:#fbbf24;">Planets don't twinkle</strong> — extended disc source
+      </div>
+      <div class="box box-dark" style="font-size:13px;color:#94a3b8;line-height:1.9;">
+        <strong style="color:#34d399;">Dispersion:</strong> VIBGYOR, violet bends most<br>
+        <strong style="color:#34d399;">Rainbow:</strong> Refraction + TIR + Refraction in droplets<br>
+        Red outer (42°), Violet inner (40°)
+      </div>
+    </div>
+    <div class="box box-dark" style="font-size:13px;color:#94a3b8;line-height:1.9;">
+      <strong style="color:#38bdf8;">Rayleigh scattering I ∝ 1/λ⁴:</strong> Blue sky (blue scattered most), Red sunset (blue scattered away over long path), Tyndall effect (colloids scatter light — beam visible)
+    </div>
+    <div style="text-align:center;margin-top:auto;">
+      <a class="hdr-nav-btn" href="Class10_Physics_HumanEye_simulations.html" target="_blank" style="font-size:15px;padding:10px 20px;">🧪 Try Simulations</a>
+      &nbsp;
+      <a class="hdr-nav-btn" href="Class10_Physics_HumanEye_interactive.html" target="_blank" style="font-size:15px;padding:10px 20px;">🖱 Interactive Study</a>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()" disabled>◀ Prev</button>
+  <span class="slide-counter" id="counter">1 / 15</span>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()">Next ▶</button>
+  <div class="nav-links">
+    <a class="hdr-nav-btn" href="Class10_Physics_HumanEye_simulations.html" target="_blank">🧪 Sims</a>
+    <a class="hdr-nav-btn" href="Class10_Physics_HumanEye_interactive.html" target="_blank">🖱 Interactive</a>
+    <a class="hdr-nav-btn" href="index.html">🏠</a>
+  </div>
+</div>
+
+<script>
+const TOTAL = 15; let cur = 1;
+function showSlide(n) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  document.getElementById('counter').textContent = n + ' / ' + TOTAL;
+  document.getElementById('prevBtn').disabled = n===1;
+  document.getElementById('nextBtn').disabled = n===TOTAL;
+  document.getElementById('progress').style.width = ((n/TOTAL)*100)+'%';
+  cur = n;
+}
+function nextSlide(){ if(cur<TOTAL) showSlide(cur+1); }
+function prevSlide(){ if(cur>1) showSlide(cur-1); }
+document.addEventListener('keydown', e => {
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') nextSlide();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') prevSlide();
+});
+showSlide(1);
+</script>
+</body>
+</html>

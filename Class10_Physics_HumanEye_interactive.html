@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Class 10 Physics – Human Eye | Interactive Study</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0a0f1e;color:#e2e8f0;font-family:'Segoe UI',Arial,sans-serif;min-height:100vh;}
+header{background:#0d1527;border-bottom:2px solid #1e293b;padding:14px 30px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.hdr-title{font-size:23px;font-weight:800;color:#38bdf8;}
+.hdr-sub{font-size:13px;color:#64748b;}
+.hdr-links{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+.hdr-link{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:6px 14px;font-size:13px;border-radius:7px;cursor:pointer;text-decoration:none;}
+.hdr-link:hover{color:#e2e8f0;background:#334155;}
+.tab-bar{display:flex;background:#070c17;border-bottom:2px solid #1e293b;overflow-x:auto;}
+.tab{padding:12px 22px;font-size:14px;font-weight:600;color:#64748b;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;}
+.tab.active{color:#38bdf8;border-bottom-color:#38bdf8;background:#0d1527;}
+.tab:hover:not(.active){color:#94a3b8;}
+.pane{display:none;padding:28px;}
+.pane.active{display:block;}
+.section-title{font-size:24px;font-weight:700;color:#38bdf8;margin-bottom:18px;}
+.card{background:#0d1527;border:1.5px solid #1e293b;border-radius:14px;padding:20px;margin-bottom:16px;}
+.card-title{font-size:16px;font-weight:700;color:#fbbf24;margin-bottom:10px;}
+label{font-size:14px;color:#94a3b8;display:block;margin-bottom:4px;}
+input[type=number]{background:#1e293b;border:1px solid #334155;color:#e2e8f0;padding:8px 12px;border-radius:8px;font-size:14px;width:130px;outline:none;}
+input[type=number]:focus{border-color:#38bdf8;}
+select.sel{background:#1e293b;border:1px solid #334155;color:#e2e8f0;padding:8px 12px;border-radius:8px;font-size:14px;outline:none;}
+.btn{background:linear-gradient(135deg,#0ea5e9,#6366f1);border:none;color:#fff;padding:9px 22px;font-size:14px;font-weight:600;border-radius:9px;cursor:pointer;}
+.btn:hover{opacity:0.88;}
+.btn-sm{padding:7px 16px;font-size:13px;}
+.result-box{background:#071a10;border:1.5px solid #10b981;border-radius:10px;padding:12px 16px;margin-top:12px;font-family:'Courier New',monospace;font-size:14px;color:#34d399;line-height:1.9;}
+.result-box.error{background:#1a0707;border-color:#f87171;color:#f87171;}
+.result-box.info{background:#0c1e38;border-color:#38bdf8;color:#93c5fd;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.quiz-q{background:#0d1527;border:1.5px solid #1e293b;border-radius:14px;padding:20px;margin-bottom:12px;}
+.quiz-q-text{font-size:16px;color:#e2e8f0;margin-bottom:12px;line-height:1.5;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{background:#1e293b;border:1.5px solid #334155;border-radius:9px;padding:10px 14px;font-size:14px;cursor:pointer;color:#cbd5e1;}
+.quiz-opt:hover:not(.locked){border-color:#38bdf8;color:#e2e8f0;}
+.quiz-opt.correct{background:rgba(16,185,129,0.15);border-color:#10b981;color:#34d399;}
+.quiz-opt.wrong{background:rgba(239,68,68,0.1);border-color:#f87171;color:#f87171;}
+.quiz-explanation{margin-top:10px;padding:10px 14px;background:#0c1e38;border-radius:8px;font-size:13px;color:#93c5fd;border-left:3px solid #38bdf8;display:none;}
+.quiz-status{font-size:13px;color:#64748b;margin-top:6px;}
+.score-box{background:linear-gradient(135deg,#0f2a4a,#111827);border:2px solid #38bdf8;border-radius:16px;padding:26px;text-align:center;margin-top:18px;}
+.score-num{font-size:52px;font-weight:800;color:#38bdf8;}
+.flashcard{background:#0d1527;border:2px solid #1e293b;border-radius:14px;padding:28px;text-align:center;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;}
+.flashcard:hover{transform:scale(1.01);}
+.fc-front{font-size:19px;font-weight:700;color:#38bdf8;}
+.fc-back{font-size:15px;color:#34d399;display:none;line-height:1.7;white-space:pre-line;}
+.fc-hint{font-size:12px;color:#475569;margin-top:8px;}
+.fc-nav{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:14px;}
+.fc-nav-btn{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:7px 18px;font-size:13px;border-radius:8px;cursor:pointer;}
+.fc-nav-btn:hover{color:#e2e8f0;background:#334155;}
+.fc-counter{color:#475569;font-size:14px;}
+.fs-btn{position:fixed;top:10px;right:10px;background:rgba(30,41,59,0.85);border:1px solid #334155;color:#64748b;padding:7px 12px;font-size:14px;border-radius:7px;cursor:pointer;z-index:999;}
+@media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr;}.pane{padding:14px;}}
+</style>
+</head>
+<body>
+<button class="fs-btn" onclick="document.documentElement.requestFullscreen()">⛶</button>
+<header>
+  <div>
+    <div class="hdr-title">👁️ Human Eye &amp; Colourful World</div>
+    <div class="hdr-sub">Class 10 Physics · Ch 10 · Interactive Study Guide</div>
+  </div>
+  <div class="hdr-links">
+    <a class="hdr-link" href="Class10_Physics_HumanEye_slides.html" target="_blank">📊 Slides</a>
+    <a class="hdr-link" href="Class10_Physics_HumanEye_simulations.html" target="_blank">🧪 Simulations</a>
+    <a class="hdr-link" href="index.html">🏠 Dashboard</a>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('calculators')">🧮 Calculators</div>
+  <div class="tab" onclick="showTab('flashcards')">🃏 Flash Cards</div>
+  <div class="tab" onclick="showTab('quiz')">📝 Quiz</div>
+  <div class="tab" onclick="showTab('formulas')">📐 Reference</div>
+</div>
+
+<!-- CALCULATORS -->
+<div class="pane active" id="pane-calculators">
+  <div class="section-title">Vision &amp; Optics Calculators</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-title">👓 Myopia Correction</div>
+      <div style="font-size:13px;color:#64748b;margin-bottom:12px;font-family:monospace;">P = −1 / far_point (in metres)</div>
+      <div>
+        <label>Far point distance (cm)</label>
+        <input type="number" id="my-fp" placeholder="e.g. 200">
+      </div>
+      <button class="btn btn-sm" style="margin-top:10px;" onclick="calcMyopia()">Calculate</button>
+      <div id="my-result"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">👓 Hypermetropia Correction</div>
+      <div style="font-size:13px;color:#64748b;margin-bottom:12px;font-family:monospace;">Object at 25 cm → virtual image at near point</div>
+      <div>
+        <label>Near point of eye (cm)</label>
+        <input type="number" id="hy-np" placeholder="e.g. 100">
+      </div>
+      <button class="btn btn-sm" style="margin-top:10px;" onclick="calcHyper()">Calculate</button>
+      <div id="hy-result"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚡ Lens Power from Focal Length</div>
+      <div style="font-size:13px;color:#64748b;margin-bottom:12px;font-family:monospace;">P = 1/f &nbsp; (f in metres)</div>
+      <div>
+        <label>Focal length f (cm)</label>
+        <input type="number" id="pw-f" placeholder="e.g. −50 or +25">
+      </div>
+      <button class="btn btn-sm" style="margin-top:10px;" onclick="calcPow()">Calculate</button>
+      <div id="pw-result"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📐 Focal Length from Power</div>
+      <div style="font-size:13px;color:#64748b;margin-bottom:12px;font-family:monospace;">f = 1/P &nbsp; (result in metres)</div>
+      <div>
+        <label>Power P (Dioptres)</label>
+        <input type="number" id="fp-p" placeholder="e.g. −2.5 or +3" step="0.1">
+      </div>
+      <button class="btn btn-sm" style="margin-top:10px;" onclick="calcFP()">Calculate</button>
+      <div id="fp-result"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🌈 Rayleigh Scattering Ratio</div>
+      <div style="font-size:13px;color:#64748b;margin-bottom:12px;font-family:monospace;">I ∝ 1/λ⁴ — compare two wavelengths</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;">
+        <div>
+          <label>λ₁ (nm)</label>
+          <input type="number" id="sc-l1" placeholder="e.g. 450" value="450">
+        </div>
+        <div>
+          <label>λ₂ (nm)</label>
+          <input type="number" id="sc-l2" placeholder="e.g. 700" value="700">
+        </div>
+      </div>
+      <button class="btn btn-sm" onclick="calcScatter()">Compare</button>
+      <div id="sc-result"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🌅 Rainbow Angle Calculator</div>
+      <div style="font-size:13px;color:#64748b;margin-bottom:12px;font-family:monospace;">Primary rainbow: Red 42°, Violet 40° (approximate)</div>
+      <div>
+        <label>Select colour</label>
+        <select class="sel" id="rb-col" onchange="calcRainbow()" style="width:100%;">
+          <option value="40">Violet (~40°)</option>
+          <option value="40.5">Indigo (~40.5°)</option>
+          <option value="41">Blue (~41°)</option>
+          <option value="41.5">Green (~41.5°)</option>
+          <option value="41.8">Yellow (~41.8°)</option>
+          <option value="41.9">Orange (~41.9°)</option>
+          <option value="42">Red (~42°)</option>
+        </select>
+      </div>
+      <div id="rb-result"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FLASH CARDS -->
+<div class="pane" id="pane-flashcards">
+  <div class="section-title">Flash Cards — Human Eye</div>
+  <p style="color:#64748b;margin-bottom:18px;font-size:13px;">Click to flip. Use arrows to navigate.</p>
+  <div style="max-width:600px;margin:0 auto;">
+    <div class="flashcard" id="fc-card" onclick="flipCard()">
+      <div class="fc-front" id="fc-front"></div>
+      <div class="fc-back" id="fc-back"></div>
+      <div class="fc-hint" id="fc-hint">Click to reveal</div>
+    </div>
+    <div class="fc-nav">
+      <button class="fc-nav-btn" onclick="fcPrev()">◀ Prev</button>
+      <span class="fc-counter" id="fc-counter">1 / 20</span>
+      <button class="fc-nav-btn" onclick="fcNext()">Next ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="pane" id="pane-quiz">
+  <div class="section-title">Practice Quiz — Human Eye &amp; Colourful World</div>
+  <p style="color:#64748b;margin-bottom:18px;font-size:13px;">15 MCQ questions. Click an option to answer.</p>
+  <div id="quiz-container"></div>
+  <div id="quiz-score" style="display:none;" class="score-box">
+    <div class="score-num" id="score-num"></div>
+    <div style="font-size:15px;color:#64748b;margin-top:6px;" id="score-sub"></div>
+    <button class="btn" style="margin-top:14px;" onclick="resetQuiz()">Try Again</button>
+  </div>
+</div>
+
+<!-- REFERENCE -->
+<div class="pane" id="pane-formulas">
+  <div class="section-title">Reference Sheet</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">👁️ Eye Measurements</div>
+      <div style="font-family:monospace;font-size:15px;color:#fbbf24;line-height:2.1;">
+        Near point = 25 cm<br>
+        Far point = ∞ (normal)<br>
+        Diameter of eye ≈ 2.3 cm
+      </div>
+      <div style="margin-top:10px;font-size:13px;color:#64748b;line-height:1.8;">
+        Rods: ~120 million, dim light, B&W<br>
+        Cones: ~6 million, colour, bright light<br>
+        Blind spot: optic disc (no receptors)
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">👓 Defect Correction Summary</div>
+      <div style="font-size:14px;color:#94a3b8;line-height:2.0;">
+        <span style="color:#f87171;font-weight:600;">Myopia:</span> Concave lens, P = −1/d (m)<br>
+        <span style="color:#38bdf8;font-weight:600;">Hypermetropia:</span> Convex lens, P &gt; 0<br>
+        <span style="color:#a78bfa;font-weight:600;">Presbyopia:</span> Bifocal lens<br>
+        <span style="color:#fbbf24;font-weight:600;">Astigmatism:</span> Cylindrical lens<br>
+        Power unit: Dioptre (D) = m⁻¹
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🌈 Dispersion &amp; Scattering</div>
+      <div style="font-family:monospace;font-size:15px;color:#fbbf24;line-height:2.1;">
+        I ∝ 1/λ⁴ (Rayleigh scattering)<br>
+        VIBGYOR (Violet bends most)<br>
+        Rainbow: Red 42°, Violet 40°
+      </div>
+      <div style="margin-top:10px;font-size:13px;color:#64748b;line-height:1.8;">
+        Blue sky: short λ scattered → blue reaches us<br>
+        Red sunset: long path, blue scattered away<br>
+        Tyndall: colloids scatter visible light
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🌅 Atmospheric Refraction Facts</div>
+      <div style="font-size:14px;color:#94a3b8;line-height:2.0;">
+        Advance sunrise: ~2 min early<br>
+        Delayed sunset: ~2 min late<br>
+        Extra daylight: ~4 min/day<br>
+        Stars twinkle (point source)<br>
+        Planets don't twinkle (disc source)<br>
+        Sun appears oval at horizon
+      </div>
+    </div>
+    <div class="card" style="grid-column:span 2;">
+      <div class="card-title">📋 Comparison Table</div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="border-bottom:2px solid #1e293b;">
+            <th style="padding:8px 12px;text-align:left;color:#38bdf8;">Feature</th>
+            <th style="padding:8px 12px;text-align:center;color:#f87171;">Myopia</th>
+            <th style="padding:8px 12px;text-align:center;color:#38bdf8;">Hypermetropia</th>
+            <th style="padding:8px 12px;text-align:center;color:#a78bfa;">Presbyopia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #1e293b;"><td style="padding:7px 12px;color:#94a3b8;">Unclear vision</td><td style="text-align:center;">Distant</td><td style="text-align:center;">Near</td><td style="text-align:center;">Both</td></tr>
+          <tr style="border-bottom:1px solid #1e293b;"><td style="padding:7px 12px;color:#94a3b8;">Image on retina</td><td style="text-align:center;">In front</td><td style="text-align:center;">Behind</td><td style="text-align:center;">Varies</td></tr>
+          <tr style="border-bottom:1px solid #1e293b;"><td style="padding:7px 12px;color:#94a3b8;">Eye shape</td><td style="text-align:center;">Elongated</td><td style="text-align:center;">Too short</td><td style="text-align:center;">Normal</td></tr>
+          <tr style="border-bottom:1px solid #1e293b;"><td style="padding:7px 12px;color:#94a3b8;">Cause</td><td style="text-align:center;">Long eyeball / strong lens</td><td style="text-align:center;">Short eyeball / weak lens</td><td style="text-align:center;">Weak ciliary muscles</td></tr>
+          <tr><td style="padding:7px 12px;color:#94a3b8;">Correction</td><td style="text-align:center;color:#f87171;">Concave (−ve)</td><td style="text-align:center;color:#38bdf8;">Convex (+ve)</td><td style="text-align:center;color:#a78bfa;">Bifocal</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pane-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+function fmt(n,dp=2){ return isFinite(n)?n.toFixed(dp):'∞'; }
+
+function calcMyopia(){
+  const fp=+document.getElementById('my-fp').value;
+  const el=document.getElementById('my-result');
+  if(!fp||fp<=0){el.innerHTML='<div class="result-box error">Enter a positive far point distance.</div>';return;}
+  const P=-(100/fp);
+  el.innerHTML=`<div class="result-box">Far point = ${fp} cm = ${fmt(fp/100,2)} m<br>P = −1/${fmt(fp/100,2)} = <strong>${fmt(P,2)} D</strong><br>Use: Concave lens of power ${fmt(P,2)} D</div>`;
+}
+
+function calcHyper(){
+  const np=+document.getElementById('hy-np').value;
+  const el=document.getElementById('hy-result');
+  if(!np||np<=25){el.innerHTML='<div class="result-box error">Near point must be greater than 25 cm.</div>';return;}
+  // Lens must form virtual image of object at 25 cm at the near point (u=−25cm, v=−np cm)
+  const u=-(25/100), v=-(np/100); // in metres
+  const f=1/(1/v-1/u);
+  const P=1/f;
+  el.innerHTML=`<div class="result-box">Near point = ${np} cm, object at 25 cm<br>u = −0.25 m, v = −${fmt(np/100,2)} m<br>f = ${fmt(f*100,2)} cm<br>P = <strong>+${fmt(P,2)} D</strong><br>Use: Convex lens of power +${fmt(P,2)} D</div>`;
+}
+
+function calcPow(){
+  const f=+document.getElementById('pw-f').value;
+  const el=document.getElementById('pw-result');
+  if(!f){el.innerHTML='';return;}
+  const P=100/f;
+  const type=P>0?'Convex (Converging, corrects hypermetropia)':'Concave (Diverging, corrects myopia)';
+  el.innerHTML=`<div class="result-box">f = ${f} cm = ${fmt(f/100,3)} m<br>P = 1/${fmt(f/100,3)} = <strong>${fmt(P,2)} D</strong><br>Type: ${type}</div>`;
+}
+
+function calcFP(){
+  const P=+document.getElementById('fp-p').value;
+  const el=document.getElementById('fp-result');
+  if(!P){el.innerHTML='';return;}
+  const f_m=1/P, f_cm=f_m*100;
+  const type=P>0?'Convex lens':'Concave lens';
+  el.innerHTML=`<div class="result-box">P = ${P} D<br>f = 1/${P} = ${fmt(f_m,4)} m = <strong>${fmt(f_cm,2)} cm</strong><br>${type}</div>`;
+}
+
+function calcScatter(){
+  const l1=+document.getElementById('sc-l1').value;
+  const l2=+document.getElementById('sc-l2').value;
+  const el=document.getElementById('sc-result');
+  if(!l1||!l2){el.innerHTML='';return;}
+  const ratio=Math.pow(l2/l1,4);
+  el.innerHTML=`<div class="result-box">λ₁ = ${l1} nm, λ₂ = ${l2} nm<br>I₁/I₂ = (λ₂/λ₁)⁴ = (${l2}/${l1})⁴ = <strong>${fmt(ratio,2)}</strong><br>${l1 < l2 ? `${l1} nm scatters ${fmt(ratio,2)}× more than ${l2} nm` : `${l2} nm scatters ${fmt(ratio,2)}× more than ${l1} nm`}</div>`;
+}
+
+function calcRainbow(){
+  const ang=document.getElementById('rb-col').value;
+  const name=document.getElementById('rb-col').selectedOptions[0].text;
+  document.getElementById('rb-result').innerHTML=`<div class="result-box">${name}<br>Angle from Sun-observer line: ~${ang}°<br>${parseFloat(ang)===42?'Outer arc of rainbow (bottom for violet, top for red)':'Part of the visible arc'}</div>`;
+}
+calcRainbow();
+
+/* FLASH CARDS */
+const flashCards=[
+  {q:'What is accommodation of the eye?',a:'The ability of the eye lens to adjust its focal length using ciliary muscles to focus clearly on objects at different distances.'},
+  {q:'What is the near point of a normal adult eye?',a:'25 cm — the minimum distance at which an object can be seen clearly without strain. Also called the least distance of distinct vision.'},
+  {q:'What is the far point of a normal eye?',a:'Infinity — the maximum distance at which a normal eye can focus without strain. The ciliary muscles are fully relaxed at far point.'},
+  {q:'State one cause and correction for myopia.',a:'Cause: Eyeball too long (or lens too converging) — image forms in front of retina.\nCorrection: Concave (diverging) lens with negative power P = −1/far_point(m).'},
+  {q:'State one cause and correction for hypermetropia.',a:'Cause: Eyeball too short (or lens too weak) — image forms behind retina.\nCorrection: Convex (converging) lens with positive power.'},
+  {q:'What is presbyopia and how is it corrected?',a:'Age-related loss of accommodation. Ciliary muscles weaken, lens loses flexibility — both near and far vision affected.\nCorrected by bifocal lenses (two regions of different power).'},
+  {q:'Why does the sky appear blue?',a:'Rayleigh scattering: I ∝ 1/λ⁴. Air molecules scatter shorter wavelengths (blue, ~450 nm) much more than longer ones. Scattered blue reaches us from all directions → blue sky.'},
+  {q:'Why is the sunset/sunrise red?',a:'At horizon, sunlight travels through maximum atmosphere. Blue light is scattered away over the long path. Only red and orange (long λ, least scattered) reach the observer.'},
+  {q:'Why do stars twinkle but planets do not?',a:'Stars are point sources — random atmospheric refraction shifts their apparent position, causing brightness to flicker.\nPlanets are extended discs — shifts from different parts average out, so no twinkling.'},
+  {q:'What is the Tyndall effect?',a:'Scattering of light by colloidal particles (1–100 nm). A beam of light becomes visible when passing through a colloid (smoke, fog, milk). True solutions show no Tyndall effect.'},
+  {q:'State Rayleigh\'s scattering law.',a:'Intensity of scattered light I ∝ 1/λ⁴.\nShorter wavelength → scattered much more intensely. Blue scatters ~5.8× more than red (700/450)⁴ ≈ 5.8.'},
+  {q:'How is a primary rainbow formed?',a:'1. Refraction at entry into water droplet\n2. Total Internal Reflection at back\n3. Refraction at exit\nRed exits at 42°, Violet at 40°. Observer must have sun behind them.'},
+  {q:'Why does the sun appear oval at the horizon?',a:'Atmospheric refraction bends the bottom edge of the sun (which travels through more atmosphere) more than the top edge, compressing the vertical diameter.'},
+  {q:'How much earlier does the sun appear to rise due to atmospheric refraction?',a:'~2 minutes before it actually rises. Similarly it appears ~2 minutes after it actually sets. Total extra daylight ≈ 4 minutes per day.'},
+  {q:'What type of image forms on the retina? Why can we see upright?',a:'The image on the retina is Real, Inverted, and Diminished. The brain processes the signals and corrects the orientation — we perceive the world upright.'},
+  {q:'What are rods and cones in the retina?',a:'Rods (~120 million): sensitive to dim light, detect black & white, used for night vision.\nCones (~6 million): detect colour (red, green, blue), require bright light.'},
+  {q:'A person has a far point of 1 m. What power of lens is needed?',a:'P = −1/far_point(m) = −1/1 = −1 D\nConcave lens of power −1 D (focal length = −1 m = −100 cm).'},
+  {q:'A person\'s near point is 1 m. What lens corrects this? (Object at 25 cm)',a:'Need virtual image at 1 m for object at 25 cm.\n1/f = 1/(−1) − 1/(−0.25) = −1 + 4 = 3\nP = +3 D (Convex lens).'},
+  {q:'What is the angle of rainbow arc for red and violet?',a:'Red: outer arc, ~42° from the Sun-observer line.\nViolet: inner arc, ~40°.\nAngular width of primary rainbow ≈ 2°.'},
+  {q:'Why is the sky NOT violet, even though violet scatters more than blue?',a:'Two reasons: (1) Sunlight contains more blue than violet. (2) Our eyes are more sensitive to blue than violet. The combined effect makes the sky appear blue.'},
+];
+
+let fcIdx=0,fcFlipped=false;
+function renderFC(){
+  document.getElementById('fc-front').textContent=flashCards[fcIdx].q;
+  document.getElementById('fc-back').textContent=flashCards[fcIdx].a;
+  document.getElementById('fc-front').style.display='block';
+  document.getElementById('fc-back').style.display='none';
+  document.getElementById('fc-hint').textContent='Click to reveal';
+  document.getElementById('fc-counter').textContent=(fcIdx+1)+' / '+flashCards.length;
+  fcFlipped=false;
+}
+function flipCard(){
+  fcFlipped=!fcFlipped;
+  document.getElementById('fc-front').style.display=fcFlipped?'none':'block';
+  document.getElementById('fc-back').style.display=fcFlipped?'block':'none';
+  document.getElementById('fc-hint').textContent=fcFlipped?'Click to hide':'Click to reveal';
+}
+function fcNext(){if(fcIdx<flashCards.length-1){fcIdx++;renderFC();}}
+function fcPrev(){if(fcIdx>0){fcIdx--;renderFC();}}
+renderFC();
+
+/* QUIZ */
+const quizData=[
+  {q:'Which part of the eye is primarily responsible for refraction?',opts:['Iris','Lens','Cornea','Retina'],ans:2,exp:'The cornea is responsible for ~70% of the eye\'s total refracting power. The lens provides fine adjustments.'},
+  {q:'A person with myopia cannot see objects beyond 50 cm clearly. What power of lens is needed?',opts:['−0.5 D','−2 D','+2 D','+0.5 D'],ans:1,exp:'P = −1/far_point = −1/0.5 = −2 D (concave lens).'},
+  {q:'Which lens corrects hypermetropia?',opts:['Concave','Plano-concave','Convex','Bifocal'],ans:2,exp:'Convex (converging) lens with positive power. It helps the weak eye lens bring image onto the retina.'},
+  {q:'The sky appears blue because:',opts:['Blue light is absorbed more','Blue light scatters more (I ∝ 1/λ⁴)','Blue light refracts more','Blue light reflects more'],ans:1,exp:'Rayleigh scattering: I ∝ 1/λ⁴. Blue (shorter λ) scatters ~5.8× more than red. Scattered blue fills the sky.'},
+  {q:'A rainbow is formed due to:',opts:['Reflection only','Refraction + TIR + Refraction in water droplets','Scattering in water vapour','Diffraction in clouds'],ans:1,exp:'Primary rainbow: refraction at entry, total internal reflection at back wall, refraction at exit. Each colour exits at a different angle.'},
+  {q:'Why do planets NOT twinkle?',opts:['They emit their own light','They are closer and appear as discs','They move faster','They have no atmosphere'],ans:1,exp:'Planets are close enough to appear as extended discs. Random refraction from different parts of the disc averages out, eliminating twinkling.'},
+  {q:'What is the least distance of distinct vision for a normal eye?',opts:['10 cm','15 cm','25 cm','50 cm'],ans:2,exp:'25 cm is the near point — the minimum distance at which the normal eye can see clearly without strain.'},
+  {q:'Due to atmospheric refraction, the Sun is visible for approximately how many extra minutes per day?',opts:['2 minutes','4 minutes','8 minutes','10 minutes'],ans:1,exp:'~2 min before actual sunrise + ~2 min after actual sunset = ~4 extra minutes of daylight per day.'},
+  {q:'Which colour deviates the MOST when white light passes through a prism?',opts:['Red','Green','Blue','Violet'],ans:3,exp:'Violet has the shortest wavelength, highest refractive index in glass, and therefore bends (deviates) the most. VIBGYOR.'},
+  {q:'The Tyndall effect is observed in:',opts:['True solutions','Pure water','Colloidal solutions','Saturated solutions'],ans:2,exp:'Tyndall effect: colloidal particles (1–100 nm) scatter visible light. True solutions do not show this effect.'},
+  {q:'At sunset, the sky appears red because:',opts:['Red light scatters more','Blue light scatters away over long path; red survives','Atmosphere absorbs blue','Sun emits only red at sunset'],ans:1,exp:'Long atmospheric path at sunset means blue is scattered away repeatedly. Red and orange (long λ, least scattered) reach the observer.'},
+  {q:'Which part of the eye controls the amount of light entering?',opts:['Cornea','Lens','Retina','Iris/Pupil'],ans:3,exp:'The iris controls pupil size. The pupil dilates in dim light (lets more in) and constricts in bright light (lets less in). It acts as the aperture.'},
+  {q:'A person uses a lens of power −3.5 D. The person suffers from:',opts:['Hypermetropia','Presbyopia','Myopia','Astigmatism'],ans:2,exp:'Negative power = concave lens = corrects myopia (short-sightedness). The far point of this person is 1/3.5 ≈ 29 cm.'},
+  {q:'The near point shifts farther than 25 cm in:',opts:['Myopia','Hypermetropia','Both myopia and hypermetropia','Presbyopia only'],ans:1,exp:'Hypermetropia: near point is farther than 25 cm. The weak lens cannot converge near-object rays onto the retina.'},
+  {q:'Which colour is on the OUTER arc of a primary rainbow?',opts:['Violet','Blue','Yellow','Red'],ans:3,exp:'Red exits water droplets at ~42° — the largest angle — forming the outer (top) arc. Violet at ~40° forms the inner arc.'},
+];
+
+let answered=0,correct=0;
+function buildQuiz(){
+  const c=document.getElementById('quiz-container');
+  c.innerHTML=''; answered=0; correct=0;
+  quizData.forEach((q,qi)=>{
+    const d=document.createElement('div');
+    d.className='quiz-q'; d.id='qq-'+qi;
+    d.innerHTML=`<div class="quiz-q-text"><strong>${qi+1}.</strong> ${q.q}</div>
+      <div class="quiz-opts">${q.opts.map((o,oi)=>`<div class="quiz-opt" onclick="answerQ(${qi},${oi})">${String.fromCharCode(65+oi)}. ${o}</div>`).join('')}</div>
+      <div class="quiz-status" id="qs-${qi}"></div>
+      <div class="quiz-explanation" id="qe-${qi}">${q.exp}</div>`;
+    c.appendChild(d);
+  });
+  document.getElementById('quiz-score').style.display='none';
+}
+function answerQ(qi,choice){
+  const qEl=document.getElementById('qq-'+qi);
+  if(qEl.classList.contains('locked'))return;
+  qEl.classList.add('locked');
+  const opts=qEl.querySelectorAll('.quiz-opt');
+  const ok=choice===quizData[qi].ans;
+  opts[choice].classList.add(ok?'correct':'wrong');
+  if(!ok)opts[quizData[qi].ans].classList.add('correct');
+  document.getElementById('qs-'+qi).textContent=ok?'✓ Correct!':'✗ Incorrect';
+  document.getElementById('qs-'+qi).style.color=ok?'#34d399':'#f87171';
+  document.getElementById('qe-'+qi).style.display='block';
+  if(ok)correct++;
+  answered++;
+  if(answered===quizData.length)setTimeout(showScore,400);
+}
+function showScore(){
+  const pct=Math.round(correct/quizData.length*100);
+  document.getElementById('quiz-score').style.display='block';
+  document.getElementById('score-num').textContent=correct+' / '+quizData.length;
+  let msg=pct>=90?'🏆 Outstanding!':pct>=70?'👍 Good job!':pct>=50?'📖 Review the material.':'💪 Keep studying!';
+  document.getElementById('score-sub').textContent=pct+'% — '+msg;
+  document.getElementById('quiz-score').scrollIntoView({behavior:'smooth'});
+}
+function resetQuiz(){buildQuiz();window.scrollTo({top:0,behavior:'smooth'});}
+buildQuiz();
+</script>
+</body>
+</html>
