@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Class 10 | Extraction of Metals | Visual Diagrams</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0a0f1e;color:#e2e8f0;font-family:'Segoe UI',Arial,sans-serif;min-height:100vh;}
+.navbar{display:flex;align-items:center;justify-content:space-between;padding:12px 28px;background:linear-gradient(135deg,#1e3a8a,#1e1b4b);border-bottom:2px solid #3730a3;position:sticky;top:0;z-index:100;}
+.nav-title{font-size:18px;font-weight:bold;color:#fff;}
+.nav-sub{font-size:12px;color:#818cf8;margin-top:2px;}
+.tabs{display:flex;gap:6px;}
+.tab{padding:8px 18px;border-radius:20px;border:1.5px solid #1e293b;background:#0d1527;color:#475569;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.tab:hover{color:#94a3b8;border-color:#334155;}
+.tab.active{background:#059669;border-color:#34d399;color:#fff;}
+.tab.t-low{} .tab.t-mid{} .tab.t-high{}
+.tab.active.t-low{background:#b45309;border-color:#fbbf24;}
+.tab.active.t-mid{background:#1d4ed8;border-color:#60a5fa;}
+.tab.active.t-high{background:#7c3aed;border-color:#a78bfa;}
+.section{display:none;padding:28px;max-width:1400px;margin:0 auto;}
+.section.active{display:block;}
+.sec-header{text-align:center;margin-bottom:32px;}
+.sec-title{font-size:28px;font-weight:bold;color:#fff;margin-bottom:6px;}
+.sec-sub{font-size:16px;color:#64748b;}
+.diagrams-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(560px,1fr));gap:28px;}
+.diagram-card{background:#0d1527;border:1.5px solid #1e293b;border-radius:16px;overflow:hidden;}
+.diagram-card:hover{border-color:#334155;box-shadow:0 4px 24px rgba(0,0,0,0.4);}
+.card-header{padding:16px 20px;border-bottom:1px solid #1e293b;display:flex;align-items:center;gap:10px;}
+.card-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:14px;flex-shrink:0;}
+.num-low{background:rgba(180,83,9,0.3);color:#fbbf24;border:1px solid rgba(251,191,36,0.3);}
+.num-mid{background:rgba(29,78,216,0.3);color:#60a5fa;border:1px solid rgba(96,165,250,0.3);}
+.num-high{background:rgba(124,58,237,0.3);color:#a78bfa;border:1px solid rgba(167,139,250,0.3);}
+.num-ov{background:rgba(5,150,105,0.3);color:#34d399;border:1px solid rgba(52,211,153,0.3);}
+.card-title{font-size:16px;font-weight:bold;color:#e2e8f0;}
+.card-diagram{padding:20px;background:#070c17;}
+svg{display:block;width:100%;}
+.card-explain{padding:20px;}
+.explain-title{font-size:14px;font-weight:bold;color:#94a3b8;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;}
+.fact-row{display:flex;gap:8px;margin-bottom:8px;font-size:15px;color:#cbd5e1;line-height:1.6;align-items:flex-start;}
+.fi{font-size:18px;flex-shrink:0;margin-top:1px;}
+.eq{background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.25);border-radius:8px;padding:10px 14px;font-family:'Courier New',monospace;font-size:15px;color:#a5b4fc;line-height:1.8;margin:10px 0;}
+.chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.chip{padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600;}
+.cg{background:rgba(52,211,153,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25);}
+.cb{background:rgba(96,165,250,0.12);color:#60a5fa;border:1px solid rgba(96,165,250,0.25);}
+.cy{background:rgba(251,191,36,0.12);color:#fbbf24;border:1px solid rgba(251,191,36,0.25);}
+.cr{background:rgba(248,113,113,0.12);color:#f87171;border:1px solid rgba(248,113,113,0.25);}
+.cp{background:rgba(167,139,250,0.12);color:#a78bfa;border:1px solid rgba(167,139,250,0.25);}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div>
+    <div class="nav-title">⚗️ Extraction of Metals — Visual Diagrams</div>
+    <div class="nav-sub">Class 10 · Chapter 3 · Metals and Non-metals · NCERT/KTBS</div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showSec('overview')">🗺 Overview</div>
+    <div class="tab t-low" onclick="showSec('low')">🟡 Low Activity</div>
+    <div class="tab t-mid" onclick="showSec('mid')">🔵 Mid Activity</div>
+    <div class="tab t-high" onclick="showSec('high')">🟣 High Activity</div>
+    <div class="tab" onclick="showSec('refine')">✨ Refining</div>
+  </div>
+</div>
+
+<!-- ══════════ OVERVIEW ══════════ -->
+<div class="section active" id="overview">
+<div class="sec-header">
+  <div class="sec-title">🗺 The Big Picture — Extraction of Metals</div>
+  <div class="sec-sub">From ore to pure metal — the complete NCERT roadmap</div>
+</div>
+<div class="diagrams-grid">
+
+<!-- Card OV1: Reactivity Series -->
+<div class="diagram-card">
+<div class="card-header"><div class="card-num num-ov">1</div><div class="card-title">The Reactivity Series — Metal Activity Ladder</div></div>
+<div class="card-diagram">
+<svg viewBox="0 0 540 420" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g-high" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient>
+    <linearGradient id="g-mid" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient>
+    <linearGradient id="g-low" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#b45309"/><stop offset="100%" stop-color="#fbbf24"/></linearGradient>
+  </defs>
+  <!-- Arrow -->
+  <line x1="60" y1="20" x2="60" y2="390" stroke="#334155" stroke-width="3"/>
+  <polygon points="60,10 53,28 67,28" fill="#34d399"/>
+  <text x="40" y="8" fill="#34d399" font-size="10" text-anchor="middle">High</text>
+  <text x="40" y="400" fill="#f87171" font-size="10" text-anchor="middle">Low</text>
+  <!-- HIGH bracket -->
+  <rect x="80" y="18" width="400" height="128" rx="10" fill="url(#g-high)" fill-opacity="0.15" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="488" y="35" fill="#a78bfa" font-size="11" font-weight="bold">HIGH</text>
+  <!-- HIGH metals -->
+  <g font-size="15" font-weight="bold">
+    <text x="100" y="48" fill="#c4b5fd">K</text><text x="130" y="48" fill="#e2e8f0" font-size="13" font-weight="normal">Potassium — reacts violently with water</text>
+    <text x="100" y="72" fill="#c4b5fd">Na</text><text x="130" y="72" fill="#e2e8f0" font-size="13" font-weight="normal">Sodium — reacts vigorously with water</text>
+    <text x="100" y="96" fill="#c4b5fd">Ca</text><text x="130" y="96" fill="#e2e8f0" font-size="13" font-weight="normal">Calcium — reacts with cold water</text>
+    <text x="100" y="120" fill="#c4b5fd">Mg</text><text x="130" y="120" fill="#e2e8f0" font-size="13" font-weight="normal">Magnesium — reacts with steam</text>
+    <text x="100" y="144" fill="#c4b5fd">Al</text><text x="130" y="144" fill="#e2e8f0" font-size="13" font-weight="normal">Aluminium — reacts with hot water</text>
+  </g>
+  <!-- MID bracket -->
+  <rect x="80" y="155" width="400" height="150" rx="10" fill="url(#g-mid)" fill-opacity="0.15" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="488" y="172" fill="#60a5fa" font-size="11" font-weight="bold">MID</text>
+  <g font-size="15" font-weight="bold">
+    <text x="100" y="180" fill="#93c5fd">Zn</text><text x="130" y="180" fill="#e2e8f0" font-size="13" font-weight="normal">Zinc — does not react with water</text>
+    <text x="100" y="204" fill="#93c5fd">Fe</text><text x="130" y="204" fill="#e2e8f0" font-size="13" font-weight="normal">Iron — reacts with steam</text>
+    <text x="100" y="228" fill="#93c5fd">Sn</text><text x="130" y="228" fill="#e2e8f0" font-size="13" font-weight="normal">Tin</text>
+    <text x="100" y="252" fill="#93c5fd">Pb</text><text x="130" y="252" fill="#e2e8f0" font-size="13" font-weight="normal">Lead</text>
+    <text x="100" y="276" fill="#93c5fd">Cu</text><text x="130" y="276" fill="#e2e8f0" font-size="13" font-weight="normal">Copper — does not react with water</text>
+  </g>
+  <!-- LOW bracket -->
+  <rect x="80" y="314" width="400" height="88" rx="10" fill="url(#g-low)" fill-opacity="0.15" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="488" y="330" fill="#fbbf24" font-size="11" font-weight="bold">LOW</text>
+  <g font-size="15" font-weight="bold">
+    <text x="100" y="340" fill="#fde68a">Hg</text><text x="130" y="340" fill="#e2e8f0" font-size="13" font-weight="normal">Mercury — found as ore (cinnabar)</text>
+    <text x="100" y="364" fill="#fde68a">Ag</text><text x="130" y="364" fill="#e2e8f0" font-size="13" font-weight="normal">Silver — found as native/ore</text>
+    <text x="100" y="388" fill="#fde68a">Au</text><text x="130" y="388" fill="#e2e8f0" font-size="13" font-weight="normal">Gold — found as native element</text>
+  </g>
+</svg>
+</div>
+<div class="card-explain">
+<div class="explain-title">Key Concept</div>
+<div class="fact-row"><span class="fi">📌</span><span>The <b>higher</b> the metal in the series, the more reactive it is, and the <b>harder</b> it is to extract from its ore.</span></div>
+<div class="fact-row"><span class="fi">🟣</span><span><b>High activity</b> (K, Na, Ca, Mg, Al) — extracted by <b>electrolysis</b> of molten compounds.</span></div>
+<div class="fact-row"><span class="fi">🔵</span><span><b>Mid activity</b> (Zn, Fe, Sn, Pb, Cu) — extracted by <b>reduction with carbon/CO</b> after roasting.</span></div>
+<div class="fact-row"><span class="fi">🟡</span><span><b>Low activity</b> (Hg, Ag, Au) — found as free elements or extracted by <b>simple heating</b>.</span></div>
+</div>
+</div>
+
+<!-- Card OV2: Ore → Metal Flowchart -->
+<div class="diagram-card">
+<div class="card-header"><div class="card-num num-ov">2</div><div class="card-title">From Ore to Metal — General Steps</div></div>
+<div class="card-diagram">
+<svg viewBox="0 0 540 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#475569"/></marker>
+  </defs>
+  <!-- Step boxes -->
+  <g>
+    <!-- Step 1: Mining -->
+    <rect x="170" y="20" width="200" height="48" rx="10" fill="rgba(30,41,59,0.8)" stroke="#475569" stroke-width="1.5"/>
+    <text x="270" y="40" fill="#94a3b8" font-size="13" text-anchor="middle" font-weight="bold">STEP 1</text>
+    <text x="270" y="58" fill="#e2e8f0" font-size="14" text-anchor="middle">⛏ Mining the Ore</text>
+    <line x1="270" y1="68" x2="270" y2="90" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+
+    <!-- Step 2: Concentration -->
+    <rect x="140" y="90" width="260" height="52" rx="10" fill="rgba(30,58,138,0.3)" stroke="#1d4ed8" stroke-width="1.5"/>
+    <text x="270" y="111" fill="#93c5fd" font-size="13" text-anchor="middle" font-weight="bold">STEP 2 — Concentration of Ore</text>
+    <text x="270" y="130" fill="#e2e8f0" font-size="13" text-anchor="middle">Remove gangue (unwanted rock)</text>
+    <!-- Methods -->
+    <text x="130" y="160" fill="#64748b" font-size="11" text-anchor="middle">Froth</text>
+    <text x="130" y="172" fill="#64748b" font-size="11" text-anchor="middle">Flotation</text>
+    <text x="270" y="160" fill="#64748b" font-size="11" text-anchor="middle">Magnetic</text>
+    <text x="270" y="172" fill="#64748b" font-size="11" text-anchor="middle">Separation</text>
+    <text x="410" y="160" fill="#64748b" font-size="11" text-anchor="middle">Gravity</text>
+    <text x="410" y="172" fill="#64748b" font-size="11" text-anchor="middle">Separation</text>
+    <line x1="270" y1="142" x2="270" y2="178" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+
+    <!-- Step 3: Conversion to oxide -->
+    <rect x="120" y="178" width="300" height="52" rx="10" fill="rgba(120,53,15,0.3)" stroke="#b45309" stroke-width="1.5"/>
+    <text x="270" y="200" fill="#fbbf24" font-size="13" text-anchor="middle" font-weight="bold">STEP 3 — Convert to Metal Oxide</text>
+    <text x="270" y="218" fill="#e2e8f0" font-size="13" text-anchor="middle">Roasting (sulphides) / Calcination (carbonates)</text>
+    <line x1="270" y1="230" x2="270" y2="252" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+
+    <!-- Step 4: Reduction -->
+    <rect x="120" y="252" width="300" height="52" rx="10" fill="rgba(5,150,105,0.3)" stroke="#059669" stroke-width="1.5"/>
+    <text x="270" y="274" fill="#34d399" font-size="13" text-anchor="middle" font-weight="bold">STEP 4 — Reduction</text>
+    <text x="270" y="292" fill="#e2e8f0" font-size="13" text-anchor="middle">Carbon/CO (mid) or Electrolysis (high)</text>
+    <line x1="270" y1="304" x2="270" y2="326" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+
+    <!-- Step 5: Refining -->
+    <rect x="140" y="326" width="260" height="52" rx="10" fill="rgba(124,58,237,0.3)" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="270" y="347" fill="#c4b5fd" font-size="13" text-anchor="middle" font-weight="bold">STEP 5 — Refining</text>
+    <text x="270" y="365" fill="#e2e8f0" font-size="13" text-anchor="middle">Electrolytic refining → pure metal</text>
+  </g>
+</svg>
+</div>
+<div class="card-explain">
+<div class="explain-title">Important Terms</div>
+<div class="fact-row"><span class="fi">🪨</span><span><b>Ore</b> = naturally occurring mineral from which a metal can be profitably extracted.</span></div>
+<div class="fact-row"><span class="fi">🗑</span><span><b>Gangue</b> = unwanted rocky/earthy impurities mixed with the ore.</span></div>
+<div class="fact-row"><span class="fi">🔥</span><span><b>Roasting</b> = heating a sulphide ore in excess air → metal oxide + SO₂.</span></div>
+<div class="fact-row"><span class="fi">♨️</span><span><b>Calcination</b> = heating a carbonate ore → metal oxide + CO₂.</span></div>
+<div class="fact-row"><span class="fi">⬇️</span><span><b>Reduction</b> = removing oxygen from oxide to get the pure metal.</span></div>
+</div>
+</div>
+
+<!-- Card OV3: Ores Table -->
+<div class="diagram-card">
+<div class="card-header"><div class="card-num num-ov">3</div><div class="card-title">Common Ores — NCERT Table</div></div>
+<div class="card-diagram">
+<svg viewBox="0 0 540 320" xmlns="http://www.w3.org/2000/svg">
+  <!-- Header row -->
+  <rect x="10" y="10" width="520" height="34" rx="6" fill="#1e293b"/>
+  <text x="60" y="32" fill="#94a3b8" font-size="13" font-weight="bold">Metal</text>
+  <text x="160" y="32" fill="#94a3b8" font-size="13" font-weight="bold">Ore Name</text>
+  <text x="310" y="32" fill="#94a3b8" font-size="13" font-weight="bold">Chemical Formula</text>
+  <text x="445" y="32" fill="#94a3b8" font-size="13" font-weight="bold">Type</text>
+  <!-- rows -->
+  <g font-size="13">
+    <!-- Al -->
+    <rect x="10" y="46" width="520" height="30" rx="4" fill="rgba(124,58,237,0.1)"/>
+    <text x="60" y="66" fill="#c4b5fd" font-weight="bold">Al</text>
+    <text x="160" y="66" fill="#e2e8f0">Bauxite</text>
+    <text x="310" y="66" fill="#a5b4fc" font-family="Courier New" font-size="12">Al₂O₃·2H₂O</text>
+    <text x="445" y="66" fill="#c4b5fd">Oxide</text>
+    <!-- Fe -->
+    <rect x="10" y="78" width="520" height="30" rx="4" fill="rgba(29,78,216,0.08)"/>
+    <text x="60" y="98" fill="#93c5fd" font-weight="bold">Fe</text>
+    <text x="160" y="98" fill="#e2e8f0">Haematite</text>
+    <text x="310" y="98" fill="#a5b4fc" font-family="Courier New" font-size="12">Fe₂O₃</text>
+    <text x="445" y="98" fill="#93c5fd">Oxide</text>
+    <!-- Fe2 -->
+    <rect x="10" y="110" width="520" height="30" rx="4" fill="rgba(29,78,216,0.05)"/>
+    <text x="60" y="130" fill="#93c5fd" font-weight="bold">Fe</text>
+    <text x="160" y="130" fill="#e2e8f0">Magnetite</text>
+    <text x="310" y="130" fill="#a5b4fc" font-family="Courier New" font-size="12">Fe₃O₄</text>
+    <text x="445" y="130" fill="#93c5fd">Oxide</text>
+    <!-- Cu -->
+    <rect x="10" y="142" width="520" height="30" rx="4" fill="rgba(5,150,105,0.1)"/>
+    <text x="60" y="162" fill="#6ee7b7" font-weight="bold">Cu</text>
+    <text x="160" y="162" fill="#e2e8f0">Copper Pyrites</text>
+    <text x="310" y="162" fill="#a5b4fc" font-family="Courier New" font-size="12">CuFeS₂</text>
+    <text x="445" y="162" fill="#6ee7b7">Sulphide</text>
+    <!-- Zn -->
+    <rect x="10" y="174" width="520" height="30" rx="4" fill="rgba(29,78,216,0.08)"/>
+    <text x="60" y="194" fill="#93c5fd" font-weight="bold">Zn</text>
+    <text x="160" y="194" fill="#e2e8f0">Zinc Blende</text>
+    <text x="310" y="194" fill="#a5b4fc" font-family="Courier New" font-size="12">ZnS</text>
+    <text x="445" y="194" fill="#93c5fd">Sulphide</text>
+    <!-- Hg -->
+    <rect x="10" y="206" width="520" height="30" rx="4" fill="rgba(180,83,9,0.1)"/>
+    <text x="60" y="226" fill="#fde68a" font-weight="bold">Hg</text>
+    <text x="160" y="226" fill="#e2e8f0">Cinnabar</text>
+    <text x="310" y="226" fill="#a5b4fc" font-family="Courier New" font-size="12">HgS</text>
+    <text x="445" y="226" fill="#fde68a">Sulphide</text>
+    <!-- Ag -->
+    <rect x="10" y="238" width="520" height="30" rx="4" fill="rgba(180,83,9,0.07)"/>
+    <text x="60" y="258" fill="#fde68a" font-weight="bold">Ag</text>
+    <text x="160" y="258" fill="#e2e8f0">Silver Glance</text>
+    <text x="310" y="258" fill="#a5b4fc" font-family="Courier New" font-size="12">Ag₂S</text>
+    <text x="445" y="258" fill="#fde68a">Sulphide</text>
+    <!-- Na -->
+    <rect x="10" y="270" width="520" height="30" rx="4" fill="rgba(124,58,237,0.1)"/>
+    <text x="60" y="290" fill="#c4b5fd" font-weight="bold">Na</text>
+    <text x="160" y="290" fill="#e2e8f0">Rock Salt</text>
+    <text x="310" y="290" fill="#a5b4fc" font-family="Courier New" font-size="12">NaCl</text>
+    <text x="445" y="290" fill="#c4b5fd">Chloride</text>
+  </g>
+</svg>
+</div>
+<div class="card-explain">
+<div class="fact-row"><span class="fi">📝</span><span>NCERT exam tip: Know the ore name, formula and type (oxide/sulphide/carbonate) for each metal.</span></div>
+<div class="chip-row"><span class="chip cg">Oxide ores → reduced directly</span><span class="chip cy">Sulphide ores → roast first → oxide → reduce</span></div>
+</div>
+</div>
+
+</div><!-- diagrams-grid -->
+</div><!-- section overview -->
+
+<!-- ══════════ LOW ACTIVITY ══════════ -->
+<div class="section" id="low">
+<div class="sec-header">
+  <div class="sec-title" style="color:#fbbf24;">🟡 Low Activity Metals — Hg, Ag, Au</div>
+  <div class="sec-sub">At the bottom of the reactivity series — least reactive — easiest to extract</div>
+</div>
+<div class="diagrams-grid">
+
+<!-- L1: Position in reactivity series -->
+<div class="diagram-card">
+<div class="card-header"><div class="card-num num-low">L1</div><div class="card-title">Why are they "Low Activity"?</div></div>
+<div class="card-diagram">
+<svg viewBox="0 0 540 280" xmlns="http://www.w3.org/2000/svg">
+  <!-- Ladder -->
+  <line x1="80" y1="30" x2="80" y2="250" stroke="#334155" stroke-width="3"/>
+  <line x1="460" y1="30" x2="460" y2="250" stroke="#334155" stroke-width="3"/>
+  <!-- Rungs and labels -->
+  <g font-size="13">
+    <line x1="80" y1="50" x2="460" y2="50" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <text x="90" y="47" fill="#c4b5fd">K, Na, Ca, Mg, Al</text>
+    <text x="350" y="47" fill="#c4b5fd" font-size="11">← High reactivity</text>
+    <line x1="80" y1="130" x2="460" y2="130" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <text x="90" y="127" fill="#93c5fd">Zn, Fe, Sn, Pb, Cu</text>
+    <text x="340" y="127" fill="#93c5fd" font-size="11">← Medium reactivity</text>
+    <!-- LOW highlighted -->
+    <rect x="82" y="175" width="376" height="68" rx="8" fill="rgba(180,83,9,0.2)" stroke="#fbbf24" stroke-width="2"/>
+    <text x="90" y="200" fill="#fde68a" font-weight="bold" font-size="15">Hg, Ag, Au</text>
+    <text x="230" y="200" fill="#fbbf24" font-size="13">← LOW reactivity</text>
+    <text x="90" y="228" fill="#e2e8f0" font-size="13">Found FREE in nature OR easily extracted by heating</text>
+  </g>
+  <!-- Arrow labels -->
+  <text x="30" y="40" fill="#34d399" font-size="11" transform="rotate(-90,30,140)" text-anchor="middle">REACTIVITY ↑</text>
+</svg>
+</div>
+<div class="card-explain">
+<div class="explain-title">Why Easy to Extract?</div>
+<div class="fact-row"><span class="fi">⚡</span><span>Low activity metals have <b>low affinity for oxygen</b>. Their oxides are unstable and decompose easily on heating.</span></div>
+<div class="fact-row"><span class="fi">🌍</span><span><b>Gold and Silver</b> are sometimes found as <b>native elements</b> (pure form) in nature because they don't react with air/water.</span></div>
+<div class="fact-row"><span class="fi">🌡️</span><span><b>Mercury</b> is found as <b>Cinnabar (HgS)</b> — just roast in air → HgO forms → decomposes → liquid mercury drips out!</span></div>
+</div>
+</div>
+
+<!-- L2: Mercury Extraction -->
+<div class="diagram-card">
+<div class="card-header"><div class="card-num num-low">L2</div><div class="card-title">Mercury Extraction from Cinnabar (HgS)</div></div>
+<div class="card-diagram">
+<svg viewBox="0 0 540 320" xmlns="http://www.w3.org/2000/svg">
+  <!-- Step 1: Cinnabar ore -->
+  <rect x="20" y="20" width="140" height="90" rx="10" fill="rgba(220,38,38,0.15)" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="90" y="48" fill="#fca5a5" font-size="13" font-weight="bold" text-anchor="middle">Cinnabar Ore</text>
+  <text x="90" y="68" fill="#f87171" font-size="20" text-anchor="middle">🪨</text>
+  <text x="90" y="94" fill="#fde68a" font-size="12" font-family="Courier New" text-anchor="middle">HgS (red solid)</text>
+  <!-- Arrow 1 -->
+  <line x1="162" y1="65" x2="195" y2="65" stroke="#475569" stroke-width="2" marker-end="url(#arr2)"/>
+  <text x="178" y="58" fill="#64748b" font-size="11" text-anchor="middle">+O₂</text>
+  <text x="178" y="82" fill="#64748b" font-size="11" text-anchor="middle">heat</text>
+  <!-- Step 2: Roasting -->
+  <rect x="195" y="20" width="150" height="90" rx="10" fill="rgba(180,83,9,0.15)" stroke="#b45309" stroke-width="1.5"/>
+  <text x="270" y="40" fill="#fbbf24" font-size="13" font-weight="bold" text-anchor="middle">Roasting in Air</text>
+  <text x="270" y="62" fill="#fb923c" font-size="22" text-anchor="middle">🔥</text>
+  <text x="270" y="85" fill="#fde68a" font-size="12" font-family="Courier New" text-anchor="middle">HgS + O₂ → HgO + SO₂</text>
+  <!-- Arrow 2 -->
+  <line x1="347" y1="65" x2="380" y2="65" stroke="#475569" stroke-width="2" marker-end="url(#arr2)"/>
+  <text x="363" y="58" fill="#64748b" font-size="11" text-anchor="middle">heat</text>
+  <text x="363" y="82" fill="#64748b" font-size="11" text-anchor="middle">↑</text>
+  <!-- Step 3: HgO decompose -->
+  <rect x="380" y="20" width="140" height="90" rx="10" fill="rgba(5,150,105,0.15)" stroke="#059669" stroke-width="1.5"/>
+  <text x="450" y="40" fill="#34d399" font-size="13" font-weight="bold" text-anchor="middle">Hg Vapour</text>
+  <text x="450" y="62" fill="#6ee7b7" font-size="22" text-anchor="middle">💧</text>
+  <text x="450" y="82" fill="#a7f3d0" font-size="12" font-family="Courier New" text-anchor="middle">2HgO → 2Hg + O₂</text>
+  <!-- Full equation box -->
+  <rect x="20" y="130" width="500" height="60" rx="10" fill="rgba(99,102,241,0.08)" stroke="rgba(99,102,241,0.3)" stroke-width="1.5"/>
+  <text x="270" y="155" fill="#a5b4fc" font-size="14" text-anchor="middle" font-weight="bold">Complete Reaction:</text>
+  <text x="270" y="178" fill="#c7d2fe" font-size="14" text-anchor="middle" font-family="Courier New">2HgS + 3O₂ → 2HgO + 2SO₂</text>
+  <!-- Condensation diagram -->
+  <text x="270" y="225" fill="#94a3b8" font-size="13" text-anchor="middle" font-weight="bold">Condensation to collect liquid mercury:</text>
+  <!-- Simple tube -->
+  <rect x="100" y="240" width="80" height="40" rx="4" fill="rgba(220,38,38,0.2)" stroke="#dc2626"/>
+  <text x="140" y="265" fill="#fca5a5" font-size="11" text-anchor="middle">Furnace</text>
+  <line x1="180" y1="255" x2="300" y2="255" stroke="#475569" stroke-width="2"/>
+  <line x1="300" y1="255" x2="300" y2="295" stroke="#475569" stroke-width="2"/>
+  <ellipse cx="300" cy="295" rx="30" ry="10" fill="rgba(100,116,139,0.6)" stroke="#94a3b8"/>
+  <text x="300" y="298" fill="#e2e8f0" font-size="10" text-anchor="middle">Hg(l)</text>
+  <text x="380" y="265" fill="#34d399" font-size="13">Hg vapour cools</text>
+  <text x="380" y="280" fill="#34d399" font-size="13">→ liquid mercury</text>
+  <defs><marker id="arr2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#475569"/></marker></defs>
+</svg>
+</div>
+<div class="card-explain">
+<div class="explain-title">Step-by-Step</div>
+<div class="fact-row"><span class="fi">1️⃣</span><span><b>Ore:</b> Cinnabar (HgS) — a red mineral, found in volcanic rocks.</span></div>
+<div class="fact-row"><span class="fi">2️⃣</span><span><b>Roasting:</b> HgS heated in air → HgO (mercury oxide) + SO₂ (sulphur dioxide gas).</span></div>
+<div class="fact-row"><span class="fi">3️⃣</span><span><b>Decomposition:</b> HgO is unstable! On continued heating it decomposes → Hg (vapour) + O₂.</span></div>
+<div class="fact-row"><span class="fi">4️⃣</span><span><b>Condensation:</b> Hg vapour cools in a condenser → liquid mercury drips out (mercury is liquid at room temperature!).</span></div>
+<div class="eq">2HgS + 3O₂ → 2HgO + 2SO₂<br>2HgO → 2Hg + O₂ ↑</div>
+<div class="chip-row"><span class="chip cy">No carbon needed</span><span class="chip cg">Gravity + heating only</span></div>
+</div>
+</div>
+
+<!-- L3: Gold / Native Metals -->
+<div class="diagram-card">
+<div class="card-header"><div class="card-num num-low">L3</div><div class="card-title">Gold and Silver — Native / Simple Extraction</div></div>
+<div class="card-diagram">
+<svg viewBox="0 0 540 260" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gold nugget representation -->
+  <ellipse cx="140" cy="90" rx="80" ry="60" fill="rgba(180,83,9,0.15)" stroke="#b45309" stroke-width="1.5"/>
+  <text x="140" y="80" font-size="30" text-anchor="middle">🪨</text>
+  <text x="140" y="115" fill="#fbbf24" font-size="14" text-anchor="middle" font-weight="bold">Rock/Ore</text>
+  <text x="140" y="135" fill="#fde68a" font-size="12" text-anchor="middle">Au/Ag mixed</text>
+  <text x="140" y="150" fill="#fde68a" font-size="12" text-anchor="middle">with minerals</text>
+  <!-- Arrow -->
+  <line x1="225" y1="90" x2="265" y2="90" stroke="#475569" stroke-width="2" marker-end="url(#arr2)"/>
+  <text x="245" y="82" fill="#64748b" font-size="11" text-anchor="middle">Chemical</text>
+  <text x="245" y="104" fill="#64748b" font-size="11" text-anchor="middle">treatment</text>
+  <!-- Gold metal -->
+  <ellipse cx="380" cy="90" rx="80" ry="60" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="380" y="80" font-size="30" text-anchor="middle">✨</text>
+  <text x="380" y="115" fill="#fde68a" font-size="14" text-anchor="middle" font-weight="bold">Pure Gold / Silver</text>
+  <text x="380" y="135" fill="#fbbf24" font-size="12" text-anchor="middle">Native element</text>
+  <!-- Facts row -->
+  <rect x="20" y="175" width="230" height="70" rx="8" fill="rgba(251,191,36,0.1)" stroke="rgba(251,191,36,0.3)"/>
+  <text x="135" y="198" fill="#fbbf24" font-size="13" text-anchor="middle" font-weight="bold">Gold (Au)</text>
+  <text x="135" y="216" fill="#e2e8f0" font-size="12" text-anchor="middle">Found as native element</text>
+  <text x="135" y="232" fill="#e2e8f0" font-size="12" text-anchor="middle">in riverbeds, rocks</text>
+  <rect x="290" y="175" width="230" height="70" rx="8" fill="rgba(148,163,184,0.1)" stroke="rgba(148,163,184,0.3)"/>
+  <text x="405" y="198" fill="#94a3b8" font-size="13" text-anchor="middle" font-weight="bold">Silver (Ag)</text>
+  <text x="405" y="216" fill="#e2e8f0" font-size="12" text-anchor="middle">Ag₂S ore → displacement</text>
+  <text x="405" y="232" fill="#e2e8f0" font-size="12" text-anchor="middle">or simple heating</text>
+</svg>
+</div>
+<div class="card-explain">
+<div class="explain-title">Key Facts</div>
+<div class="fact-row"><span class="fi">🌟</span><span><b>Gold</b> is the most unreactive metal. Found as shiny nuggets in riverbeds and rocks — it has NOT reacted with anything for millions of years!</span></div>
+<div class="fact-row"><span class="fi">🥈</span><span><b>Silver</b> sometimes occurs as native silver. Its ore (Ag₂S) can be reduced by displacement: add more reactive metal like Zn or Cu.</span></div>
+<div class="fact-row"><span class="fi">📌</span><span>NCERT Key point: <b>Metals below hydrogen in the reactivity series</b> are found as free elements (native state) in nature.</span></div>
+<div class="chip-row"><span class="chip cy">Au: Native element</span><span class="chip cb">Ag: Native or Ag₂S ore</span><span class="chip cg">No carbon needed</span></div>
+</div>
+</div>
+
+</div><!-- diagrams-grid -->
+</div><!-- section low -->
+
+<!-- ══════════ MID ACTIVITY ══════════ -->
+<div class="section" id="mid">
+<div class="sec-header">
+  <div class="sec-title" style="color:#60a5fa;">🔵 Mid Activity Metals — Zn, Fe, Cu, Pb, Sn</div>
+  <div class="sec-sub">Moderate reactivity — extracted by carbon/CO reduction after roasting or calcination</div>
+</div>
+<div class="diagrams-grid">
+
+<!-- M1: Roasting vs Calcination -->
+<div class="diagram-card">
+<div class="card-header"><div class="card-num num-mid">M1</div><div class="card-title">Roasting vs Calcination — Step 3 Details</div></div>
+<div class="card-diagram">
+<svg viewBox="0 0 540 280" xmlns="http://www.w3.org/2000/svg">
+  <!-- Roasting side -->
+  <rect x="20" y="20" width="230" height="230" rx="12" fill="rgba(220,38,38,0.08)" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="135" y="48" fill="#fca5a5" font-size="15" font-weight="bold" text-anchor="middle">🔥 ROASTING</text>
+  <text x="135" y="68" fill="#94a3b8" font-size="13" text-anchor="middle">For SULPHIDE ores</text>
+  <text x="135" y="90" fill="#e2e8f0" font-size="13" text-anchor="middle">Heat in EXCESS AIR (O₂)</text>
+  <rect x="30" y="100" width="210" height="40" rx="6" fill="rgba(99,102,241,0.08)" stroke="#4338ca" stroke-width="1"/>
+  <text x="135" y="118" fill="#a5b4fc" font-size="12" text-anchor="middle" font-family="Courier New">2ZnS + 3O₂ →</text>
+  <text x="135" y="134" fill="#a5b4fc" font-size="12" text-anchor="middle" font-family="Courier New">2ZnO + 2SO₂↑</text>
+  <text x="135" y="162" fill="#fde68a" font-size="13" text-anchor="middle" font-weight="bold">Ore: ZnS → ZnO</text>
+  <text x="135" y="180" fill="#e2e8f0" font-size="13" text-anchor="middle">By-product: SO₂ gas</text>
+  <text x="135" y="198" fill="#94a3b8" font-size="12" text-anchor="middle">(SO₂ → acid rain ⚠)</text>
+  <text x="135" y="225" fill="#fca5a5" font-size="12" text-anchor="middle">Sulphide → Oxide</text>
+  <!-- Calcination side -->
+  <rect x="290" y="20" width="230" height="230" rx="12" fill="rgba(180,83,9,0.08)" stroke="#b45309" stroke-width="1.5"/>
+  <text x="405" y="48" fill="#fbbf24" font-size="15" font-weight="bold" text-anchor="middle">♨️ CALCINATION</text>
+  <text x="405" y="68" fill="#94a3b8" font-size="13" text-anchor="middle">For CARBONATE ores</text>
+  <text x="405" y="90" fill="#e2e8f0" font-size="13" text-anchor="middle">Heat in LIMITED air</text>
+  <rect x="300" y="100" width="210" height="40" rx="6" fill="rgba(99,102,241,0.08)" stroke="#4338ca" stroke-width="1"/>
+  <text x="405" y="118" fill="#a5b4fc" font-size="12" text-anchor="middle" font-family="Courier New">ZnCO₃ →</text>
+  <text x="405" y="134" fill="#a5b4fc" font-size="12" text-anchor="middle" font-family="Courier New">ZnO + CO₂↑</text>
+  <text x="405" y="162" fill="#fde68a" font-size="13" text-anchor="middle" font-weight="bold">Ore: ZnCO₃ → ZnO</text>
+  <text x="405" y="180" fill="#e2e8f0" font-size="13" text-anchor="middle">By-product: CO₂ gas</text>
+  <text x="405" y="198" fill="#94a3b8" font-size="12" text-anchor="middle">(harmless gas escapes)</text>
+  <text x="405" y="225" fill="#fbbf24" font-size="12" text-anchor="middle">Carbonate → Oxide</text>
+</svg>
+</div>
+<div class="card-explain">
+<div class="explain-title">Remember the Difference</div>
+<div class="fact-row"><span class="fi">🔥</span><span><b>Roasting</b> = sulphide ore + excess air → oxide + SO₂. Temperature below melting point.</span></div>
+<div class="fact-row"><span class="fi">♨️</span><span><b>Calcination</b> = carbonate ore + limited air → oxide + CO₂. No sulphur dioxide produced.</span></div>
+<div class="fact-row"><span class="fi">🎯</span><span>Both processes <b>convert the ore to a metal oxide</b> — which is then reduced in the next step.</span></div>
+<div class="chip-row"><span class="chip cr">Roasting: ZnS, Cu₂S, FeS₂</span><span class="chip cy">Calcination: ZnCO₃, FeCO₃</span></div>
+</div>
+</div>
+
+<!-- M2: Zinc Extraction -->
+<div class="diagram-card">
+<div class="card-header"><div class="card-num num-mid">M2</div><div class="card-title">Zinc Extraction — Zinc Blende (ZnS)</div></div>
+<div class="card-diagram">
+<svg viewBox="0 0 540 310" xmlns="http://www.w3.org/2000/svg">
+  <!-- Flow -->
+  <defs><marker id="arr3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#475569"/></marker></defs>
+  <!-- Step 1 -->
+  <rect x="20" y="20" width="140" height="58" rx="8" fill="rgba(99,102,241,0.1)" stroke="#4338ca" stroke-width="1.5"/>
+  <text x="90" y="43" fill="#818cf8" font-size="13" font-weight="bold" text-anchor="middle">ZnS</text>
+  <text x="90" y="62" fill="#c7d2fe" font-size="12" text-anchor="middle">Zinc Blende ore</text>
+  <!-- Arrow + label -->
+  <line x1="162" y1="49" x2="192" y2="49" stroke="#475569" stroke-width="2" marker-end="url(#arr3)"/>
+  <text x="177" y="42" fill="#64748b" font-size="10" text-anchor="middle">+3O₂</text>
+  <text x="177" y="62" fill="#64748b" font-size="10" text-anchor="middle">roast</text>
+  <!-- Step 2 -->
+  <rect x="192" y="20" width="140" height="58" rx="8" fill="rgba(220,38,38,0.1)" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="262" y="43" fill="#fca5a5" font-size="13" font-weight="bold" text-anchor="middle">ZnO + SO₂</text>
+  <text x="262" y="62" fill="#e2e8f0" font-size="12" text-anchor="middle">Zinc oxide formed</text>
+  <!-- Arrow -->
+  <line x1="334" y1="49" x2="364" y2="49" stroke="#475569" stroke-width="2" marker-end="url(#arr3)"/>
+  <text x="349" y="42" fill="#64748b" font-size="10" text-anchor="middle">+C</text>
+  <text x="349" y="62" fill="#64748b" font-size="10" text-anchor="middle">1200°C</text>
+  <!-- Step 3 -->
+  <rect x="364" y="20" width="150" height="58" rx="8" fill="rgba(5,150,105,0.1)" stroke="#059669" stroke-width="1.5"/>
+  <text x="439" y="43" fill="#34d399" font-size="13" font-weight="bold" text-anchor="middle">Zn + CO₂</text>
+  <text x="439" y="62" fill="#a7f3d0" font-size="12" text-anchor="middle">Zinc metal!</text>
+  <!-- Full equation -->
+  <rect x="20" y="100" width="500" height="38" rx="8" fill="rgba(99,102,241,0.08)" stroke="#4338ca" stroke-width="1.5"/>
+  <text x="270" y="124" fill="#a5b4fc" font-size="14" font-family="Courier New" text-anchor="middle">2ZnO + C → 2Zn + CO₂</text>
+  <!-- Reduction furnace diagram -->
+  <text x="270" y="168" fill="#94a3b8" font-size="13" text-anchor="middle" font-weight="bold">Reduction Furnace</text>
+  <!-- Furnace -->
+  <rect x="180" y="180" width="180" height="100" rx="10" fill="rgba(220,38,38,0.1)" stroke="#dc2626" stroke-width="2"/>
+  <text x="270" y="210" fill="#fb923c" font-size="22" text-anchor="middle">🔥</text>
+  <text x="270" y="240" fill="#fbbf24" font-size="13" text-anchor="middle" font-weight="bold">ZnO + C</text>
+  <text x="270" y="260" fill="#94a3b8" font-size="12" text-anchor="middle">1200°C</text>
+  <!-- Products arrows -->
+  <line x1="180" y1="230" x2="80" y2="230" stroke="#34d399" stroke-width="2" marker-end="url(#arr3)"/>
+  <text x="130" y="222" fill="#34d399" font-size="12" text-anchor="middle">Zn vapour</text>
+  <text x="130" y="246" fill="#6ee7b7" font-size="11" text-anchor="middle">(condenses)</text>
+  <line x1="360" y1="230" x2="460" y2="230" stroke="#60a5fa" stroke-width="2" marker-end="url(#arr3)"/>
+  <text x="410" y="222" fill="#60a5fa" font-size="12" text-anchor="middle">CO₂ gas</text>
+  <text x="410" y="246" fill="#93c5fd" font-size="11" text-anchor="middle">(escapes)</text>
+</svg>
+</div>
+<div class="card-explain">
+<div class="explain-title">Complete Process</div>
+<div class="fact-row"><span class="fi">1️⃣</span><span><b>Ore:</b> Zinc Blende (ZnS) — concentrated by froth flotation.</span></div>
+<div class="fact-row"><span class="fi">2️⃣</span><span><b>Roasting:</b> 2ZnS + 3O₂ → 2ZnO + 2SO₂ (sulphide → oxide).</span></div>
+<div class="fact-row"><span class="fi">3️⃣</span><span><b>Reduction with Carbon:</b> ZnO + C → Zn + CO₂ at 1200°C.</span></div>
+<div class="fact-row"><span class="fi">4️⃣</span><span>Zinc vapour condenses to liquid zinc, then solidifies to pure zinc metal.</span></div>
+<div class="eq">2ZnS + 3O₂ → 2ZnO + 2SO₂ (roasting)<br>2ZnO + C → 2Zn + CO₂↑ (reduction)</div>
+</div>
+</div>
+
+<!-- M3: Blast Furnace -->
+<div class="diagram-card">
+<div class="card-header"><div class="card-num num-mid">M3</div><div class="card-title">Blast Furnace — Iron Extraction from Haematite (Fe₂O₃)</div></div>
+<div class="card-diagram">
+<svg viewBox="0 0 540 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blast furnace shape -->
+  <path d="M200,20 L340,20 L380,180 L380,300 L160,300 L160,180 Z" fill="rgba(220,38,38,0.1)" stroke="#dc2626" stroke-width="2"/>
+  <!-- Zones labels -->
+  <text x="270" y="45" fill="#94a3b8" font-size="12" text-anchor="middle" font-weight="bold">↓ Charge (Fe₂O₃+coke+limestone)</text>
+  <!-- Temp zones -->
+  <rect x="162" y="60" width="216" height="30" rx="4" fill="rgba(59,130,246,0.1)"/>
+  <text x="270" y="80" fill="#93c5fd" font-size="12" text-anchor="middle">Zone 1 (top): 500°C — CO reduces Fe₂O₃</text>
+  <rect x="162" y="94" width="216" height="30" rx="4" fill="rgba(251,191,36,0.1)"/>
+  <text x="270" y="114" fill="#fbbf24" font-size="12" text-anchor="middle">Zone 2: 850°C — CO₂+C→CO (coke gasifies)</text>
+  <rect x="162" y="128" width="216" height="30" rx="4" fill="rgba(249,115,22,0.1)"/>
+  <text x="270" y="148" fill="#fb923c" font-size="12" text-anchor="middle">Zone 3: 1000°C — Fe₂O₃+CO→Fe+CO₂</text>
+  <rect x="162" y="162" width="216" height="30" rx="4" fill="rgba(220,38,38,0.1)"/>
+  <text x="270" y="182" fill="#fca5a5" font-size="12" text-anchor="middle">Zone 4 (bottom): 1500°C — slag forms</text>
+  <!-- Hot air blast -->
+  <line x1="30" y1="250" x2="158" y2="250" stroke="#f97316" stroke-width="3" marker-end="url(#arr3)"/>
+  <text x="85" y="240" fill="#fb923c" font-size="12" text-anchor="middle">Hot air</text>
+  <text x="85" y="268" fill="#fb923c" font-size="11" text-anchor="middle">(blast)</text>
+  <line x1="382" y1="250" x2="510" y2="250" stroke="#f97316" stroke-width="3" marker-end="url(#arr3)"/>
+  <text x="445" y="240" fill="#fb923c" font-size="12" text-anchor="middle">Hot air</text>
+  <!-- Waste gas out top -->
+  <line x1="270" y1="20" x2="270" y2="1" stroke="#60a5fa" stroke-width="2" marker-end="url(#arr3)"/>
+  <text x="310" y="15" fill="#60a5fa" font-size="11">CO,CO₂,N₂ waste gases ↑</text>
+  <!-- Slag tap -->
+  <rect x="160" y="300" width="216" height="10" fill="#475569"/>
+  <line x1="270" y1="310" x2="270" y2="340" stroke="#6b7280" stroke-width="6"/>
+  <text x="310" y="333" fill="#94a3b8" font-size="12">← Slag (CaSiO₃)</text>
+  <!-- Iron tap -->
+  <line x1="270" y1="340" x2="270" y2="375" stroke="#f97316" stroke-width="6"/>
+  <ellipse cx="270" cy="380" rx="40" ry="12" fill="rgba(249,115,22,0.6)" stroke="#f97316"/>
+  <text x="270" y="384" fill="#fff" font-size="11" text-anchor="middle" font-weight="bold">Molten Iron</text>
+  <text x="270" y="400" fill="#94a3b8" font-size="11" text-anchor="middle">(Pig Iron — tapped from bottom)</text>
+</svg>
+</div>
+<div class="card-explain">
+<div class="explain-title">Blast Furnace Reactions</div>
+<div class="fact-row"><span class="fi">📥</span><span><b>Charge:</b> Haematite (Fe₂O₃) + coke (C) + limestone (CaCO₃) fed from the top.</span></div>
+<div class="fact-row"><span class="fi">💨</span><span><b>Hot air blast</b> from the bottom ignites coke → CO₂ → CO (reducing agent).</span></div>
+<div class="eq">C + O₂ → CO₂<br>CO₂ + C → 2CO (reducing agent)<br>Fe₂O₃ + 3CO → 2Fe + 3CO₂</div>
+<div class="fact-row"><span class="fi">🗑</span><span><b>Limestone → slag:</b> CaCO₃ → CaO + CO₂; CaO + SiO₂ → CaSiO₃ (slag) — removes gangue.</span></div>
+<div class="fact-row"><span class="fi">⬇️</span><span>Molten iron (<b>pig iron</b>) sinks to the bottom and is tapped. Slag floats above iron and is tapped separately.</span></div>
+<div class="chip-row"><span class="chip cr">Pig iron: 4% carbon</span><span class="chip cb">Slag: CaSiO₃</span><span class="chip cy">1500°C at base</span></div>
+</div>
+</div>
+
+<!-- M4: Copper Extraction -->
+<div class="diagram-card">
+<div class="card-header"><div class="card-num num-mid">M4</div><div class="card-title">Copper Extraction from Copper Pyrites (CuFeS₂)</div></div>
+<div class="card-diagram">
+<svg viewBox="0 0 540 280" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="arr4" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#475569"/></marker></defs>
+  <!-- Step boxes in a chain -->
+  <rect x="10" y="30" width="110" height="55" rx="8" fill="rgba(99,102,241,0.1)" stroke="#4338ca"/>
+  <text x="65" y="52" fill="#818cf8" font-size="12" font-weight="bold" text-anchor="middle">CuFeS₂</text>
+  <text x="65" y="70" fill="#c7d2fe" font-size="11" text-anchor="middle">Copper Pyrites</text>
+  <line x1="122" y1="57" x2="145" y2="57" stroke="#475569" stroke-width="2" marker-end="url(#arr4)"/>
+  <text x="133" y="48" fill="#64748b" font-size="9" text-anchor="middle">roast</text>
+
+  <rect x="145" y="30" width="110" height="55" rx="8" fill="rgba(220,38,38,0.1)" stroke="#dc2626"/>
+  <text x="200" y="52" fill="#fca5a5" font-size="12" font-weight="bold" text-anchor="middle">Cu₂S+FeO</text>
+  <text x="200" y="70" fill="#e2e8f0" font-size="11" text-anchor="middle">+SiO₂ flux</text>
+  <line x1="257" y1="57" x2="280" y2="57" stroke="#475569" stroke-width="2" marker-end="url(#arr4)"/>
+  <text x="268" y="48" fill="#64748b" font-size="9" text-anchor="middle">heat</text>
+
+  <rect x="280" y="30" width="110" height="55" rx="8" fill="rgba(180,83,9,0.1)" stroke="#b45309"/>
+  <text x="335" y="52" fill="#fbbf24" font-size="12" font-weight="bold" text-anchor="middle">Cu₂O + Cu₂S</text>
+  <text x="335" y="70" fill="#e2e8f0" font-size="11" text-anchor="middle">Blister copper</text>
+  <line x1="392" y1="57" x2="415" y2="57" stroke="#475569" stroke-width="2" marker-end="url(#arr4)"/>
+  <text x="403" y="48" fill="#64748b" font-size="9" text-anchor="middle">react</text>
+
+  <rect x="415" y="30" width="110" height="55" rx="8" fill="rgba(5,150,105,0.1)" stroke="#059669"/>
+  <text x="470" y="52" fill="#34d399" font-size="13" font-weight="bold" text-anchor="middle">Cu (metal)</text>
+  <text x="470" y="70" fill="#a7f3d0" font-size="11" text-anchor="middle">98% pure</text>
+
+  <!-- Key reactions -->
+  <rect x="10" y="108" width="520" height="150" rx="10" fill="rgba(99,102,241,0.05)" stroke="#4338ca" stroke-width="1.5"/>
+  <text x="270" y="130" fill="#818cf8" font-size="13" text-anchor="middle" font-weight="bold">Key Reactions:</text>
+  <text x="270" y="154" fill="#a5b4fc" font-size="12" font-family="Courier New" text-anchor="middle">2CuFeS₂ + O₂ → Cu₂S + 2FeS + SO₂  (roasting)</text>
+  <text x="270" y="176" fill="#a5b4fc" font-size="12" font-family="Courier New" text-anchor="middle">2FeS + 3O₂ → 2FeO + 2SO₂  (FeO removed as slag)</text>
+  <text x="270" y="198" fill="#a5b4fc" font-size="12" font-family="Courier New" text-anchor="middle">2Cu₂S + 3O₂ → 2Cu₂O + 2SO₂</text>
+  <text x="270" y="220" fill="#a5b4fc" font-size="12" font-family="Courier New" text-anchor="middle">2Cu₂O + Cu₂S → 6Cu + SO₂  (auto-reduction)</text>
+  <text x="270" y="246" fill="#34d399" font-size="13" text-anchor="middle" font-weight="bold">↑ Copper reduces itself — no external carbon needed!</text>
+</svg>
+</div>
+<div class="card-explain">
+<div class="explain-title">Auto-Reduction — Unique to Copper!</div>
+<div class="fact-row"><span class="fi">🌟</span><span><b>Auto-reduction:</b> Cu₂O reacts with Cu₂S directly — copper reduces itself! No carbon needed.</span></div>
+<div class="fact-row"><span class="fi">🫧</span><span><b>Blister copper</b> (98% pure) — called "blister" because SO₂ bubbles trapped inside create a blistered surface.</span></div>
+<div class="fact-row"><span class="fi">⚡</span><span>Further purified to <b>99.9% copper</b> by electrolytic refining (see Refining tab).</span></div>
+<div class="chip-row"><span class="chip cg">Auto-reduction</span><span class="chip cb">Blister copper: 98%</span><span class="chip cp">Electrolysis: 99.9%</span></div>
+</div>
+</div>
+
+</div><!-- diagrams-grid -->
+</div><!-- section mid -->
+
+<!-- ══════════ HIGH ACTIVITY ══════════ -->
+<div class="section" id="high">
+<div class="sec-header">
+  <div class="sec-title" style="color:#a78bfa;">🟣 High Activity Metals — K, Na, Ca, Mg, Al</div>
+  <div class="sec-sub">Most reactive — carbon CANNOT reduce their oxides — must use electrolysis</div>
+</div>
+<div class="diagrams-grid">
+
+<!-- H1: Why not carbon? -->
+<div class="diagram-card">
+<div class="card-header"><div class="card-num num-high">H1</div><div class="card-title">Why Can't Carbon Reduce Highly Active Metal Oxides?</div></div>
+<div class="card-diagram">
+<svg viewBox="0 0 540 280" xmlns="http://www.w3.org/2000/svg">
+  <!-- Left: attempt with carbon -->
+  <rect x="20" y="20" width="230" height="230" rx="12" fill="rgba(220,38,38,0.08)" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="135" y="48" fill="#fca5a5" font-size="14" font-weight="bold" text-anchor="middle">❌ Carbon Reduction</text>
+  <text x="135" y="68" fill="#94a3b8" font-size="12" text-anchor="middle">Tried: Al₂O₃ + C → Al + CO₂</text>
+  <text x="135" y="90" fill="#f87171" font-size="13" text-anchor="middle" font-weight="bold">DOES NOT WORK!</text>
+  <text x="135" y="118" fill="#e2e8f0" font-size="13" text-anchor="middle">Why? Al is MORE reactive</text>
+  <text x="135" y="136" fill="#e2e8f0" font-size="13" text-anchor="middle">than carbon. Al cannot</text>
+  <text x="135" y="154" fill="#e2e8f0" font-size="13" text-anchor="middle">be "displaced" by C.</text>
+  <text x="135" y="180" fill="#94a3b8" font-size="12" text-anchor="middle">Carbon forms carbides</text>
+  <text x="135" y="198" fill="#94a3b8" font-size="12" text-anchor="middle">(Al₄C₃) instead of</text>
+  <text x="135" y="216" fill="#94a3b8" font-size="12" text-anchor="middle">giving pure metal</text>
+  <!-- Right: electrolysis -->
+  <rect x="290" y="20" width="230" height="230" rx="12" fill="rgba(124,58,237,0.08)" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="405" y="48" fill="#c4b5fd" font-size="14" font-weight="bold" text-anchor="middle">✅ Electrolysis</text>
+  <text x="405" y="68" fill="#94a3b8" font-size="12" text-anchor="middle">Solution: Use electricity!</text>
+  <text x="405" y="90" fill="#34d399" font-size="13" text-anchor="middle" font-weight="bold">Electrolytic Reduction</text>
+  <text x="405" y="118" fill="#e2e8f0" font-size="13" text-anchor="middle">Melt the compound</text>
+  <text x="405" y="136" fill="#e2e8f0" font-size="13" text-anchor="middle">(NaCl, Al₂O₃, MgCl₂)</text>
+  <text x="405" y="162" fill="#e2e8f0" font-size="13" text-anchor="middle">Pass electric current</text>
+  <text x="405" y="180" fill="#e2e8f0" font-size="13" text-anchor="middle">→ Metal deposits at</text>
+  <text x="405" y="198" fill="#c4b5fd" font-size="13" text-anchor="middle" font-weight="bold">CATHODE (negative)</text>
+  <text x="405" y="216" fill="#a7f3d0" font-size="13" text-anchor="middle">Pure metal obtained!</text>
+</svg>
+</div>
+<div class="card-explain">
+<div class="explain-title">The Core Principle</div>
+<div class="fact-row"><span class="fi">⚡</span><span>When a metal is MORE reactive than carbon, carbon CANNOT displace it. Electricity is used instead to force the reduction.</span></div>
+<div class="fact-row"><span class="fi">🔵</span><span>At <b>cathode (−)</b>: metal ions gain electrons → metal atom deposited (reduction).</span></div>
+<div class="fact-row"><span class="fi">🔴</span><span>At <b>anode (+)</b>: non-metal ions lose electrons → non-metal released (oxidation).</span></div>
+<div class="chip-row"><span class="chip cp">Na from NaCl</span><span class="chip cp">Al from Al₂O₃</span><span class="chip cp">Mg from MgCl₂</span></div>
+</div>
+</div>
+
+<!-- H2: Electrolysis of NaCl -->
+<div class="diagram-card">
+<div class="card-header"><div class="card-num num-high">H2</div><div class="card-title">Electrolysis of Molten NaCl — Sodium Extraction</div></div>
+<div class="card-diagram">
+<svg viewBox="0 0 540 320" xmlns="http://www.w3.org/2000/svg">
+  <!-- Battery -->
+  <rect x="215" y="10" width="110" height="40" rx="6" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <text x="270" y="35" fill="#e2e8f0" font-size="14" text-anchor="middle" font-weight="bold">🔋 Battery</text>
+  <!-- Wires -->
+  <line x1="215" y1="30" x2="130" y2="30" stroke="#f87171" stroke-width="2.5"/>
+  <line x1="130" y1="30" x2="130" y2="90" stroke="#f87171" stroke-width="2.5"/>
+  <line x1="325" y1="30" x2="410" y2="30" stroke="#60a5fa" stroke-width="2.5"/>
+  <line x1="410" y1="30" x2="410" y2="90" stroke="#60a5fa" stroke-width="2.5"/>
+  <!-- + − labels -->
+  <text x="195" y="22" fill="#f87171" font-size="14" font-weight="bold">−</text>
+  <text x="335" y="22" fill="#60a5fa" font-size="14" font-weight="bold">+</text>
+  <!-- Electrolysis cell -->
+  <rect x="80" y="90" width="380" height="200" rx="10" fill="rgba(56,189,248,0.07)" stroke="#0891b2" stroke-width="2"/>
+  <!-- Molten NaCl -->
+  <rect x="82" y="140" width="376" height="148" rx="8" fill="rgba(251,191,36,0.1)"/>
+  <text x="270" y="250" fill="#fbbf24" font-size="13" text-anchor="middle">Molten NaCl (Na⁺ and Cl⁻ ions free to move)</text>
+  <!-- Cathode -->
+  <rect x="120" y="92" width="30" height="150" rx="4" fill="#f87171" fill-opacity="0.8"/>
+  <text x="135" y="88" fill="#f87171" font-size="12" text-anchor="middle" font-weight="bold">CATHODE</text>
+  <text x="135" y="104" fill="#fca5a5" font-size="11" text-anchor="middle">(−ve)</text>
+  <!-- Anode -->
+  <rect x="390" y="92" width="30" height="150" rx="4" fill="#60a5fa" fill-opacity="0.8"/>
+  <text x="405" y="88" fill="#60a5fa" font-size="12" text-anchor="middle" font-weight="bold">ANODE</text>
+  <text x="405" y="104" fill="#93c5fd" font-size="11" text-anchor="middle">(+ve)</text>
+  <!-- Na depositing at cathode -->
+  <circle cx="162" cy="175" r="10" fill="#fbbf24" fill-opacity="0.8"/>
+  <text x="162" y="179" fill="#000" font-size="9" text-anchor="middle" font-weight="bold">Na</text>
+  <circle cx="162" cy="200" r="10" fill="#fbbf24" fill-opacity="0.8"/>
+  <text x="162" y="204" fill="#000" font-size="9" text-anchor="middle" font-weight="bold">Na</text>
+  <!-- Cl2 bubbles at anode -->
+  <circle cx="378" cy="170" r="8" fill="none" stroke="#34d399" stroke-width="1.5"/>
+  <text x="378" y="174" fill="#34d399" font-size="8" text-anchor="middle">Cl₂</text>
+  <circle cx="378" cy="195" r="8" fill="none" stroke="#34d399" stroke-width="1.5"/>
+  <text x="378" y="199" fill="#34d399" font-size="8" text-anchor="middle">Cl₂</text>
+  <!-- Half reactions -->
+  <text x="270" y="276" fill="#f87171" font-size="12" text-anchor="middle">Cathode: Na⁺ + e⁻ → Na  (reduction)</text>
+  <text x="270" y="295" fill="#60a5fa" font-size="12" text-anchor="middle">Anode: 2Cl⁻ → Cl₂ + 2e⁻  (oxidation)</text>
+</svg>
+</div>
+<div class="card-explain">
+<div class="explain-title">Half Reactions (Must Know!)</div>
+<div class="eq">At Cathode (−): Na⁺ + e⁻ → Na ↓  (reduction)<br>At Anode (+): 2Cl⁻ → Cl₂↑ + 2e⁻  (oxidation)</div>
+<div class="fact-row"><span class="fi">⚠️</span><span>NaCl must be <b>molten</b> (not dissolved in water) — in water, H₂ forms at cathode instead of Na.</span></div>
+<div class="fact-row"><span class="fi">🌡️</span><span>NaCl melts at 801°C. <b>CaCl₂ is added</b> as flux to lower the melting point to ~600°C.</span></div>
+<div class="fact-row"><span class="fi">☢️</span><span>Cl₂ gas is toxic — collected separately and used to make HCl, disinfectants, PVC.</span></div>
+</div>
+</div>
+
+<!-- H3: Hall-Héroult for Aluminium -->
+<div class="diagram-card">
+<div class="card-header"><div class="card-num num-high">H3</div><div class="card-title">Hall-Héroult Process — Aluminium from Al₂O₃ (Bauxite)</div></div>
+<div class="card-diagram">
+<svg viewBox="0 0 540 340" xmlns="http://www.w3.org/2000/svg">
+  <!-- Step 1: Bauxite to Pure Al2O3 -->
+  <rect x="20" y="10" width="150" height="60" rx="8" fill="rgba(124,58,237,0.1)" stroke="#7c3aed"/>
+  <text x="95" y="34" fill="#c4b5fd" font-size="12" font-weight="bold" text-anchor="middle">Bauxite ore</text>
+  <text x="95" y="54" fill="#e2e8f0" font-size="11" text-anchor="middle">Al₂O₃·2H₂O</text>
+  <line x1="172" y1="40" x2="200" y2="40" stroke="#475569" stroke-width="2" marker-end="url(#arr3)"/>
+  <text x="186" y="32" fill="#64748b" font-size="9" text-anchor="middle">Bayer</text>
+  <text x="186" y="52" fill="#64748b" font-size="9" text-anchor="middle">process</text>
+  <rect x="200" y="10" width="150" height="60" rx="8" fill="rgba(99,102,241,0.1)" stroke="#4338ca"/>
+  <text x="275" y="34" fill="#818cf8" font-size="12" font-weight="bold" text-anchor="middle">Pure Alumina</text>
+  <text x="275" y="54" fill="#e2e8f0" font-size="11" text-anchor="middle">Al₂O₃ (white powder)</text>
+  <line x1="352" y1="40" x2="380" y2="40" stroke="#475569" stroke-width="2" marker-end="url(#arr3)"/>
+  <text x="366" y="32" fill="#64748b" font-size="9" text-anchor="middle">+cryolite</text>
+  <text x="366" y="52" fill="#64748b" font-size="9" text-anchor="middle">electro</text>
+  <rect x="380" y="10" width="140" height="60" rx="8" fill="rgba(5,150,105,0.1)" stroke="#059669"/>
+  <text x="450" y="34" fill="#34d399" font-size="13" font-weight="bold" text-anchor="middle">Pure Al</text>
+  <text x="450" y="54" fill="#a7f3d0" font-size="11" text-anchor="middle">99.9% aluminium</text>
+  <!-- Electrolytic cell -->
+  <text x="270" y="102" fill="#94a3b8" font-size="13" text-anchor="middle" font-weight="bold">Electrolytic Cell (Hall-Héroult)</text>
+  <!-- Cell outline -->
+  <rect x="60" y="115" width="420" height="190" rx="10" fill="rgba(30,41,59,0.6)" stroke="#334155" stroke-width="2"/>
+  <!-- Carbon anode blocks (hanging from top) -->
+  <rect x="130" y="115" width="50" height="80" rx="4" fill="#374151" stroke="#6b7280"/>
+  <text x="155" y="145" fill="#9ca3af" font-size="10" text-anchor="middle">Carbon</text>
+  <text x="155" y="158" fill="#9ca3af" font-size="10" text-anchor="middle">Anode (+)</text>
+  <rect x="245" y="115" width="50" height="80" rx="4" fill="#374151" stroke="#6b7280"/>
+  <text x="270" y="145" fill="#9ca3af" font-size="10" text-anchor="middle">Carbon</text>
+  <text x="270" y="158" fill="#9ca3af" font-size="10" text-anchor="middle">Anode (+)</text>
+  <rect x="360" y="115" width="50" height="80" rx="4" fill="#374151" stroke="#6b7280"/>
+  <text x="385" y="145" fill="#9ca3af" font-size="10" text-anchor="middle">Carbon</text>
+  <text x="385" y="158" fill="#9ca3af" font-size="10" text-anchor="middle">Anode (+)</text>
+  <!-- Molten cryolite + Al2O3 -->
+  <rect x="62" y="195" width="416" height="90" rx="6" fill="rgba(99,102,241,0.15)"/>
+  <text x="270" y="225" fill="#a5b4fc" font-size="13" text-anchor="middle" font-weight="bold">Molten Al₂O₃ in Cryolite (Na₃AlF₆)</text>
+  <text x="270" y="244" fill="#c7d2fe" font-size="12" text-anchor="middle">Cryolite lowers melting point: 2050°C → 950°C</text>
+  <!-- Carbon cathode (the steel shell) -->
+  <text x="270" y="275" fill="#f87171" font-size="12" text-anchor="middle">Steel shell lined with carbon = CATHODE (−ve)</text>
+  <!-- Molten Al at bottom -->
+  <rect x="82" y="285" width="376" height="18" rx="4" fill="rgba(251,191,36,0.4)"/>
+  <text x="270" y="299" fill="#fbbf24" font-size="11" text-anchor="middle" font-weight="bold">Molten Aluminium (tapped from bottom)</text>
+  <!-- O2 bubbles at anodes -->
+  <text x="155" y="186" fill="#34d399" font-size="11" text-anchor="middle">O₂↑</text>
+  <text x="270" y="186" fill="#34d399" font-size="11" text-anchor="middle">O₂↑</text>
+  <text x="385" y="186" fill="#34d399" font-size="11" text-anchor="middle">O₂↑</text>
+  <!-- Battery connection -->
+  <line x1="270" y1="80" x2="270" y2="115" stroke="#475569" stroke-width="2"/>
+  <text x="310" y="100" fill="#64748b" font-size="11">DC electricity</text>
+</svg>
+</div>
+<div class="card-explain">
+<div class="explain-title">Hall-Héroult Process Details</div>
+<div class="eq">At Cathode (−): Al³⁺ + 3e⁻ → Al  (reduction)<br>At Anode (+): 2O²⁻ → O₂ + 4e⁻  (oxidation)</div>
+<div class="fact-row"><span class="fi">❄️</span><span><b>Cryolite (Na₃AlF₆)</b> is added to dissolve Al₂O₃ and lower its melting point from 2050°C to ~950°C — saves huge energy costs.</span></div>
+<div class="fact-row"><span class="fi">🔥</span><span><b>Carbon anodes burn away</b> — O₂ from anode reacts with carbon: C + O₂ → CO₂. Anodes must be replaced regularly.</span></div>
+<div class="fact-row"><span class="fi">⚡</span><span>Aluminium production is <b>energy-intensive</b> — this is why recycling aluminium is so important (saves 95% energy!).</span></div>
+<div class="chip-row"><span class="chip cp">Ore: Bauxite → Alumina</span><span class="chip cb">Cryolite as flux</span><span class="chip cg">Cathode: steel lining</span></div>
+</div>
+</div>
+
+<!-- H4: Thermite Reaction -->
+<div class="diagram-card">
+<div class="card-header"><div class="card-num num-high">H4</div><div class="card-title">Thermite Reaction — Al as a Reducing Agent</div></div>
+<div class="card-diagram">
+<svg viewBox="0 0 540 240" xmlns="http://www.w3.org/2000/svg">
+  <!-- Left: Al + Fe2O3 -->
+  <rect x="30" y="30" width="180" height="80" rx="10" fill="rgba(124,58,237,0.1)" stroke="#7c3aed"/>
+  <text x="120" y="55" fill="#c4b5fd" font-size="14" font-weight="bold" text-anchor="middle">Reactants</text>
+  <text x="120" y="75" fill="#e2e8f0" font-size="13" text-anchor="middle">Aluminium (Al)</text>
+  <text x="120" y="95" fill="#e2e8f0" font-size="13" text-anchor="middle">+ Iron oxide (Fe₂O₃)</text>
+  <!-- Arrow -->
+  <text x="270" y="62" fill="#fb923c" font-size="22" text-anchor="middle">🔥</text>
+  <text x="270" y="85" fill="#f97316" font-size="12" text-anchor="middle" font-weight="bold">ignite</text>
+  <line x1="215" y1="70" x2="250" y2="70" stroke="#475569" stroke-width="2" marker-end="url(#arr3)"/>
+  <line x1="290" y1="70" x2="325" y2="70" stroke="#475569" stroke-width="2" marker-end="url(#arr3)"/>
+  <!-- Right: products -->
+  <rect x="330" y="30" width="180" height="80" rx="10" fill="rgba(5,150,105,0.1)" stroke="#059669"/>
+  <text x="420" y="55" fill="#34d399" font-size="14" font-weight="bold" text-anchor="middle">Products</text>
+  <text x="420" y="75" fill="#fbbf24" font-size="13" text-anchor="middle">Molten Iron (Fe) ⬇</text>
+  <text x="420" y="95" fill="#e2e8f0" font-size="13" text-anchor="middle">+ Aluminium oxide</text>
+  <!-- Equation -->
+  <rect x="30" y="130" width="480" height="38" rx="8" fill="rgba(99,102,241,0.08)" stroke="#4338ca"/>
+  <text x="270" y="154" fill="#a5b4fc" font-size="14" font-family="Courier New" text-anchor="middle">Fe₂O₃ + 2Al → Al₂O₃ + 2Fe + heat</text>
+  <!-- Applications -->
+  <rect x="30" y="182" width="230" height="48" rx="8" fill="rgba(220,38,38,0.08)" stroke="#dc2626"/>
+  <text x="145" y="202" fill="#fca5a5" font-size="13" text-anchor="middle" font-weight="bold">Welding Railway Tracks</text>
+  <text x="145" y="220" fill="#e2e8f0" font-size="12" text-anchor="middle">Molten iron joins the gap!</text>
+  <rect x="280" y="182" width="230" height="48" rx="8" fill="rgba(180,83,9,0.08)" stroke="#b45309"/>
+  <text x="395" y="202" fill="#fbbf24" font-size="13" text-anchor="middle" font-weight="bold">Temperature: ~2500°C</text>
+  <text x="395" y="220" fill="#e2e8f0" font-size="12" text-anchor="middle">Extremely exothermic!</text>
+</svg>
+</div>
+<div class="card-explain">
+<div class="explain-title">Thermite Reaction — NCERT Important!</div>
+<div class="fact-row"><span class="fi">⚡</span><span>Al is more reactive than Fe, so Al displaces Fe from Fe₂O₃ — this is a <b>displacement reaction</b>.</span></div>
+<div class="fact-row"><span class="fi">🌡️</span><span>Releases enormous heat (~2500°C) — enough to <b>melt iron</b>! The molten iron fills gaps in railway tracks (thermite welding).</span></div>
+<div class="fact-row"><span class="fi">📝</span><span>NCERT exam question: <i>"Name the reaction used in welding railway tracks."</i> — Answer: <b>Thermite reaction</b>.</span></div>
+<div class="eq">Fe₂O₃ + 2Al → Al₂O₃ + 2Fe + heat</div>
+<div class="chip-row"><span class="chip cp">Al displaces Fe</span><span class="chip cr">~2500°C heat</span><span class="chip cg">Railway track welding</span></div>
+</div>
+</div>
+
+</div><!-- diagrams-grid -->
+</div><!-- section high -->
+
+<!-- ══════════ REFINING ══════════ -->
+<div class="section" id="refine">
+<div class="sec-header">
+  <div class="sec-title">✨ Refining of Metals</div>
+  <div class="sec-sub">Getting pure metal from impure extracted metal</div>
+</div>
+<div class="diagrams-grid">
+
+<!-- R1: Electrolytic Refining -->
+<div class="diagram-card">
+<div class="card-header"><div class="card-num num-ov">R1</div><div class="card-title">Electrolytic Refining — The Final Purification Step</div></div>
+<div class="card-diagram">
+<svg viewBox="0 0 540 320" xmlns="http://www.w3.org/2000/svg">
+  <!-- Battery -->
+  <rect x="215" y="10" width="110" height="40" rx="6" fill="#1e293b" stroke="#475569"/>
+  <text x="270" y="35" fill="#e2e8f0" font-size="14" text-anchor="middle" font-weight="bold">🔋 DC Power</text>
+  <line x1="215" y1="30" x2="130" y2="30" stroke="#f87171" stroke-width="2.5"/>
+  <line x1="130" y1="30" x2="130" y2="80" stroke="#f87171" stroke-width="2.5"/>
+  <line x1="325" y1="30" x2="410" y2="30" stroke="#60a5fa" stroke-width="2.5"/>
+  <line x1="410" y1="30" x2="410" y2="80" stroke="#60a5fa" stroke-width="2.5"/>
+  <text x="195" y="22" fill="#f87171" font-size="14" font-weight="bold">−</text>
+  <text x="335" y="22" fill="#60a5fa" font-size="14" font-weight="bold">+</text>
+  <!-- Cell -->
+  <rect x="80" y="80" width="380" height="200" rx="10" fill="rgba(56,189,248,0.07)" stroke="#0891b2" stroke-width="2"/>
+  <!-- Electrolyte -->
+  <rect x="82" y="130" width="376" height="148" rx="8" fill="rgba(56,189,248,0.1)"/>
+  <text x="270" y="240" fill="#38bdf8" font-size="12" text-anchor="middle">Copper sulphate solution (CuSO₄) — the electrolyte</text>
+  <!-- Cathode: thin pure Cu -->
+  <rect x="110" y="82" width="20" height="150" rx="3" fill="#34d399" fill-opacity="0.9"/>
+  <text x="120" y="78" fill="#34d399" font-size="11" text-anchor="middle" font-weight="bold">CATHODE</text>
+  <text x="120" y="92" fill="#6ee7b7" font-size="10" text-anchor="middle">(−ve)</text>
+  <text x="120" y="104" fill="#a7f3d0" font-size="10" text-anchor="middle">Pure Cu</text>
+  <text x="120" y="116" fill="#a7f3d0" font-size="10" text-anchor="middle">(thin sheet)</text>
+  <!-- Anode: thick impure Cu -->
+  <rect x="410" y="82" width="30" height="150" rx="3" fill="#f97316" fill-opacity="0.8"/>
+  <text x="425" y="78" fill="#f97316" font-size="11" text-anchor="middle" font-weight="bold">ANODE</text>
+  <text x="425" y="92" fill="#fb923c" font-size="10" text-anchor="middle">(+ve)</text>
+  <text x="425" y="104" fill="#fed7aa" font-size="10" text-anchor="middle">Impure Cu</text>
+  <text x="425" y="116" fill="#fed7aa" font-size="10" text-anchor="middle">(thick block)</text>
+  <!-- Cu2+ ions in solution -->
+  <circle cx="230" cy="180" r="10" fill="rgba(251,191,36,0.6)" stroke="#fbbf24"/>
+  <text x="230" y="184" fill="#000" font-size="8" text-anchor="middle">Cu²⁺</text>
+  <circle cx="300" cy="165" r="10" fill="rgba(251,191,36,0.6)" stroke="#fbbf24"/>
+  <text x="300" y="169" fill="#000" font-size="8" text-anchor="middle">Cu²⁺</text>
+  <circle cx="260" cy="210" r="10" fill="rgba(251,191,36,0.6)" stroke="#fbbf24"/>
+  <text x="260" y="214" fill="#000" font-size="8" text-anchor="middle">Cu²⁺</text>
+  <!-- Arrows for ion movement -->
+  <line x1="275" y1="180" x2="145" y2="180" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr3)"/>
+  <text x="210" y="172" fill="#fbbf24" font-size="10" text-anchor="middle">Cu²⁺ → cathode</text>
+  <!-- Anode mud -->
+  <rect x="410" y="230" width="30" height="22" rx="3" fill="#374151"/>
+  <text x="440" y="250" fill="#6b7280" font-size="10">Anode mud</text>
+  <text x="440" y="262" fill="#6b7280" font-size="9">(Au, Ag, Pt)</text>
+  <!-- Half reactions -->
+  <text x="270" y="265" fill="#f87171" font-size="12" text-anchor="middle">Cathode: Cu²⁺ + 2e⁻ → Cu  (reduction)</text>
+  <text x="270" y="284" fill="#60a5fa" font-size="12" text-anchor="middle">Anode: Cu → Cu²⁺ + 2e⁻  (oxidation)</text>
+</svg>
+</div>
+<div class="card-explain">
+<div class="explain-title">How Electrolytic Refining Works</div>
+<div class="fact-row"><span class="fi">🔴</span><span><b>Anode (+):</b> impure copper dissolves into the electrolyte as Cu²⁺ ions. Impurities (Zn, Fe, Ni) also dissolve.</span></div>
+<div class="fact-row"><span class="fi">🟢</span><span><b>Cathode (−):</b> only Cu²⁺ ions deposit as pure copper (Cu²⁺ + 2e⁻ → Cu). Less reactive impurities (Ag, Au, Pt) do NOT deposit — they fall as <b>anode mud</b> below the anode.</span></div>
+<div class="fact-row"><span class="fi">💎</span><span><b>Anode mud</b> contains precious metals (Ag, Au, Pt) — recovered and sold separately! This is how gold is found near copper refineries.</span></div>
+<div class="fact-row"><span class="fi">📌</span><span>Used for: Cu (copper wire), Al, Zn, Ni. Purity achieved: <b>99.9%+</b>.</span></div>
+<div class="chip-row"><span class="chip cr">Anode: impure metal dissolves</span><span class="chip cg">Cathode: pure metal deposits</span><span class="chip cy">Anode mud: Ag, Au, Pt</span></div>
+</div>
+</div>
+
+<!-- R2: Corrosion -->
+<div class="diagram-card">
+<div class="card-header"><div class="card-num num-ov">R2</div><div class="card-title">Corrosion — The Reverse of Extraction!</div></div>
+<div class="card-diagram">
+<svg viewBox="0 0 540 280" xmlns="http://www.w3.org/2000/svg">
+  <!-- Iron rusting -->
+  <rect x="20" y="30" width="150" height="80" rx="10" fill="rgba(220,38,38,0.1)" stroke="#dc2626"/>
+  <text x="95" y="58" fill="#fca5a5" font-size="14" text-anchor="middle" font-weight="bold">Iron Rusting</text>
+  <text x="95" y="78" fill="#e2e8f0" font-size="13" text-anchor="middle">Fe (metal) + O₂</text>
+  <text x="95" y="96" fill="#e2e8f0" font-size="13" text-anchor="middle">+ H₂O → Fe₂O₃</text>
+  <!-- Copper corrosion -->
+  <rect x="195" y="30" width="150" height="80" rx="10" fill="rgba(5,150,105,0.1)" stroke="#059669"/>
+  <text x="270" y="58" fill="#34d399" font-size="14" text-anchor="middle" font-weight="bold">Copper</text>
+  <text x="270" y="78" fill="#e2e8f0" font-size="13" text-anchor="middle">Cu + CO₂ + H₂O</text>
+  <text x="270" y="96" fill="#e2e8f0" font-size="13" text-anchor="middle">→ green patina</text>
+  <!-- Silver -->
+  <rect x="370" y="30" width="150" height="80" rx="10" fill="rgba(100,116,139,0.1)" stroke="#64748b"/>
+  <text x="445" y="58" fill="#94a3b8" font-size="14" text-anchor="middle" font-weight="bold">Silver</text>
+  <text x="445" y="78" fill="#e2e8f0" font-size="13" text-anchor="middle">Ag + H₂S</text>
+  <text x="445" y="96" fill="#e2e8f0" font-size="13" text-anchor="middle">→ black tarnish</text>
+  <!-- Prevention methods -->
+  <text x="270" y="140" fill="#94a3b8" font-size="13" text-anchor="middle" font-weight="bold">Prevention Methods</text>
+  <rect x="20" y="152" width="110" height="62" rx="8" fill="rgba(99,102,241,0.08)" stroke="#4338ca"/>
+  <text x="75" y="174" fill="#818cf8" font-size="12" text-anchor="middle" font-weight="bold">Paint/Oil</text>
+  <text x="75" y="192" fill="#c7d2fe" font-size="11" text-anchor="middle">Barrier coating</text>
+  <text x="75" y="206" fill="#c7d2fe" font-size="11" text-anchor="middle">prevents O₂</text>
+  <rect x="145" y="152" width="110" height="62" rx="8" fill="rgba(5,150,105,0.08)" stroke="#059669"/>
+  <text x="200" y="174" fill="#34d399" font-size="12" text-anchor="middle" font-weight="bold">Galvanising</text>
+  <text x="200" y="192" fill="#a7f3d0" font-size="11" text-anchor="middle">Zinc coating</text>
+  <text x="200" y="206" fill="#a7f3d0" font-size="11" text-anchor="middle">on iron/steel</text>
+  <rect x="270" y="152" width="110" height="62" rx="8" fill="rgba(220,38,38,0.08)" stroke="#dc2626"/>
+  <text x="325" y="174" fill="#fca5a5" font-size="12" text-anchor="middle" font-weight="bold">Alloying</text>
+  <text x="325" y="192" fill="#e2e8f0" font-size="11" text-anchor="middle">Stainless steel</text>
+  <text x="325" y="206" fill="#e2e8f0" font-size="11" text-anchor="middle">(Fe + Cr + Ni)</text>
+  <rect x="395" y="152" width="125" height="62" rx="8" fill="rgba(251,191,36,0.08)" stroke="#b45309"/>
+  <text x="457" y="174" fill="#fbbf24" font-size="12" text-anchor="middle" font-weight="bold">Electroplating</text>
+  <text x="457" y="192" fill="#fde68a" font-size="11" text-anchor="middle">Cr/Ni plating</text>
+  <text x="457" y="206" fill="#fde68a" font-size="11" text-anchor="middle">on base metal</text>
+  <!-- Rusting equation -->
+  <rect x="20" y="230" width="500" height="38" rx="8" fill="rgba(99,102,241,0.08)" stroke="#4338ca"/>
+  <text x="270" y="254" fill="#a5b4fc" font-size="13" font-family="Courier New" text-anchor="middle">4Fe + 3O₂ + 2xH₂O → 2Fe₂O₃·xH₂O  (rust)</text>
+</svg>
+</div>
+<div class="card-explain">
+<div class="explain-title">Corrosion Concepts</div>
+<div class="fact-row"><span class="fi">🔄</span><span>Corrosion is the <b>reverse of extraction</b>! We work hard to extract metals, then they slowly return to their oxide/compound form.</span></div>
+<div class="fact-row"><span class="fi">🌧️</span><span><b>Rusting needs BOTH oxygen AND water</b>. Iron in dry air does NOT rust. Iron in water with no O₂ does NOT rust.</span></div>
+<div class="fact-row"><span class="fi">🔵</span><span><b>Galvanising:</b> iron coated with zinc. Even if Zn layer scratches, Zn is more reactive — Zn corrodes first, protecting iron (sacrificial protection).</span></div>
+<div class="fact-row"><span class="fi">⚗️</span><span><b>Alloys resist corrosion:</b> Stainless steel (Fe+Cr+Ni) — Cr₂O₃ forms a protective layer.</span></div>
+<div class="chip-row"><span class="chip cr">Rust = Fe₂O₃·xH₂O</span><span class="chip cg">Galvanise = Zn on Fe</span><span class="chip cb">Alloy = mix of metals</span></div>
+</div>
+</div>
+
+</div><!-- diagrams-grid -->
+</div><!-- section refine -->
+
+<script>
+function showSec(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx=['overview','low','mid','high','refine'].indexOf(id);
+  document.querySelectorAll('.tab')[idx].classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

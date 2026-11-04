@@ -54,6 +54,7 @@ body{background:#0a0f1e;color:#e2e8f0;font-family:'Segoe UI',Arial,sans-serif;mi
 .btn-slides{background:#1d4ed8;color:#fff;}
 .btn-interactive{background:#7c3aed;color:#fff;}
 .btn-sim{background:#059669;color:#fff;}
+.btn-visuals{background:#0891b2;color:#fff;}
 .coming-label{font-size:14px;color:#334155;font-style:italic;margin-top:8px;}
 .coming-icon{font-size:28px;position:absolute;top:20px;right:20px;opacity:0.4;}
 
@@ -185,6 +186,7 @@ const curriculum = {
         slides: 'Class10_Chemistry_MetalsNonMetals_slides.html',
         interactive: 'Class10_Chemistry_MetalsNonMetals_interactive.html',
         sim: 'Class10_Chemistry_MetalsNonMetals_simulations.html',
+        visuals: 'Class10_Chemistry_ExtractionOfMetals_visuals.html',
         comingSoon: false,
       },
       { title: 'Chapter 1: Chemical Reactions and Equations', desc: 'Types of reactions, balancing equations, oxidation and reduction', badge: 'Chemistry', badgeClass: 'badge-chem', comingSoon: true },
@@ -265,6 +267,7 @@ function renderTopics() {
           ${t.slides ? `<a class="topic-btn btn-slides" href="${t.slides}" target="_blank">📊 Slides</a>` : ''}
           ${t.interactive ? `<a class="topic-btn btn-interactive" href="${t.interactive}" target="_blank">🖱 Interactive</a>` : ''}
           ${t.sim ? `<a class="topic-btn btn-sim" href="${t.sim}" target="_blank">🔬 Lab Simulations</a>` : ''}
+          ${t.visuals ? `<a class="topic-btn btn-visuals" href="${t.visuals}" target="_blank">🖼 Visual Diagrams</a>` : ''}
         </div>
       </div>`;
   }).join('');
