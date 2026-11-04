@@ -1198,6 +1198,11 @@ function loop3(){
 function loop4(){
   updateSim4();drawSim4();animId=requestAnimationFrame(loop4);
 }
+// Deep-link from slides: URL hash #sim1–#sim5 opens that experiment
+window.addEventListener('DOMContentLoaded',()=>{
+  const h=window.location.hash.slice(1);
+  if(/^sim[1-5]$/.test(h)) startSim(h);
+});
 </script>
 </body>
 </html>

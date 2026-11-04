@@ -103,8 +103,8 @@ tr:hover td{background:rgba(255,255,255,0.03);}
   </div>
   <div style="display:flex;gap:8px;align-items:center;">
     <div class="nav-hint" style="margin-right:4px;">Click <b>green terms</b> for explanation</div>
-    <a href="Class10_Chemistry_CarbonCompounds_interactive.html" target="_blank" style="background:#7c3aed;color:#fff;padding:7px 14px;font-size:15px;border-radius:7px;text-decoration:none;font-weight:bold;">🎯 Interactive</a>
-    <a href="Class10_Chemistry_CarbonCompounds_simulations.html" target="_blank" style="background:#0891b2;color:#fff;padding:7px 14px;font-size:15px;border-radius:7px;text-decoration:none;font-weight:bold;">🔬 Lab Sims</a>
+    <a id="ch4-ia-btn" href="Class10_Chemistry_CarbonCompounds_interactive.html#scene1" target="_blank" style="background:#7c3aed;color:#fff;padding:7px 14px;font-size:15px;border-radius:7px;text-decoration:none;font-weight:bold;">🎯 Interactive</a>
+    <a id="ch4-sim-btn" href="Class10_Chemistry_CarbonCompounds_simulations.html" target="_blank" style="background:#0891b2;color:#fff;padding:7px 14px;font-size:15px;border-radius:7px;text-decoration:none;font-weight:bold;">🔬 Lab Sims</a>
     <a href="index.html" target="_blank" style="background:rgba(30,41,59,0.8);color:#94a3b8;border:1px solid #334155;padding:7px 12px;font-size:14px;border-radius:7px;text-decoration:none;">🏠</a>
     <button class="fsbtn" onclick="document.documentElement.requestFullscreen()">⛶</button>
   </div>
@@ -929,6 +929,30 @@ tr:hover td{background:rgba(255,255,255,0.03);}
 const TOTAL = 19;
 let cur = 1;
 
+// Per-slide cross-nav: ia = interactive scene (1-indexed), sim = sim DOM id or null
+const slideLinks4 = [
+  null,
+  {ia:1,   sim:null},   // 1  Title
+  {ia:1,   sim:null},   // 2  Carbon Daily Life
+  {ia:2,   sim:null},   // 3  Why Carbon Special
+  {ia:2,   sim:'sim1'}, // 4  Covalent Bond     → Special | Covalent Bond sim
+  {ia:3,   sim:null},   // 5  Allotropes        → Allotropes
+  {ia:4,   sim:null},   // 6  Hydrocarbons      → Series Builder
+  {ia:4,   sim:'sim1'}, // 7  Alkanes           → Series Builder | Covalent Bond sim
+  {ia:4,   sim:'sim3'}, // 8  Alkenes/Alkynes   → Series Builder | Bromine Test
+  {ia:4,   sim:null},   // 9  Homologous Series → Series Builder
+  {ia:4,   sim:null},   // 10 Functional Groups → Series Builder
+  {ia:4,   sim:null},   // 11 IUPAC Naming      → Series Builder
+  {ia:5,   sim:'sim2'}, // 12 Combustion        → Reactions | Combustion sim
+  {ia:5,   sim:'sim3'}, // 13 Oxid/Add/Sub      → Reactions | Bromine Test
+  {ia:6,   sim:'sim4'}, // 14 Ethanol           → Ethanol scene | Oxidation sim
+  {ia:5,   sim:'sim4'}, // 15 Ethanoic Acid     → Reactions | Oxidation sim
+  {ia:7,   sim:'sim5'}, // 16 Soaps             → Soap Science | Micelle sim
+  {ia:7,   sim:'sim5'}, // 17 Micelle           → Soap Science | Micelle sim
+  {ia:7,   sim:null},   // 18 Soaps vs Deterg.  → Soap Science
+  {ia:8,   sim:null},   // 19 Summary           → Quiz scene
+];
+
 function showSlide(n) {
   document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
   const el = document.getElementById('s' + n);
@@ -936,6 +960,17 @@ function showSlide(n) {
   document.getElementById('scnt').textContent = n + ' / ' + TOTAL;
   document.getElementById('pfill').style.width = (n / TOTAL * 100) + '%';
   cur = n;
+  const lk = slideLinks4[n] || {ia:null, sim:null};
+  const iaBtn = document.getElementById('ch4-ia-btn');
+  const simBtn = document.getElementById('ch4-sim-btn');
+  if (lk.ia) {
+    iaBtn.href = 'Class10_Chemistry_CarbonCompounds_interactive.html#scene' + lk.ia;
+    iaBtn.style.display = '';
+  } else { iaBtn.style.display = 'none'; }
+  if (lk.sim) {
+    simBtn.href = 'Class10_Chemistry_CarbonCompounds_simulations.html#' + lk.sim;
+    simBtn.style.display = '';
+  } else { simBtn.style.display = 'none'; }
 }
 function nextSlide() { if (cur < TOTAL) showSlide(cur + 1); }
 function prevSlide() { if (cur > 1) showSlide(cur - 1); }
@@ -1101,6 +1136,7 @@ function openC(key) {
 function closeC() {
   document.getElementById('sidebar').classList.remove('open');
 }
+showSlide(1); // init buttons on first slide
 </script>
 </body>
 </html>

@@ -1084,8 +1084,8 @@ ul.blist.small{font-size:22px;}
 <div class="slidebar">
   <div class="sb-chapter">Class 10 Chemistry · NCERT Ch. 3 · Metals and Non-metals · Karnataka KTBS</div>
   <div style="display:flex;gap:8px;align-items:center;">
-    <a href="Class10_Chemistry_MetalsNonMetals_interactive.html" target="_blank" style="background:#7c3aed;color:#fff;border:none;padding:8px 16px;font-size:16px;border-radius:7px;cursor:pointer;text-decoration:none;font-weight:bold;">🎯 Interactive</a>
-    <a href="Class10_Chemistry_MetalsNonMetals_simulations.html" target="_blank" style="background:#0891b2;color:#fff;border:none;padding:8px 16px;font-size:16px;border-radius:7px;cursor:pointer;text-decoration:none;font-weight:bold;">🔬 Lab Sims</a>
+    <a id="ch3-ia-btn" href="Class10_Chemistry_MetalsNonMetals_interactive.html#scene1" target="_blank" style="background:#7c3aed;color:#fff;border:none;padding:8px 16px;font-size:16px;border-radius:7px;cursor:pointer;text-decoration:none;font-weight:bold;">🎯 Interactive</a>
+    <a id="ch3-sim-btn" href="Class10_Chemistry_MetalsNonMetals_simulations.html" target="_blank" style="background:#0891b2;color:#fff;border:none;padding:8px 16px;font-size:16px;border-radius:7px;cursor:pointer;text-decoration:none;font-weight:bold;">🔬 Lab Sims</a>
     <a href="index.html" target="_blank" style="background:#1e293b;color:#94a3b8;border:1px solid #334155;padding:8px 14px;font-size:15px;border-radius:7px;cursor:pointer;text-decoration:none;">🏠 Home</a>
   </div>
   <div class="sb-nav">
@@ -1099,6 +1099,35 @@ ul.blist.small{font-size:22px;}
 const total = 24;
 let cur = 1;
 
+// Per-slide cross-nav: ia = interactive scene (1-indexed), sim = sim DOM id or null
+const slideLinks = [
+  null,
+  {ia:1,   sim:null},   // 1  Title
+  {ia:1,   sim:null},   // 2  Learning Objectives
+  {ia:2,   sim:null},   // 3  Physical Props Metals
+  {ia:2,   sim:null},   // 4  Physical Props Non-metals
+  {ia:4,   sim:'sim4'}, // 5  Metals + Oxygen   → Rxn w O₂ | Mg Burning
+  {ia:3,   sim:'sim1'}, // 6  Metals + Water    → Chem Props | Metal+Acid
+  {ia:3,   sim:'sim1'}, // 7  Metals + Acids    → Chem Props | Metal+Acid
+  {ia:3,   sim:'sim2'}, // 8  Displacement      → Chem Props | Displacement
+  {ia:5,   sim:'sim1'}, // 9  Reactivity Series → Reactivity | Metal+Acid
+  {ia:6,   sim:null},   // 10 Non-metals        → Non-metals scene
+  {ia:7,   sim:'sim3'}, // 11 Ionic Bond        → Ionic Bond | NaCl sim
+  {ia:7,   sim:'sim3'}, // 12 NaCl Formation    → Ionic Bond | NaCl sim
+  {ia:7,   sim:'sim3'}, // 13 Ionic Compounds   → Ionic Bond | NaCl sim
+  {ia:8,   sim:null},   // 14 Occurrence        → Extraction
+  {ia:8,   sim:null},   // 15 Extraction Low    → Extraction
+  {ia:8,   sim:null},   // 16 Extraction Medium → Extraction
+  {ia:8,   sim:null},   // 17 Extraction High   → Extraction
+  {ia:8,   sim:null},   // 18 Electrolytic Ref  → Extraction
+  {ia:9,   sim:'sim5'}, // 19 Corrosion         → Corrosion | Rusting
+  {ia:9,   sim:'sim5'}, // 20 Prevention        → Corrosion | Rusting
+  {ia:9,   sim:null},   // 21 Alloys            → Corrosion
+  {ia:null,sim:null},   // 22 Activities        (no match)
+  {ia:null,sim:null},   // 23 Misconceptions    (no match)
+  {ia:11,  sim:null},   // 24 Summary           → Summary
+];
+
 function showSlide(n){
   document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));
   document.getElementById('sl'+n).classList.add('active');
@@ -1106,6 +1135,17 @@ function showSlide(n){
   document.getElementById('pb').disabled = (n===1);
   document.getElementById('nb').disabled = (n===total);
   cur=n;
+  const lk = slideLinks[n] || {ia:null, sim:null};
+  const iaBtn = document.getElementById('ch3-ia-btn');
+  const simBtn = document.getElementById('ch3-sim-btn');
+  if (lk.ia) {
+    iaBtn.href = 'Class10_Chemistry_MetalsNonMetals_interactive.html#scene' + lk.ia;
+    iaBtn.style.display = '';
+  } else { iaBtn.style.display = 'none'; }
+  if (lk.sim) {
+    simBtn.href = 'Class10_Chemistry_MetalsNonMetals_simulations.html#' + lk.sim;
+    simBtn.style.display = '';
+  } else { simBtn.style.display = 'none'; }
 }
 function go(d){
   const nxt=cur+d;
@@ -1120,6 +1160,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowLeft'||e.key==='PageUp')go(-1);
   if(e.key==='f'||e.key==='F')toggleFS();
 });
+showSlide(1); // init buttons on first slide
 </script>
 </body>
 </html>

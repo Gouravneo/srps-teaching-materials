@@ -919,6 +919,12 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowLeft'||e.key==='ArrowUp')go(-1);
   if(e.key==='f'||e.key==='F')toggleFS();
 });
+// Deep-link from slides: URL hash #scene1–#scene12 jumps to that scene
+window.addEventListener('DOMContentLoaded',()=>{
+  const h=window.location.hash.slice(1);
+  const m=h.match(/^scene(\d+)$/);
+  if(m){const n=parseInt(m[1]);if(n>=1&&n<=scenes.length)showScene(n-1);}
+});
 </script>
 </body>
 </html>

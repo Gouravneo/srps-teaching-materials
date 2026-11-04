@@ -884,6 +884,11 @@ function loop5(){ updateSim5(); drawSim5(); if(s5.step>0&&s5.step<4) animId=requ
 
 /* ─── START ─── */
 loop1();
+// Deep-link from slides: URL hash #sim1–#sim5 opens that experiment
+window.addEventListener('DOMContentLoaded',()=>{
+  const h=window.location.hash.slice(1);
+  if(/^sim[1-5]$/.test(h)) initSim(h);
+});
 </script>
 </body>
 </html>
