@@ -66,6 +66,13 @@ input[type=range]::-webkit-slider-thumb{width:20px;height:20px;border-radius:50%
 .fs-btn{position:fixed;top:12px;right:12px;background:rgba(30,41,59,0.85);border:1px solid #334155;color:#64748b;padding:8px 14px;font-size:16px;border-radius:7px;cursor:pointer;z-index:999;}
 .fs-btn:hover{color:#e2e8f0;}
 
+/* ── CROSS-NAV ── */
+.sim-nav-row{display:flex;gap:12px;margin-bottom:28px;}
+.sim-nav-btn{background:#1e293b;border:1.5px solid #334155;color:#94a3b8;padding:10px 22px;font-size:17px;border-radius:9px;cursor:pointer;text-decoration:none;transition:all 0.2s;}
+.sim-nav-btn:hover{color:#e2e8f0;background:#334155;border-color:#64748b;}
+.hdr-nav-btn{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:7px 15px;font-size:16px;border-radius:7px;cursor:pointer;text-decoration:none;white-space:nowrap;}
+.hdr-nav-btn:hover{color:#e2e8f0;background:#334155;}
+
 /* ── STATUS DOT ── */
 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;}
 </style>
@@ -77,6 +84,11 @@ input[type=range]::-webkit-slider-thumb{width:20px;height:20px;border-radius:50%
 <div class="scene active" id="home">
   <div class="home-title">🔬 Chemistry Lab Simulations</div>
   <div class="home-sub">Class 10 · NCERT Chapter 3 · Metals and Non-metals · Karnataka KTBS</div>
+  <div class="sim-nav-row">
+    <a href="Class10_Chemistry_MetalsNonMetals_slides.html" class="sim-nav-btn">📋 Slides</a>
+    <a href="Class10_Chemistry_MetalsNonMetals_interactive.html" class="sim-nav-btn">🧩 Interactive</a>
+    <a href="index.html" class="sim-nav-btn">🏠 Home</a>
+  </div>
   <div class="exp-grid">
     <div class="exp-card" onclick="startSim('sim1')">
       <div class="exp-icon">⚗️</div>
@@ -112,6 +124,8 @@ input[type=range]::-webkit-slider-thumb{width:20px;height:20px;border-radius:50%
     <button class="back-btn" onclick="goHome()">← Back</button>
     <span class="sim-name">⚗️ Metal + HCl Reactivity Lab</span>
     <span class="sim-chapter">NCERT Activity 3.2 · Reactivity Series</span>
+    <a href="Class10_Chemistry_MetalsNonMetals_slides.html#slide7" class="hdr-nav-btn">📋 Slides</a>
+    <a href="Class10_Chemistry_MetalsNonMetals_interactive.html#scene3" class="hdr-nav-btn">🧩 Interactive</a>
   </div>
   <div class="sim-wrap">
     <div class="sim-canvas-area"><canvas id="c1" width="820" height="560"></canvas></div>
@@ -140,6 +154,8 @@ input[type=range]::-webkit-slider-thumb{width:20px;height:20px;border-radius:50%
     <button class="back-btn" onclick="goHome()">← Back</button>
     <span class="sim-name">🪙 Displacement Reaction — Fe + CuSO₄</span>
     <span class="sim-chapter">NCERT Activity 3.4 · Reactivity Series</span>
+    <a href="Class10_Chemistry_MetalsNonMetals_slides.html#slide8" class="hdr-nav-btn">📋 Slides</a>
+    <a href="Class10_Chemistry_MetalsNonMetals_interactive.html#scene3" class="hdr-nav-btn">🧩 Interactive</a>
   </div>
   <div class="sim-wrap">
     <div class="sim-canvas-area"><canvas id="c2" width="820" height="560"></canvas></div>
@@ -166,6 +182,8 @@ input[type=range]::-webkit-slider-thumb{width:20px;height:20px;border-radius:50%
     <button class="back-btn" onclick="goHome()">← Back</button>
     <span class="sim-name">⚛️ Ionic Bond Formation — NaCl</span>
     <span class="sim-chapter">NCERT Section 3.4 · Bonding</span>
+    <a href="Class10_Chemistry_MetalsNonMetals_slides.html#slide11" class="hdr-nav-btn">📋 Slides</a>
+    <a href="Class10_Chemistry_MetalsNonMetals_interactive.html#scene7" class="hdr-nav-btn">🧩 Interactive</a>
   </div>
   <div class="sim-wrap">
     <div class="sim-canvas-area"><canvas id="c3" width="820" height="560"></canvas></div>
@@ -193,6 +211,8 @@ input[type=range]::-webkit-slider-thumb{width:20px;height:20px;border-radius:50%
     <button class="back-btn" onclick="goHome()">← Back</button>
     <span class="sim-name">🔥 Magnesium Burning in Air</span>
     <span class="sim-chapter">NCERT Activity 3.1 · Metal + Oxygen</span>
+    <a href="Class10_Chemistry_MetalsNonMetals_slides.html#slide5" class="hdr-nav-btn">📋 Slides</a>
+    <a href="Class10_Chemistry_MetalsNonMetals_interactive.html#scene4" class="hdr-nav-btn">🧩 Interactive</a>
   </div>
   <div class="sim-wrap">
     <div class="sim-canvas-area"><canvas id="c4" width="820" height="560"></canvas></div>
@@ -221,6 +241,8 @@ input[type=range]::-webkit-slider-thumb{width:20px;height:20px;border-radius:50%
     <button class="back-btn" onclick="goHome()">← Back</button>
     <span class="sim-name">🦀 Rusting Experiment — Conditions for Corrosion</span>
     <span class="sim-chapter">NCERT Activity 3.9 · Corrosion</span>
+    <a href="Class10_Chemistry_MetalsNonMetals_slides.html#slide19" class="hdr-nav-btn">📋 Slides</a>
+    <a href="Class10_Chemistry_MetalsNonMetals_interactive.html#scene9" class="hdr-nav-btn">🧩 Interactive</a>
   </div>
   <div class="sim-wrap">
     <div class="sim-canvas-area"><canvas id="c5" width="820" height="560"></canvas></div>

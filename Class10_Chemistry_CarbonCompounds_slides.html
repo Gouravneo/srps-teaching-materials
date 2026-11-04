@@ -1136,7 +1136,12 @@ function openC(key) {
 function closeC() {
   document.getElementById('sidebar').classList.remove('open');
 }
-showSlide(1); // init buttons on first slide
+(function(){
+  const h=window.location.hash.slice(1);
+  const m=h.match(/^slide(\d+)$/);
+  if(m){const n=parseInt(m[1]);if(n>=1&&n<=total){showSlide(n);return;}}
+  showSlide(1);
+})();
 </script>
 </body>
 </html>

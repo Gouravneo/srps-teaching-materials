@@ -73,7 +73,12 @@ label{font-size:14px;color:#64748b;display:block;margin-bottom:4px;}
     <div class="stab" onclick="initSim('sim4')">4. Oxidation</div>
     <div class="stab" onclick="initSim('sim5')">5. Micelle</div>
   </div>
-  <button class="fsbtn" onclick="document.documentElement.requestFullscreen()">⛶ Fullscreen</button>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <a id="ch4-sim-slides-btn" href="Class10_Chemistry_CarbonCompounds_slides.html" class="fsbtn" style="text-decoration:none;color:#94a3b8;">📋 Slides</a>
+    <a id="ch4-sim-ia-btn" href="Class10_Chemistry_CarbonCompounds_interactive.html" class="fsbtn" style="text-decoration:none;color:#94a3b8;">🧩 Interactive</a>
+    <a href="index.html" class="fsbtn" style="text-decoration:none;color:#94a3b8;">🏠 Home</a>
+    <button class="fsbtn" onclick="document.documentElement.requestFullscreen()">⛶ Fullscreen</button>
+  </div>
 </div>
 
 <div class="main">
@@ -291,12 +296,24 @@ class Smoke{
   isDead(){ return this.alpha<=0; }
 }
 
+const ch4SimLinks={
+  sim1:{slide:4, scene:2},
+  sim2:{slide:12, scene:5},
+  sim3:{slide:8, scene:4},
+  sim4:{slide:14, scene:6},
+  sim5:{slide:16, scene:7}
+};
 function initSim(id){
   stopAll();
   document.querySelectorAll('.sim-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.stab')[['sim1','sim2','sim3','sim4','sim5'].indexOf(id)].classList.add('active');
+  const lk=ch4SimLinks[id];
+  if(lk){
+    document.getElementById('ch4-sim-slides-btn').href='Class10_Chemistry_CarbonCompounds_slides.html#slide'+lk.slide;
+    document.getElementById('ch4-sim-ia-btn').href='Class10_Chemistry_CarbonCompounds_interactive.html#scene'+lk.scene;
+  }
   if(id==='sim1'){resetSim1();loop1();}
   else if(id==='sim2'){resetSim2();loop2();}
   else if(id==='sim3'){resetSim3();drawSim3();}
@@ -883,12 +900,12 @@ function drawSim5(){
 function loop5(){ updateSim5(); drawSim5(); if(s5.step>0&&s5.step<4) animId=requestAnimationFrame(loop5); else if(s5.step===4) drawSim5(); }
 
 /* ─── START ─── */
-loop1();
-// Deep-link from slides: URL hash #sim1–#sim5 opens that experiment
 window.addEventListener('DOMContentLoaded',()=>{
   const h=window.location.hash.slice(1);
   if(/^sim[1-5]$/.test(h)) initSim(h);
+  else { const lk=ch4SimLinks['sim1']; if(lk){document.getElementById('ch4-sim-slides-btn').href='Class10_Chemistry_CarbonCompounds_slides.html#slide'+lk.slide; document.getElementById('ch4-sim-ia-btn').href='Class10_Chemistry_CarbonCompounds_interactive.html#scene'+lk.scene;} }
 });
+loop1();
 </script>
 </body>
 </html>
