@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Class 10 | Carbon and Its Compounds | Lab Simulations</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{background:#0a0f1e;color:#e2e8f0;font-family:'Segoe UI',Arial,sans-serif;display:flex;flex-direction:column;}
+.navbar{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;background:linear-gradient(135deg,#1e3a8a,#1e1b4b);border-bottom:2px solid #3730a3;flex-shrink:0;}
+.nav-title{font-size:17px;font-weight:bold;color:#fff;}
+.nav-sub{font-size:12px;color:#818cf8;margin-top:2px;}
+.sim-tabs{display:flex;gap:6px;}
+.stab{padding:7px 15px;border-radius:20px;border:1.5px solid #1e293b;background:#0d1527;color:#475569;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.stab:hover{border-color:#334155;color:#94a3b8;}
+.stab.active{background:#059669;border-color:#34d399;color:#fff;}
+.fsbtn{background:rgba(30,41,59,0.8);border:1px solid #334155;color:#64748b;padding:7px 14px;font-size:13px;border-radius:7px;cursor:pointer;}
+.fsbtn:hover{color:#e2e8f0;}
+.main{flex:1;display:flex;overflow:hidden;}
+.sim-wrapper{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+/* SIM PANELS */
+.sim-panel{display:none;flex:1;overflow:hidden;padding:20px 28px;}
+.sim-panel.active{display:flex;gap:24px;}
+.sim-left{display:flex;flex-direction:column;gap:14px;flex-shrink:0;}
+canvas{background:#070c17;border-radius:12px;border:1.5px solid #1e293b;display:block;}
+/* CONTROLS */
+.ctrl-box{background:#0d1527;border:1.5px solid #1e293b;border-radius:12px;padding:16px;min-width:280px;}
+.ctrl-title{font-size:15px;font-weight:bold;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+.action-btn{padding:11px 20px;border-radius:8px;border:none;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.2s;width:100%;margin-bottom:8px;}
+.btn-green{background:#059669;color:#fff;}
+.btn-green:hover{background:#047857;}
+.btn-blue{background:#1d4ed8;color:#fff;}
+.btn-blue:hover{background:#1e40af;}
+.btn-amber{background:#d97706;color:#fff;}
+.btn-amber:hover{background:#b45309;}
+.btn-red{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);}
+.btn-red:hover{background:rgba(239,68,68,0.25);}
+.btn-purple{background:#7c3aed;color:#fff;}
+.btn-purple:hover{background:#6d28d9;}
+.btn-row{display:flex;gap:8px;}
+.btn-row .action-btn{flex:1;}
+.obs-box{background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.2);border-radius:10px;padding:12px;font-size:15px;color:#a7f3d0;line-height:1.6;min-height:60px;}
+.eq-box{background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:10px;padding:12px;font-size:16px;color:#a5b4fc;font-family:'Courier New',monospace;line-height:1.7;}
+/* SIM RIGHT */
+.sim-right{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#334155 transparent;}
+.info-panel{background:#0d1527;border:1.5px solid #1e293b;border-radius:12px;padding:20px;}
+.info-title{font-size:20px;font-weight:bold;color:#fff;margin-bottom:8px;}
+.info-sub{font-size:14px;color:#64748b;margin-bottom:16px;}
+.fact{display:flex;gap:10px;margin-bottom:12px;align-items:flex-start;font-size:16px;color:#cbd5e1;line-height:1.6;}
+.fact-icon{font-size:20px;flex-shrink:0;margin-top:2px;}
+.chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.chip{padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;}
+.chip-g{background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);}
+.chip-b{background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.3);}
+.chip-y{background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.3);}
+.chip-r{background:rgba(248,113,113,0.15);color:#f87171;border:1px solid rgba(248,113,113,0.3);}
+select{width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid #334155;background:#070c17;color:#e2e8f0;font-size:15px;margin-bottom:10px;cursor:pointer;}
+label{font-size:14px;color:#64748b;display:block;margin-bottom:4px;}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div>
+    <div class="nav-title">🔬 Carbon and Its Compounds — Virtual Lab</div>
+    <div class="nav-sub">Class 10 · Chapter 4 · 5 Animated Experiments</div>
+  </div>
+  <div class="sim-tabs">
+    <div class="stab active" onclick="initSim('sim1')">1. Covalent Bond</div>
+    <div class="stab" onclick="initSim('sim2')">2. Combustion</div>
+    <div class="stab" onclick="initSim('sim3')">3. Bromine Test</div>
+    <div class="stab" onclick="initSim('sim4')">4. Oxidation</div>
+    <div class="stab" onclick="initSim('sim5')">5. Micelle</div>
+  </div>
+  <button class="fsbtn" onclick="document.documentElement.requestFullscreen()">⛶ Fullscreen</button>
+</div>
+
+<div class="main">
+<div class="sim-wrapper">
+
+<!-- ══ SIM 1: COVALENT BOND FORMATION ══ -->
+<div class="sim-panel active" id="sim1">
+  <div class="sim-left">
+    <canvas id="c1" width="560" height="440"></canvas>
+    <div class="ctrl-box">
+      <div class="ctrl-title">🔬 Choose Molecule</div>
+      <label>Select a molecule to build:</label>
+      <select id="mol-select" onchange="changeMol()">
+        <option value="h2">H₂ — Hydrogen (single bond)</option>
+        <option value="o2">O₂ — Oxygen (double bond)</option>
+        <option value="n2">N₂ — Nitrogen (triple bond)</option>
+        <option value="ch4">CH₄ — Methane (4 single bonds)</option>
+        <option value="c2h4">C₂H₄ — Ethene (C=C double bond)</option>
+        <option value="c2h2">C₂H₂ — Ethyne (C≡C triple bond)</option>
+      </select>
+      <div class="btn-row">
+        <button class="action-btn btn-green" onclick="startBond()">▶ Form Bond</button>
+        <button class="action-btn btn-red" onclick="resetSim1()">↺ Reset</button>
+      </div>
+      <div class="obs-box" id="obs1">Select a molecule and press ▶ Form Bond</div>
+    </div>
+  </div>
+  <div class="sim-right">
+    <div class="info-panel">
+      <div class="info-title">⚛️ Covalent Bond Formation</div>
+      <div class="info-sub">Watch atoms share electrons to form stable molecules</div>
+      <div class="fact"><span class="fact-icon">🔵</span><span><b>Covalent bond</b> = atoms SHARE electrons. No transfer — both atoms benefit by getting a full outer shell.</span></div>
+      <div class="fact"><span class="fact-icon">1️⃣</span><span><b>Single bond (—)</b>: share 1 electron pair. Example: H–H, C–H, C–C in alkanes.</span></div>
+      <div class="fact"><span class="fact-icon">2️⃣</span><span><b>Double bond (=)</b>: share 2 electron pairs. Example: C=C in ethene, C=O in CO₂. More reactive.</span></div>
+      <div class="fact"><span class="fact-icon">3️⃣</span><span><b>Triple bond (≡)</b>: share 3 electron pairs. Example: C≡C in ethyne, N≡N. Very short, strong bond.</span></div>
+      <div class="fact"><span class="fact-icon">4️⃣</span><span><b>Carbon forms exactly 4 bonds</b> (tetravalency). It can bond with H, O, N, halogens and other C atoms.</span></div>
+      <div class="chip-row">
+        <span class="chip chip-g">Single bond: weakest</span>
+        <span class="chip chip-b">Double: reactive</span>
+        <span class="chip chip-y">Triple: strongest</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SIM 2: COMBUSTION ══ -->
+<div class="sim-panel" id="sim2">
+  <div class="sim-left">
+    <canvas id="c2" width="560" height="440"></canvas>
+    <div class="ctrl-box">
+      <div class="ctrl-title">🔥 Combustion Lab</div>
+      <label>Fuel:</label>
+      <select id="fuel-select">
+        <option value="ch4">Methane (CH₄)</option>
+        <option value="c2h5oh">Ethanol (C₂H₅OH)</option>
+        <option value="c3h8">Propane (C₃H₈)</option>
+      </select>
+      <div class="btn-row">
+        <button class="action-btn btn-blue" id="btn-complete" onclick="burnFuel('complete')">🔵 Complete Combustion</button>
+        <button class="action-btn btn-amber" id="btn-incomplete" onclick="burnFuel('incomplete')">🟡 Incomplete Combustion</button>
+      </div>
+      <button class="action-btn btn-red" onclick="resetSim2()">↺ Extinguish</button>
+      <div class="obs-box" id="obs2">Choose a fuel and combustion type to begin</div>
+    </div>
+  </div>
+  <div class="sim-right">
+    <div class="info-panel">
+      <div class="info-title">🔥 Combustion of Carbon Compounds</div>
+      <div class="info-sub">Carbon compounds burn to release heat energy</div>
+      <div class="fact"><span class="fact-icon">🔵</span><span><b>Complete combustion</b> (excess O₂): blue flame, products are CO₂ + H₂O. Maximum energy released. Safe.</span></div>
+      <div class="fact"><span class="fact-icon">🟡</span><span><b>Incomplete combustion</b> (limited O₂): yellow/sooty flame, products are CO + soot. Less energy. CO is toxic!</span></div>
+      <div class="fact"><span class="fact-icon">⚠️</span><span><b>CO (carbon monoxide)</b> is colourless, odourless, and deadly. It binds to haemoglobin, preventing oxygen transport.</span></div>
+      <div class="eq-box" id="eq2">Select a fuel to see the equation</div>
+      <div class="chip-row">
+        <span class="chip chip-b">Blue flame → complete</span>
+        <span class="chip chip-y">Yellow flame → incomplete</span>
+        <span class="chip chip-r">CO → toxic gas</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SIM 3: BROMINE WATER TEST ══ -->
+<div class="sim-panel" id="sim3">
+  <div class="sim-left">
+    <canvas id="c3" width="560" height="440"></canvas>
+    <div class="ctrl-box">
+      <div class="ctrl-title">🧪 Bromine Water Test</div>
+      <div class="fact" style="margin-bottom:12px;font-size:14px;"><span>Tests for <b>unsaturation</b> (C=C or C≡C double/triple bonds)</span></div>
+      <div class="btn-row">
+        <button class="action-btn btn-amber" onclick="bromineTest('alkane')">Test Alkane (Ethane)</button>
+        <button class="action-btn btn-green" onclick="bromineTest('alkene')">Test Alkene (Ethene)</button>
+      </div>
+      <button class="action-btn btn-blue" onclick="bromineTest('alkyne')">Test Alkyne (Ethyne)</button>
+      <button class="action-btn btn-red" onclick="resetSim3()">↺ Reset</button>
+      <div class="obs-box" id="obs3">Choose a compound to test with bromine water</div>
+    </div>
+  </div>
+  <div class="sim-right">
+    <div class="info-panel">
+      <div class="info-title">🧪 Bromine Water Test for Unsaturation</div>
+      <div class="info-sub">A quick lab test to identify double/triple bonds</div>
+      <div class="fact"><span class="fact-icon">🟤</span><span><b>Bromine water</b> (Br₂ in water) is <b>brown in colour</b>. It reacts with unsaturated bonds.</span></div>
+      <div class="fact"><span class="fact-icon">✅</span><span><b>Alkenes/Alkynes → decolourize</b> bromine water (brown → colourless). The double/triple bond reacts with Br₂ (addition reaction).</span></div>
+      <div class="fact"><span class="fact-icon">❌</span><span><b>Alkanes → NO change</b>. Brown colour stays. Alkanes have only single bonds — cannot react with Br₂ at room temperature without light.</span></div>
+      <div class="eq-box" id="eq3">CH₂=CH₂ + Br₂ → CH₂Br–CH₂Br<br>(ethene + bromine → 1,2-dibromoethane)</div>
+      <div class="chip-row">
+        <span class="chip chip-y">Brown stays → saturated</span>
+        <span class="chip chip-g">Colourless → unsaturated</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SIM 4: OXIDATION ══ -->
+<div class="sim-panel" id="sim4">
+  <div class="sim-left">
+    <canvas id="c4" width="560" height="440"></canvas>
+    <div class="ctrl-box">
+      <div class="ctrl-title">🔴 Oxidation of Ethanol</div>
+      <button class="action-btn btn-blue" onclick="addKMnO4()" id="btn-kmno4">1️⃣ Add KMnO₄ (Oxidising Agent)</button>
+      <button class="action-btn btn-amber" onclick="heatFlask()" id="btn-heat" disabled>2️⃣ Heat the Flask</button>
+      <button class="action-btn btn-green" onclick="checkProduct()" id="btn-check" disabled>3️⃣ Check Product</button>
+      <button class="action-btn btn-red" onclick="resetSim4()">↺ Reset</button>
+      <div class="obs-box" id="obs4">Flask contains ethanol (C₂H₅OH). Start by adding the oxidising agent.</div>
+    </div>
+  </div>
+  <div class="sim-right">
+    <div class="info-panel">
+      <div class="info-title">🔴 Ethanol → Ethanoic Acid</div>
+      <div class="info-sub">Oxidation reaction using KMnO₄ or K₂Cr₂O₇</div>
+      <div class="fact"><span class="fact-icon">🔴</span><span><b>KMnO₄</b> (potassium permanganate) is a strong oxidising agent. It is <b>purple/violet</b> in colour and gets reduced (decolourizes) during the reaction.</span></div>
+      <div class="fact"><span class="fact-icon">🍷</span><span>This is the same reaction that happens when <b>wine turns to vinegar</b> — ethanol in wine gets oxidised to ethanoic acid by bacteria in air.</span></div>
+      <div class="fact"><span class="fact-icon">🧪</span><span>Also done industrially using <b>K₂Cr₂O₇</b> (orange → green when reduced).</span></div>
+      <div class="eq-box">
+        C₂H₅OH + [O] → CH₃COOH<br>
+        (Ethanol + Oxygen → Ethanoic acid)
+      </div>
+      <div class="chip-row">
+        <span class="chip chip-b">KMnO₄: purple → colourless</span>
+        <span class="chip chip-g">Product: vinegar smell</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SIM 5: MICELLE FORMATION ══ -->
+<div class="sim-panel" id="sim5">
+  <div class="sim-left">
+    <canvas id="c5" width="560" height="440"></canvas>
+    <div class="ctrl-box">
+      <div class="ctrl-title">🧼 Micelle Formation</div>
+      <button class="action-btn btn-blue" onclick="micelle1()" id="mbtn1">1️⃣ Add Soap to Water</button>
+      <button class="action-btn btn-amber" onclick="micelle2()" id="mbtn2" disabled>2️⃣ Add Grease Droplet</button>
+      <button class="action-btn btn-green" onclick="micelle3()" id="mbtn3" disabled>3️⃣ Soap Surrounds Grease</button>
+      <button class="action-btn btn-purple" onclick="micelle4()" id="mbtn4" disabled>4️⃣ Rinse — Wash Away!</button>
+      <button class="action-btn btn-red" onclick="resetSim5()">↺ Reset</button>
+      <div class="obs-box" id="obs5">A beaker of water is ready. Press Step 1 to add soap.</div>
+    </div>
+  </div>
+  <div class="sim-right">
+    <div class="info-panel">
+      <div class="info-title">🧼 Soap and Micelle Formation</div>
+      <div class="info-sub">How soap removes grease from surfaces</div>
+      <div class="fact"><span class="fact-icon">🧴</span><span><b>Saponification:</b> Fat/Oil + NaOH → Soap + Glycerol. NaOH → hard soap. KOH → liquid soap.</span></div>
+      <div class="fact"><span class="fact-icon">🔵</span><span><b>Soap molecule</b> has two parts: a long hydrophobic tail (–CH₂CH₂CH₂–) and a hydrophilic ionic head (–COO⁻Na⁺).</span></div>
+      <div class="fact"><span class="fact-icon">⚽</span><span><b>Micelle</b>: when soap meets grease, tails point inward into grease, heads face water → spherical cage around grease droplet.</span></div>
+      <div class="fact"><span class="fact-icon">💧</span><span>The micelle is <b>water-soluble</b> because its outer surface (ionic heads) is hydrophilic. It washes away with water carrying the grease!</span></div>
+      <div class="fact"><span class="fact-icon">⚠️</span><span><b>Hard water problem:</b> Ca²⁺/Mg²⁺ in hard water react with soap → insoluble scum. Use detergent instead!</span></div>
+      <div class="chip-row">
+        <span class="chip chip-b">Tail → hydrophobic</span>
+        <span class="chip chip-g">Head → hydrophilic</span>
+        <span class="chip chip-y">Micelle → water-soluble</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- sim-wrapper -->
+</div><!-- main -->
+
+<script>
+/* ═══════════════════════════════════
+   SHARED UTILITIES
+═══════════════════════════════════ */
+let animId = null;
+function stopAll(){ if(animId){ cancelAnimationFrame(animId); animId=null; } }
+
+/* ─── Particle classes ─── */
+class Bubble{
+  constructor(x,y,speed){
+    this.x=x; this.y=y; this.r=3+Math.random()*5;
+    this.vy=-(0.8+Math.random()*speed*0.3);
+    this.vx=(Math.random()-0.5)*0.6;
+    this.alpha=0.8; this.killY=0;
+  }
+  update(){ this.x+=this.vx; this.y+=this.vy; this.alpha-=0.01; if(this.y<this.killY) this.alpha=0; }
+  draw(ctx){ ctx.save(); ctx.globalAlpha=this.alpha; ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.strokeStyle='rgba(56,189,248,0.8)'; ctx.lineWidth=1.5; ctx.stroke(); ctx.restore(); }
+  isDead(){ return this.alpha<=0; }
+}
+class FlameP{
+  constructor(x,y,rgb){
+    this.x=x; this.y=y; this.rgb=rgb;
+    this.vx=(Math.random()-0.5)*1.5; this.vy=-(1+Math.random()*2.5);
+    this.r=4+Math.random()*8; this.life=0.9; this.decay=0.02+Math.random()*0.015;
+  }
+  update(){ this.x+=this.vx; this.y+=this.vy; this.r+=0.1; this.life-=this.decay; }
+  draw(ctx){ ctx.save(); ctx.globalAlpha=this.life; ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fillStyle=`rgba(${this.rgb},${this.life})`; ctx.fill(); ctx.restore(); }
+  isDead(){ return this.life<=0; }
+}
+class Smoke{
+  constructor(x,y){ this.x=x; this.y=y; this.r=4+Math.random()*8; this.vx=(Math.random()-0.5)*0.8; this.vy=-0.3-Math.random()*0.4; this.alpha=0.5; }
+  update(){ this.x+=this.vx; this.y+=this.vy; this.r+=0.3; this.alpha-=0.008; }
+  draw(ctx){ ctx.save(); ctx.globalAlpha=this.alpha; ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fillStyle='#475569'; ctx.fill(); ctx.restore(); }
+  isDead(){ return this.alpha<=0; }
+}
+
+function initSim(id){
+  stopAll();
+  document.querySelectorAll('.sim-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.stab')[['sim1','sim2','sim3','sim4','sim5'].indexOf(id)].classList.add('active');
+  if(id==='sim1'){resetSim1();loop1();}
+  else if(id==='sim2'){resetSim2();loop2();}
+  else if(id==='sim3'){resetSim3();drawSim3();}
+  else if(id==='sim4'){resetSim4();}
+  else if(id==='sim5'){resetSim5();}
+}
+
+/* ═══════════════════════════════════
+   SIM 1 — COVALENT BOND FORMATION
+═══════════════════════════════════ */
+const MOLS = {
+  h2:  { name:'H₂', atoms:[{sym:'H',col:'#1d4ed8',r:28,shells:[1],e:[1]},{sym:'H',col:'#1d4ed8',r:28,shells:[1],e:[1]}], bonds:1, desc:'Hydrogen: each H has 1 electron, needs 1 more. They share 1 pair → single covalent bond H—H.' },
+  o2:  { name:'O₂', atoms:[{sym:'O',col:'#dc2626',r:32,shells:[2,6],e:[2,6]},{sym:'O',col:'#dc2626',r:32,shells:[2,6],e:[2,6]}], bonds:2, desc:'Oxygen: each O has 6 outer electrons, needs 2 more. They share 2 pairs → double bond O=O.' },
+  n2:  { name:'N₂', atoms:[{sym:'N',col:'#7c3aed',r:30,shells:[2,5],e:[2,5]},{sym:'N',col:'#7c3aed',r:30,shells:[2,5],e:[2,5]}], bonds:3, desc:'Nitrogen: each N has 5 outer electrons, needs 3 more. They share 3 pairs → triple bond N≡N. Very stable!' },
+  ch4: { name:'CH₄', atoms:[{sym:'C',col:'#059669',r:34,shells:[2,4],e:[2,4]},{sym:'H',col:'#1d4ed8',r:22,shells:[1],e:[1]},{sym:'H',col:'#1d4ed8',r:22,shells:[1],e:[1]},{sym:'H',col:'#1d4ed8',r:22,shells:[1],e:[1]},{sym:'H',col:'#1d4ed8',r:22,shells:[1],e:[1]}], bonds:1, desc:'Methane: carbon makes 4 single bonds with 4 hydrogen atoms. All electrons shared. Carbon achieves 8 outer electrons.' },
+  c2h4:{ name:'C₂H₄', atoms:[{sym:'C',col:'#059669',r:32,shells:[2,4],e:[2,4]},{sym:'C',col:'#059669',r:32,shells:[2,4],e:[2,4]}], bonds:2, desc:'Ethene: two carbons share 2 pairs of electrons → C=C double bond. Unsaturated — can undergo addition reactions.' },
+  c2h2:{ name:'C₂H₂', atoms:[{sym:'C',col:'#059669',r:32,shells:[2,4],e:[2,4]},{sym:'C',col:'#059669',r:32,shells:[2,4],e:[2,4]}], bonds:3, desc:'Ethyne (acetylene): two carbons share 3 pairs → C≡C triple bond. Very reactive. Burns at ~3500°C with oxygen!' }
+};
+
+let s1={mol:'h2',phase:0,t:0,dist:200,eA:0,eB:0,formed:false};
+
+function changeMol(){
+  s1.mol=document.getElementById('mol-select').value;
+  s1.phase=0; s1.t=0; s1.dist=200; s1.formed=false;
+  document.getElementById('obs1').textContent='Press ▶ Form Bond to watch the covalent bond form';
+}
+function startBond(){ if(s1.phase===0){s1.phase=1;} }
+function resetSim1(){ s1={mol:'h2',phase:0,t:0,dist:200,eA:0,eB:0,formed:false}; document.getElementById('mol-select').value='h2'; document.getElementById('obs1').textContent='Select a molecule and press ▶ Form Bond'; }
+
+function updateSim1(){
+  s1.t++;
+  s1.eA+=0.04; s1.eB-=0.04;
+  if(s1.phase===1){
+    s1.dist=Math.max(72,s1.dist-1.2);
+    if(s1.dist<=72){ s1.phase=2; s1.formed=true; }
+  }
+  const mol=MOLS[s1.mol];
+  if(s1.formed) document.getElementById('obs1').textContent='✅ '+mol.desc;
+}
+
+function drawSim1(){
+  const cv=document.getElementById('c1'); const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  const bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#0f172a'); bg.addColorStop(1,'#070c17');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+  const mol=MOLS[s1.mol];
+  const isCH4=s1.mol==='ch4';
+
+  if(isCH4){
+    // Special: show central C with 4 H arranged around
+    const cx=W/2, cy=H/2;
+    const hPos=[{x:cx,y:cy-s1.dist},{x:cx+s1.dist*0.85,y:cy},{x:cx,y:cy+s1.dist},{x:cx-s1.dist*0.85,y:cy}];
+    // bonds
+    if(s1.formed){
+      hPos.forEach(hp=>{
+        ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(hp.x,hp.y);
+        ctx.strokeStyle='rgba(52,211,153,0.8)'; ctx.lineWidth=4; ctx.stroke();
+      });
+    }
+    // C nucleus
+    const g=ctx.createRadialGradient(cx,cy,2,cx,cy,34);
+    g.addColorStop(0,'#34d399'); g.addColorStop(1,'#059669');
+    ctx.beginPath(); ctx.arc(cx,cy,34,0,Math.PI*2);
+    ctx.fillStyle=g; ctx.fill();
+    ctx.font='bold 18px Segoe UI'; ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('C',cx,cy);
+    // 4 H atoms
+    hPos.forEach((hp,i)=>{
+      const hg=ctx.createRadialGradient(hp.x,hp.y,2,hp.x,hp.y,22);
+      hg.addColorStop(0,'#60a5fa'); hg.addColorStop(1,'#1d4ed8');
+      ctx.beginPath(); ctx.arc(hp.x,hp.y,22,0,Math.PI*2);
+      ctx.fillStyle=hg; ctx.fill();
+      ctx.font='bold 15px Segoe UI'; ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText('H',hp.x,hp.y);
+    });
+    if(!s1.formed){
+      ctx.fillStyle='rgba(100,116,139,0.6)'; ctx.font='17px Segoe UI'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+      ctx.fillText('Press ▶ to bring H atoms close',W/2,H-30);
+    } else {
+      ctx.fillStyle='#34d399'; ctx.font='bold 18px Segoe UI'; ctx.textAlign='center';
+      ctx.fillText('CH₄ — Methane formed! 4 covalent bonds',W/2,H-30);
+    }
+    return;
+  }
+
+  // Two-atom molecules
+  const ax=W/2-s1.dist/2, bx=W/2+s1.dist/2, ay=H/2, by=H/2;
+  const atomA=mol.atoms[0], atomB=mol.atoms[1];
+
+  // Electron orbits (outer shell)
+  const drawElectronShell=(x,y,atom,angleOffset,shellIdx)=>{
+    const orbitR=atom.r+22+(shellIdx*18);
+    ctx.beginPath(); ctx.arc(x,y,orbitR,0,Math.PI*2);
+    ctx.strokeStyle='rgba(100,116,139,0.25)'; ctx.setLineDash([4,4]); ctx.lineWidth=1.5; ctx.stroke(); ctx.setLineDash([]);
+    const eCount=atom.shells[shellIdx]||0;
+    for(let i=0;i<eCount;i++){
+      const a=(i/eCount)*Math.PI*2+angleOffset;
+      const ex=x+Math.cos(a)*orbitR, ey=y+Math.sin(a)*orbitR;
+      ctx.beginPath(); ctx.arc(ex,ey,5,0,Math.PI*2);
+      ctx.fillStyle=shellIdx===atom.shells.length-1?'#f87171':'#60a5fa'; ctx.fill();
+    }
+  };
+
+  // Bond lines
+  if(s1.dist<140){
+    const bonds=mol.bonds;
+    const spread=5;
+    for(let i=0;i<bonds;i++){
+      const offset=(i-(bonds-1)/2)*spread;
+      ctx.beginPath(); ctx.moveTo(ax+atomA.r,ay+offset); ctx.lineTo(bx-atomB.r,by+offset);
+      const alpha=Math.min(1,(140-s1.dist)/60);
+      ctx.strokeStyle=`rgba(52,211,153,${alpha})`; ctx.lineWidth=4; ctx.stroke();
+    }
+  }
+
+  // Atom A
+  const gA=ctx.createRadialGradient(ax,ay,2,ax,ay,atomA.r);
+  gA.addColorStop(0,atomA.col+'cc'); gA.addColorStop(1,atomA.col);
+  ctx.beginPath(); ctx.arc(ax,ay,atomA.r,0,Math.PI*2);
+  ctx.fillStyle=gA; ctx.shadowColor=atomA.col; ctx.shadowBlur=12; ctx.fill(); ctx.shadowBlur=0;
+  ctx.font=`bold ${atomA.r*0.6}px Segoe UI`; ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(atomA.sym,ax,ay);
+  atomA.shells.forEach((n,i)=>drawElectronShell(ax,ay,atomA,s1.eA+(i*0.7),i));
+
+  // Atom B
+  const gB=ctx.createRadialGradient(bx,by,2,bx,by,atomB.r);
+  gB.addColorStop(0,atomB.col+'cc'); gB.addColorStop(1,atomB.col);
+  ctx.beginPath(); ctx.arc(bx,by,atomB.r,0,Math.PI*2);
+  ctx.fillStyle=gB; ctx.shadowColor=atomB.col; ctx.shadowBlur=12; ctx.fill(); ctx.shadowBlur=0;
+  ctx.font=`bold ${atomB.r*0.6}px Segoe UI`; ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(atomB.sym,bx,by);
+  atomB.shells.forEach((n,i)=>drawElectronShell(bx,by,atomB,s1.eB+(i*0.7),i));
+
+  // Shared electron count label
+  if(s1.formed){
+    const bondNames=['','single (—)','double (=)','triple (≡)'];
+    ctx.fillStyle='#34d399'; ctx.font='bold 17px Segoe UI'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+    ctx.fillText(`${mol.name} — ${bondNames[mol.bonds]} bond formed! ✅`,W/2,H-30);
+  } else if(s1.phase===0){
+    ctx.fillStyle='rgba(100,116,139,0.5)'; ctx.font='16px Segoe UI'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+    ctx.fillText('Press ▶ Form Bond to watch the electrons share',W/2,H-30);
+  }
+}
+function loop1(){ updateSim1(); drawSim1(); animId=requestAnimationFrame(loop1); }
+
+/* ═══════════════════════════════════
+   SIM 2 — COMBUSTION
+═══════════════════════════════════ */
+let s2={burning:false,type:'',particles:[],soot:[],t:0,lit:false};
+const FUELS={
+  ch4:{name:'Methane',complete:'CH₄ + 2O₂ → CO₂ + 2H₂O',incomplete:'2CH₄ + 3O₂ → 2CO + 4H₂O + soot'},
+  c2h5oh:{name:'Ethanol',complete:'C₂H₅OH + 3O₂ → 2CO₂ + 3H₂O',incomplete:'C₂H₅OH + 2O₂ → 2CO + 3H₂O + soot'},
+  c3h8:{name:'Propane',complete:'C₃H₈ + 5O₂ → 3CO₂ + 4H₂O',incomplete:'2C₃H₈ + 7O₂ → 6CO + 8H₂O + soot'}
+};
+function burnFuel(type){
+  s2.burning=true; s2.type=type; s2.lit=true; s2.t=0;
+  const fuel=FUELS[document.getElementById('fuel-select').value];
+  const eq=document.getElementById('eq2');
+  if(type==='complete'){
+    eq.textContent=fuel.complete;
+    document.getElementById('obs2').textContent='🔵 Complete combustion — Blue flame, clean burn. Products: CO₂ + H₂O + heat. Safe!';
+  } else {
+    eq.textContent=fuel.incomplete;
+    document.getElementById('obs2').textContent='🟡 Incomplete combustion — Yellow sooty flame. Products: CO (toxic!) + soot. ⚠️ Danger!';
+  }
+}
+function resetSim2(){ s2={burning:false,type:'',particles:[],soot:[],t:0,lit:false}; document.getElementById('obs2').textContent='Choose a fuel and combustion type to begin'; document.getElementById('eq2').textContent='Select a fuel to see the equation'; }
+
+function updateSim2(){
+  if(!s2.burning) return;
+  s2.t++;
+  const cv=document.getElementById('c2');
+  const W=cv.width,H=cv.height;
+  const bx=W/2,by=H-80;
+  if(s2.type==='complete'){
+    for(let i=0;i<6;i++) s2.particles.push(new FlameP(bx+(Math.random()-0.5)*20,by,'56,189,248'));
+    for(let i=0;i<3;i++) s2.particles.push(new FlameP(bx+(Math.random()-0.5)*14,by,'147,197,253'));
+  } else {
+    for(let i=0;i<5;i++) s2.particles.push(new FlameP(bx+(Math.random()-0.5)*24,by,'251,191,36'));
+    for(let i=0;i<3;i++) s2.particles.push(new FlameP(bx+(Math.random()-0.5)*20,by,'249,115,22'));
+    if(Math.random()<0.4) s2.soot.push(new Smoke(bx+(Math.random()-0.5)*30,by-20));
+  }
+  s2.particles=s2.particles.filter(p=>!p.isDead());
+  s2.soot=s2.soot.filter(p=>!p.isDead());
+  s2.particles.forEach(p=>p.update());
+  s2.soot.forEach(p=>p.update());
+}
+
+function drawSim2(){
+  const cv=document.getElementById('c2'); const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  const bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#0f172a'); bg.addColorStop(1,'#070c17');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+  // bench
+  ctx.fillStyle='#1e293b'; ctx.fillRect(0,H-30,W,30);
+  ctx.fillStyle='#334155'; ctx.fillRect(0,H-32,W,3);
+  // burner
+  const bx=W/2,by=H-80;
+  ctx.fillStyle='#334155'; ctx.fillRect(bx-36,by-20,72,22);
+  ctx.fillStyle='#475569'; ctx.fillRect(bx-14,by-90,28,70);
+  ctx.fillStyle='#1e293b'; ctx.fillRect(bx-14,by-60,8,16);
+  ctx.fillStyle='#64748b'; ctx.fillRect(bx-18,by-96,36,10);
+  // flame glow
+  if(s2.lit){
+    const glowCol=s2.type==='complete'?'rgba(56,189,248,0.1)':'rgba(251,191,36,0.1)';
+    const gr=ctx.createRadialGradient(bx,by-80,0,bx,by-80,120);
+    gr.addColorStop(0,glowCol); gr.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=gr; ctx.fillRect(bx-120,by-200,240,200);
+  }
+  s2.soot.forEach(p=>p.draw(ctx));
+  s2.particles.forEach(p=>p.draw(ctx));
+  // labels
+  if(!s2.lit){
+    ctx.fillStyle='rgba(100,116,139,0.4)'; ctx.font='18px Segoe UI'; ctx.textAlign='center';
+    ctx.fillText('Choose fuel and combustion type above',W/2,H/2); ctx.textAlign='left';
+  }
+  // CO molecules drifting up
+  if(s2.burning&&s2.type==='incomplete'&&Math.random()<0.02){
+    ctx.fillStyle='#f87171'; ctx.font='bold 16px Segoe UI'; ctx.textAlign='center';
+    ctx.fillText('CO ⚠️',bx+(Math.random()-0.5)*60,by-80-Math.random()*80);
+  }
+  if(s2.burning&&s2.type==='complete'&&Math.random()<0.02){
+    ctx.fillStyle='#38bdf8'; ctx.font='16px Segoe UI'; ctx.textAlign='center';
+    ctx.fillText('CO₂',bx+(Math.random()-0.5)*60,by-80-Math.random()*80);
+    ctx.fillText('H₂O',bx+(Math.random()-0.5)*60,by-80-Math.random()*80);
+  }
+}
+function loop2(){ updateSim2(); drawSim2(); animId=requestAnimationFrame(loop2); }
+
+/* ═══════════════════════════════════
+   SIM 3 — BROMINE WATER TEST
+═══════════════════════════════════ */
+let s3={left:{compound:'',brCol:0,reacted:false},right:{compound:'',brCol:0,reacted:false},t:0};
+function bromineTest(type){
+  const obs=document.getElementById('obs3');
+  const eq=document.getElementById('eq3');
+  s3.t=0;
+  if(type==='alkane'){
+    s3.left={compound:'Ethane (C₂H₆)',brCol:1,reacted:false};
+    s3.right={compound:'+Bromine Water',brCol:1,reacted:false};
+    obs.innerHTML='⏳ Adding bromine water to ethane... Watch what happens!';
+    setTimeout(()=>{
+      s3.left.reacted=false; s3.right.reacted=false;
+      obs.innerHTML='❌ No reaction! Bromine water stays <b>brown</b>. Ethane is SATURATED — no double bonds to react with.';
+      eq.textContent='C₂H₆ + Br₂ → NO REACTION (at room temperature without UV light)';
+    },1800);
+  } else if(type==='alkene'){
+    s3.left={compound:'Ethene (CH₂=CH₂)',brCol:1,reacted:false};
+    s3.right={compound:'+Bromine Water',brCol:1,reacted:false};
+    obs.innerHTML='⏳ Adding bromine water to ethene...';
+    setTimeout(()=>{
+      s3.left.brCol=0; s3.right.brCol=0; s3.left.reacted=true;
+      obs.innerHTML='✅ Bromine water <b>decolourised</b> (brown → colourless)! Ethene is UNSATURATED — the C=C double bond reacted with Br₂.';
+      eq.textContent='CH₂=CH₂ + Br₂ → CH₂Br–CH₂Br  (1,2-dibromoethane)';
+    },1800);
+  } else {
+    s3.left={compound:'Ethyne (CH≡CH)',brCol:1,reacted:false};
+    s3.right={compound:'+Bromine Water',brCol:1,reacted:false};
+    obs.innerHTML='⏳ Adding bromine water to ethyne...';
+    setTimeout(()=>{
+      s3.left.brCol=0; s3.right.brCol=0; s3.left.reacted=true;
+      obs.innerHTML='✅ Bromine water <b>decolourised</b>! Ethyne has C≡C triple bond — reacts with Br₂ twice (2 moles of Br₂ absorbed)!';
+      eq.textContent='CH≡CH + 2Br₂ → CHBr₂–CHBr₂  (1,1,2,2-tetrabromoethane)';
+    },1800);
+  }
+  drawSim3();
+}
+function resetSim3(){
+  s3={left:{compound:'',brCol:0,reacted:false},right:{compound:'',brCol:0,reacted:false},t:0};
+  document.getElementById('obs3').textContent='Choose a compound to test with bromine water';
+  document.getElementById('eq3').textContent='CH₂=CH₂ + Br₂ → CH₂Br–CH₂Br\n(ethene + bromine → 1,2-dibromoethane)';
+  drawSim3();
+}
+function drawSim3(){
+  const cv=document.getElementById('c3'); const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  const bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#0f172a'); bg.addColorStop(1,'#070c17');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+  // bench
+  ctx.fillStyle='#1e293b'; ctx.fillRect(0,H-30,W,30);
+  ctx.fillStyle='#334155'; ctx.fillRect(0,H-32,W,3);
+
+  // Draw two test tubes
+  const tubes=[
+    {x:W*0.3,label:'Sample + Bromine Water',data:s3.left},
+    {x:W*0.7,label:'Reference (Bromine Water only)',data:{compound:'Br₂(aq)',brCol:1,reacted:false}}
+  ];
+  tubes.forEach(t=>{
+    const tx=t.x, ty=H-320;
+    const TW=90, TH=200;
+    // tube glow
+    const brOpacity=t.data.brCol;
+    const liquidCol=brOpacity>0.5?`rgba(180,80,0,0.6)`:brOpacity>0?`rgba(240,180,80,0.4)`:'rgba(200,200,200,0.3)';
+    // tube outline
+    ctx.beginPath();
+    ctx.moveTo(tx-TW/2,ty); ctx.lineTo(tx-TW/2,ty+TH-20);
+    ctx.quadraticCurveTo(tx-TW/2,ty+TH,tx,ty+TH+12);
+    ctx.quadraticCurveTo(tx+TW/2,ty+TH,tx+TW/2,ty+TH-20);
+    ctx.lineTo(tx+TW/2,ty);
+    ctx.strokeStyle='#475569'; ctx.lineWidth=3; ctx.stroke();
+    // liquid fill
+    ctx.beginPath();
+    ctx.moveTo(tx-TW/2+2,ty+30); ctx.lineTo(tx-TW/2+2,ty+TH-20);
+    ctx.quadraticCurveTo(tx-TW/2+2,ty+TH-2,tx,ty+TH+8);
+    ctx.quadraticCurveTo(tx+TW/2-2,ty+TH-2,tx+TW/2-2,ty+TH-20);
+    ctx.lineTo(tx+TW/2-2,ty+30);
+    ctx.closePath();
+    ctx.fillStyle=liquidCol; ctx.fill();
+    // reaction sparks if reacted
+    if(t.data.reacted){
+      for(let i=0;i<5;i++){
+        ctx.beginPath(); ctx.arc(tx-25+i*12,ty+60+i*8,4,0,Math.PI*2);
+        ctx.fillStyle='rgba(52,211,153,0.6)'; ctx.fill();
+      }
+    }
+    // label
+    ctx.font='bold 16px Segoe UI'; ctx.fillStyle='#e2e8f0'; ctx.textAlign='center';
+    ctx.fillText(t.data.compound||'(empty)',tx,ty-15);
+    ctx.font='13px Segoe UI'; ctx.fillStyle='#64748b';
+    ctx.fillText(t.label,tx,ty-32);
+    // result label
+    if(t.data.compound){
+      const isRef=t===tubes[1];
+      if(isRef){
+        ctx.font='bold 15px Segoe UI'; ctx.fillStyle='#f97316'; ctx.textAlign='center';
+        ctx.fillText('🟤 Brown (reference)',tx,ty+TH+35);
+      } else if(t.data.reacted){
+        ctx.font='bold 15px Segoe UI'; ctx.fillStyle='#34d399'; ctx.textAlign='center';
+        ctx.fillText('✅ Colourless!',tx,ty+TH+35);
+      } else if(t.data.brCol>0){
+        ctx.font='bold 15px Segoe UI'; ctx.fillStyle='#f97316'; ctx.textAlign='center';
+        ctx.fillText('🟤 Still brown',tx,ty+TH+35);
+      }
+    }
+  });
+  // instruction
+  if(!s3.left.compound){
+    ctx.fillStyle='rgba(100,116,139,0.4)'; ctx.font='17px Segoe UI'; ctx.textAlign='center';
+    ctx.fillText('Choose a compound above to test it with bromine water',W/2,H/2+30);
+  }
+}
+
+/* ═══════════════════════════════════
+   SIM 4 — OXIDATION OF ETHANOL
+═══════════════════════════════════ */
+let s4={step:0,t:0,flaskColor:0,particles:[],bubbles:[]};
+function addKMnO4(){
+  s4.step=1; s4.flaskColor=0;
+  document.getElementById('obs4').textContent='KMnO₄ added — purple colour! Now heat to trigger the oxidation reaction.';
+  document.getElementById('btn-kmno4').disabled=true;
+  document.getElementById('btn-heat').disabled=false;
+  loop4();
+}
+function heatFlask(){
+  s4.step=2;
+  document.getElementById('obs4').textContent='⏳ Heating... KMnO₄ getting reduced, colour fading, ethanol oxidising to ethanoic acid...';
+  document.getElementById('btn-heat').disabled=true;
+  setTimeout(()=>{
+    s4.step=3;
+    document.getElementById('obs4').textContent='✅ KMnO₄ decolourised! Ethanol (C₂H₅OH) has been oxidised to Ethanoic Acid (CH₃COOH). You can smell vinegar! 🍶';
+    document.getElementById('btn-check').disabled=false;
+  },3000);
+}
+function checkProduct(){
+  s4.step=4;
+  document.getElementById('obs4').innerHTML='✅ <b>Product: Ethanoic Acid (CH₃COOH)</b> — vinegar smell, sour taste, turns litmus red. The [O] from KMnO₄ was added to ethanol.<br>C₂H₅OH + [O] → CH₃COOH';
+}
+function resetSim4(){
+  s4={step:0,t:0,flaskColor:0,particles:[],bubbles:[]};
+  ['btn-kmno4'].forEach(id=>document.getElementById(id).disabled=false);
+  ['btn-heat','btn-check'].forEach(id=>document.getElementById(id).disabled=true);
+  document.getElementById('obs4').textContent='Flask contains ethanol (C₂H₅OH). Start by adding the oxidising agent.';
+  drawSim4();
+}
+function updateSim4(){
+  s4.t++;
+  const cv=document.getElementById('c4');
+  const W=cv.width,H=cv.height;
+  if(s4.step>=2&&s4.step<3){
+    if(Math.random()<0.4) s4.bubbles.push(new Bubble(W/2+(Math.random()-0.5)*40,H-160,2));
+    if(Math.random()<0.3) s4.particles.push(new FlameP(W/2+(Math.random()-0.5)*30,H-80,'251,191,36'));
+  }
+  s4.bubbles=s4.bubbles.filter(b=>!b.isDead()); s4.bubbles.forEach(b=>b.update());
+  s4.particles=s4.particles.filter(p=>!p.isDead()); s4.particles.forEach(p=>p.update());
+}
+function drawSim4(){
+  const cv=document.getElementById('c4'); const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  const bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#0f172a'); bg.addColorStop(1,'#070c17');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+  // bench
+  ctx.fillStyle='#1e293b'; ctx.fillRect(0,H-30,W,30);
+  ctx.fillStyle='#334155'; ctx.fillRect(0,H-32,W,3);
+
+  const fx=W/2, fy=H-220;
+  // flask body (round-bottom)
+  ctx.beginPath();
+  ctx.moveTo(fx-60,fy); ctx.lineTo(fx-60,fy+60);
+  ctx.arc(fx,fy+100,80,Math.PI,0); // bottom curve
+  ctx.lineTo(fx+60,fy+60); ctx.lineTo(fx+60,fy);
+  // flask colour
+  let flaskLiquidCol='rgba(249,115,22,0.3)'; // ethanol orange tint
+  if(s4.step>=1&&s4.step<3){
+    const purpleAlpha=s4.step===3?0:0.5;
+    flaskLiquidCol=`rgba(139,92,246,${purpleAlpha})`;
+  } else if(s4.step>=3){
+    flaskLiquidCol='rgba(200,200,200,0.3)'; // colourless
+  }
+  ctx.fillStyle=flaskLiquidCol; ctx.fill();
+  // flask outline
+  ctx.beginPath();
+  ctx.moveTo(fx-60,fy); ctx.lineTo(fx-60,fy+60);
+  ctx.arc(fx,fy+100,80,Math.PI,0);
+  ctx.lineTo(fx+60,fy+60); ctx.lineTo(fx+60,fy);
+  ctx.strokeStyle='#475569'; ctx.lineWidth=3; ctx.stroke();
+  // neck
+  ctx.fillStyle='rgba(56,189,248,0.1)'; ctx.fillRect(fx-18,fy-60,36,65);
+  ctx.strokeStyle='#475569'; ctx.lineWidth=2;
+  ctx.strokeRect(fx-18,fy-60,36,65);
+  // stopper
+  ctx.fillStyle='#475569'; ctx.fillRect(fx-22,fy-70,44,14); ctx.strokeStyle='#64748b'; ctx.strokeRect(fx-22,fy-70,44,14);
+  // bubbles and flame
+  s4.bubbles.forEach(b=>b.draw(ctx));
+  s4.particles.forEach(p=>p.draw(ctx));
+  // bunsen burner below flask
+  if(s4.step>=2&&s4.step<3){
+    ctx.fillStyle='#334155'; ctx.fillRect(fx-30,H-50,60,20);
+    ctx.fillStyle='#475569'; ctx.fillRect(fx-10,H-80,20,30);
+  }
+  // labels
+  const labels=['','C₂H₅OH + KMnO₄ (purple)','Heating... oxidation in progress','✅ CH₃COOH (colourless)','✅ Ethanoic Acid — vinegar!'];
+  ctx.font='bold 17px Segoe UI'; ctx.fillStyle='#94a3b8'; ctx.textAlign='center';
+  if(s4.step>0) ctx.fillText(labels[Math.min(s4.step,labels.length-1)],W/2,fy-80);
+  if(s4.step===0){
+    ctx.fillStyle='rgba(249,115,22,0.8)'; ctx.font='16px Segoe UI';
+    ctx.fillText('Ethanol (C₂H₅OH)',fx,fy+120);
+  }
+}
+function loop4(){ updateSim4(); drawSim4(); if(s4.step>0&&s4.step<3) animId=requestAnimationFrame(loop4); else drawSim4(); }
+
+/* ═══════════════════════════════════
+   SIM 5 — MICELLE FORMATION
+═══════════════════════════════════ */
+let s5={step:0,t:0,molecules:[],angle:0};
+function micelle1(){
+  s5.step=1; s5.molecules=[];
+  for(let i=0;i<12;i++) s5.molecules.push({x:80+i*34,y:60+Math.random()*80,angle:Math.random()*Math.PI*2,speed:0.02+Math.random()*0.01});
+  document.getElementById('obs5').textContent='Soap molecules added to water. Each has a hydrophilic head (green) and a hydrophobic tail (grey line).';
+  document.getElementById('mbtn1').disabled=true;
+  document.getElementById('mbtn2').disabled=false;
+  loop5();
+}
+function micelle2(){
+  s5.step=2;
+  document.getElementById('obs5').textContent='Grease droplet added! Watch the soap molecules orient themselves — tails pointing toward the grease.';
+  document.getElementById('mbtn2').disabled=true;
+  document.getElementById('mbtn3').disabled=false;
+}
+function micelle3(){
+  s5.step=3;
+  document.getElementById('obs5').textContent='Micelle forming! Hydrophobic tails buried in grease, hydrophilic heads facing water. The grease is trapped!';
+  document.getElementById('mbtn3').disabled=true;
+  document.getElementById('mbtn4').disabled=false;
+}
+function micelle4(){
+  s5.step=4;
+  document.getElementById('obs5').textContent='✅ Rinse! The micelle (with grease trapped inside) is water-soluble and washes away. Surface is clean!';
+  document.getElementById('mbtn4').disabled=true;
+}
+function resetSim5(){
+  s5={step:0,t:0,molecules:[],angle:0};
+  ['mbtn1'].forEach(id=>document.getElementById(id).disabled=false);
+  ['mbtn2','mbtn3','mbtn4'].forEach(id=>document.getElementById(id).disabled=true);
+  document.getElementById('obs5').textContent='A beaker of water is ready. Press Step 1 to add soap.';
+  drawSim5();
+}
+function updateSim5(){
+  s5.t++; s5.angle+=0.015;
+  s5.molecules.forEach(m=>{ m.angle+=m.speed; });
+}
+function drawSim5(){
+  const cv=document.getElementById('c5'); const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  const bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#0f172a'); bg.addColorStop(1,'#070c17');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+  // beaker
+  ctx.beginPath();
+  ctx.moveTo(60,60); ctx.lineTo(60,H-50); ctx.lineTo(W-60,H-50); ctx.lineTo(W-60,60);
+  ctx.strokeStyle='#475569'; ctx.lineWidth=3; ctx.stroke();
+  // water fill
+  ctx.fillStyle='rgba(56,189,248,0.07)'; ctx.fillRect(63,63,W-126,H-116);
+  // bench
+  ctx.fillStyle='#1e293b'; ctx.fillRect(0,H-30,W,30);
+
+  if(s5.step===0){
+    ctx.fillStyle='rgba(56,189,248,0.3)'; ctx.fillRect(63,100,W-126,H-150);
+    ctx.fillStyle='#38bdf8'; ctx.font='17px Segoe UI'; ctx.textAlign='center';
+    ctx.fillText('Water in beaker',W/2,H/2);
+    ctx.fillStyle='#475569'; ctx.font='14px Segoe UI';
+    ctx.fillText('Press Step 1 to add soap',W/2,H/2+28);
+    return;
+  }
+
+  // Water
+  ctx.fillStyle='rgba(56,189,248,0.1)'; ctx.fillRect(63,63,W-126,H-116);
+
+  if(s5.step>=1&&s5.step<3){
+    // floating soap molecules (random positions)
+    s5.molecules.forEach(m=>{
+      const mx=80+m.x%400, my=100+m.y%250;
+      ctx.save(); ctx.translate(mx,my); ctx.rotate(m.angle);
+      ctx.strokeStyle='#64748b'; ctx.lineWidth=2.5;
+      ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(0,25); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0,-10,9,0,Math.PI*2);
+      ctx.fillStyle='#059669'; ctx.fill();
+      ctx.restore();
+    });
+    ctx.fillStyle='#94a3b8'; ctx.font='14px Segoe UI'; ctx.textAlign='center';
+    ctx.fillText('🟢 = hydrophilic heads   — = hydrophobic tails',W/2,H-60);
+  }
+
+  if(s5.step>=2){
+    // grease droplet
+    const gx=W/2, gy=H/2+30;
+    ctx.beginPath(); ctx.arc(gx,gy,50,0,Math.PI*2);
+    ctx.fillStyle='rgba(251,191,36,0.25)'; ctx.fill();
+    ctx.strokeStyle='rgba(251,191,36,0.5)'; ctx.lineWidth=2; ctx.stroke();
+    ctx.fillStyle='#fbbf24'; ctx.font='bold 14px Segoe UI'; ctx.textAlign='center';
+    ctx.fillText('Grease',gx,gy+5);
+  }
+
+  if(s5.step>=3){
+    // micelle: soap molecules arranged in circle around grease
+    const gx=W/2, gy=H/2+30;
+    const nMol=14;
+    for(let i=0;i<nMol;i++){
+      const angle=(i/nMol)*Math.PI*2+s5.angle;
+      const hx=gx+Math.cos(angle)*72, hy=gy+Math.sin(angle)*60;
+      const tx=gx+Math.cos(angle)*50, ty=gy+Math.sin(angle)*42;
+      ctx.strokeStyle='#64748b'; ctx.lineWidth=2.5;
+      ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(hx,hy); ctx.stroke();
+      ctx.beginPath(); ctx.arc(hx+Math.cos(angle)*10,hy+Math.sin(angle)*10,10,0,Math.PI*2);
+      ctx.fillStyle='#059669'; ctx.fill();
+    }
+    // grease still inside
+    ctx.beginPath(); ctx.arc(gx,gy,42,0,Math.PI*2);
+    ctx.fillStyle='rgba(251,191,36,0.3)'; ctx.fill();
+    ctx.fillStyle='#fbbf24'; ctx.font='13px Segoe UI'; ctx.textAlign='center';
+    ctx.fillText('Grease',gx,gy+4);
+    ctx.fillStyle='#34d399'; ctx.font='14px Segoe UI';
+    ctx.fillText('Micelle formed — rotating in water',W/2,H-60);
+  }
+
+  if(s5.step>=4){
+    // micelle moving to the right and fading
+    const gx=W/2+100+(s5.t-s5.t%1)*0.5, gy=H/2;
+    if(gx<W+100){
+      ctx.beginPath(); ctx.arc(gx,gy,50,0,Math.PI*2);
+      ctx.fillStyle='rgba(52,211,153,0.2)'; ctx.fill();
+      ctx.strokeStyle='#34d399'; ctx.lineWidth=2; ctx.stroke();
+      for(let i=0;i<10;i++){
+        const angle=(i/10)*Math.PI*2+s5.angle;
+        ctx.beginPath(); ctx.arc(gx+Math.cos(angle)*65,gy+Math.sin(angle)*55,9,0,Math.PI*2);
+        ctx.fillStyle='#059669'; ctx.fill();
+      }
+    }
+    ctx.fillStyle='rgba(56,189,248,0.3)'; ctx.fillRect(63,63,W-126,H-116);
+    ctx.fillStyle='#34d399'; ctx.font='bold 20px Segoe UI'; ctx.textAlign='center';
+    ctx.fillText('✅ Surface is clean! Micelle washed away.',W/2,H/2);
+  }
+}
+function loop5(){ updateSim5(); drawSim5(); if(s5.step>0&&s5.step<4) animId=requestAnimationFrame(loop5); else if(s5.step===4) drawSim5(); }
+
+/* ─── START ─── */
+loop1();
+</script>
+</body>
+</html>
