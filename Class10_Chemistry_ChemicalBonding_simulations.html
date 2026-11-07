@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chemical Bond Simulator — Class 10 Chemistry</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0f1e;color:#e2e8f0;font-family:'Segoe UI',sans-serif;min-height:100vh}
+h1{text-align:center;padding:18px 0 8px;font-size:1.6rem;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:.5px}
+.subtitle{text-align:center;color:#94a3b8;font-size:.85rem;margin-bottom:16px}
+
+/* tabs */
+.tabs{display:flex;justify-content:center;gap:6px;padding:0 12px 12px;flex-wrap:wrap}
+.tab{padding:8px 20px;border-radius:20px;border:1.5px solid #334155;background:transparent;color:#94a3b8;cursor:pointer;font-size:.88rem;transition:all .2s}
+.tab.active{background:linear-gradient(135deg,#1e40af,#7c3aed);border-color:transparent;color:#fff;font-weight:600}
+.tab:hover:not(.active){border-color:#60a5fa;color:#60a5fa}
+
+/* panels */
+.panel{display:none;padding:0 16px 20px}
+.panel.active{display:block}
+
+/* molecule selector */
+.mol-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:12px}
+.mol-btn{padding:6px 14px;border-radius:12px;border:1.5px solid #334155;background:#0f172a;color:#94a3b8;cursor:pointer;font-size:.82rem;transition:all .2s}
+.mol-btn.sel{background:#1e3a5f;border-color:#3b82f6;color:#93c5fd;font-weight:600}
+.mol-btn:hover:not(.sel){border-color:#60a5fa;color:#bfdbfe}
+
+/* canvas area */
+.canvas-wrap{position:relative;background:#060b18;border-radius:12px;border:1px solid #1e293b;overflow:hidden;margin-bottom:10px}
+canvas{display:block;width:100%;height:380px}
+#explainOverlay{position:absolute;top:0;left:0;width:100%;height:100%;display:none;pointer-events:none}
+
+/* controls */
+.ctrl-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
+.btn{padding:7px 18px;border-radius:10px;border:none;cursor:pointer;font-size:.83rem;font-weight:600;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff}
+.btn-primary:hover{filter:brightness(1.15)}
+.btn-sec{background:#1e293b;color:#94a3b8;border:1px solid #334155}
+.btn-sec:hover{border-color:#60a5fa;color:#bfdbfe}
+.btn-danger{background:#7f1d1d;color:#fca5a5;border:1px solid #991b1b}
+
+/* info tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px}
+.tile{background:#0f172a;border:1px solid #1e293b;border-radius:10px;padding:10px 8px;text-align:center}
+.tile-label{font-size:.68rem;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.tile-val{font-size:.95rem;font-weight:700;color:#e2e8f0}
+.tile-val.c-blue{color:#60a5fa}
+.tile-val.c-orange{color:#f97316}
+.tile-val.c-green{color:#22c55e}
+.tile-val.c-purple{color:#a78bfa}
+
+/* sub-panel tabs */
+.sub-tabs{display:flex;gap:6px;border-bottom:1px solid #1e293b;margin-bottom:12px;overflow-x:auto}
+.sub-tab{padding:6px 14px;font-size:.8rem;color:#64748b;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.sub-tab.active{color:#60a5fa;border-bottom-color:#60a5fa}
+.sub-panel{display:none}
+.sub-panel.active{display:block}
+
+/* lewis canvas */
+#lewisCanvas{background:#060b18;border-radius:8px;border:1px solid #1e293b;display:block;margin:0 auto}
+
+/* board answer */
+.board-ans{background:#0f172a;border-radius:10px;padding:14px;border:1px solid #1e293b}
+.board-ans h4{font-size:.78rem;color:#a78bfa;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.board-ans p{font-size:.82rem;line-height:1.6;color:#cbd5e1;margin-bottom:10px}
+.board-ans .mark{display:inline-block;background:#1e3a5f;color:#93c5fd;border-radius:6px;padding:1px 8px;font-size:.72rem;font-weight:700;margin-right:6px}
+
+/* EN meter */
+.en-meter{padding:8px 0}
+.en-bar-wrap{position:relative;height:28px;border-radius:14px;overflow:hidden;background:linear-gradient(to right,#22c55e 0%,#f59e0b 40%,#ef4444 100%);margin:8px 0}
+.en-pin{position:absolute;top:0;width:3px;height:100%;background:#fff;border-radius:2px;transition:left .4s}
+.en-label-row{display:flex;justify-content:space-between;font-size:.7rem;color:#64748b;margin-top:4px}
+.en-info{font-size:.82rem;color:#e2e8f0;margin:8px 0;text-align:center}
+.en-zone{display:inline-block;padding:2px 10px;border-radius:8px;font-size:.75rem;font-weight:700;margin:4px}
+
+/* octet check */
+.octet-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:8px 0}
+.octet-card{background:#0f172a;border:1px solid #1e293b;border-radius:10px;padding:10px 14px;text-align:center;min-width:100px}
+.octet-card .sym{font-size:1.3rem;font-weight:700;margin-bottom:4px}
+.octet-card .detail{font-size:.72rem;color:#94a3b8;line-height:1.5}
+.octet-card .verdict{font-size:.75rem;font-weight:700;margin-top:4px}
+.verdict-give{color:#fbbf24}
+.verdict-take{color:#60a5fa}
+.verdict-share{color:#a78bfa}
+
+/* build tab */
+.periodic-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:4px;max-width:500px;margin:0 auto 14px}
+.p-cell{background:#0f172a;border:1.5px solid #1e293b;border-radius:6px;padding:5px 2px;text-align:center;cursor:pointer;transition:all .2s}
+.p-cell:hover,.p-cell.sel{background:#1e3a5f;border-color:#3b82f6}
+.p-cell .sym{font-size:.9rem;font-weight:700}
+.p-cell .num{font-size:.6rem;color:#64748b}
+.p-cell .val{font-size:.6rem;color:#94a3b8}
+.build-slots{display:flex;gap:16px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
+.slot{background:#0f172a;border:2px dashed #334155;border-radius:12px;padding:12px 20px;text-align:center;min-width:100px;cursor:pointer;transition:all .2s}
+.slot.filled{border-style:solid;border-color:#3b82f6}
+.slot .s-label{font-size:.7rem;color:#64748b;margin-bottom:4px}
+.slot .s-sym{font-size:1.4rem;font-weight:700}
+.slot .s-name{font-size:.7rem;color:#94a3b8}
+.build-result{background:#0f172a;border-radius:10px;padding:12px;border:1px solid #1e293b;margin-top:10px;text-align:center}
+.formula-big{font-size:1.4rem;font-weight:700;color:#a78bfa;margin:6px 0}
+
+/* 3D tab */
+.shape-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px;margin-bottom:12px}
+.shape-btn{padding:8px;border-radius:10px;border:1.5px solid #334155;background:#0f172a;color:#94a3b8;cursor:pointer;text-align:center;transition:all .2s;font-size:.8rem}
+.shape-btn.sel{border-color:#a78bfa;color:#c4b5fd;background:#1a1040}
+.shape-btn:hover:not(.sel){border-color:#7c3aed;color:#a78bfa}
+#canvas3d{display:block;margin:0 auto;cursor:grab;border-radius:12px;border:1px solid #1e293b}
+.shape-info{text-align:center;font-size:.82rem;color:#94a3b8;margin-top:8px}
+.shape-info strong{color:#c4b5fd}
+
+/* metallic */
+.metal-sel{display:flex;gap:8px;justify-content:center;margin-bottom:10px}
+
+/* explain controls */
+.exp-ctrl{display:flex;gap:8px;justify-content:center;align-items:center;padding:8px 0}
+.exp-step{font-size:.8rem;color:#94a3b8;min-width:80px;text-align:center}
+
+/* progress bar */
+.anim-bar-wrap{height:4px;background:#0f172a;border-radius:2px;margin-bottom:8px;overflow:hidden}
+.anim-bar{height:100%;background:linear-gradient(to right,#3b82f6,#a78bfa);border-radius:2px;transition:width .05s linear;width:0}
+
+/* responsive */
+@media(max-width:600px){
+  h1{font-size:1.2rem}
+  canvas{height:300px}
+  .tiles{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+<h1>⚛ Chemical Bond Simulator</h1>
+<p class="subtitle">Class 10 Chemistry · CBSE · Interactive Bohr Model Animations</p>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('covalent',this)">Covalent</button>
+  <button class="tab" onclick="switchTab('ionic',this)">Ionic</button>
+  <button class="tab" onclick="switchTab('metallic',this)">Metallic</button>
+  <button class="tab" onclick="switchTab('build',this)">Build</button>
+  <button class="tab" onclick="switchTab('shapes3d',this)">3D Shapes</button>
+</div>
+
+<!-- ===== COVALENT ===== -->
+<div id="panel-covalent" class="panel active">
+  <div class="mol-row" id="cov-mol-row"></div>
+  <div class="anim-bar-wrap"><div class="anim-bar" id="cov-bar"></div></div>
+  <div class="canvas-wrap">
+    <canvas id="covCanvas"></canvas>
+    <canvas id="explainOverlay"></canvas>
+  </div>
+  <div class="ctrl-row">
+    <button class="btn btn-primary" id="btn-cov-sim" onclick="covSimulate()">▶ Simulate</button>
+    <button class="btn btn-sec" onclick="covReplay()">↻ Replay</button>
+    <button class="btn btn-sec" onclick="covReset()">↺ Reset</button>
+    <button class="btn btn-sec" id="btn-freeze" onclick="toggleFreeze()">⏸ Freeze</button>
+    <button class="btn btn-sec" onclick="startExplain()">💡 Explain</button>
+    <button class="btn btn-sec" onclick="exportCanvas('covCanvas')">📷 Export</button>
+  </div>
+  <div class="tiles" id="cov-tiles"></div>
+  <div class="sub-tabs">
+    <div class="sub-tab active" onclick="subTab('cov','lewis',this)">Lewis Structure</div>
+    <div class="sub-tab" onclick="subTab('cov','board',this)">Board Answer</div>
+    <div class="sub-tab" onclick="subTab('cov','en',this)">EN Meter</div>
+    <div class="sub-tab" onclick="subTab('cov','octet',this)">Octet Check</div>
+  </div>
+  <div id="cov-sub-lewis" class="sub-panel active"><canvas id="lewisCanvas" width="460" height="180"></canvas></div>
+  <div id="cov-sub-board" class="sub-panel"><div id="cov-board-ans" class="board-ans"></div></div>
+  <div id="cov-sub-en" class="sub-panel"><div id="cov-en-meter" class="en-meter"></div></div>
+  <div id="cov-sub-octet" class="sub-panel"><div id="cov-octet" class="octet-row"></div></div>
+</div>
+
+<!-- ===== IONIC ===== -->
+<div id="panel-ionic" class="panel">
+  <div class="mol-row" id="ion-mol-row"></div>
+  <div class="anim-bar-wrap"><div class="anim-bar" id="ion-bar"></div></div>
+  <div class="canvas-wrap">
+    <canvas id="ionCanvas"></canvas>
+  </div>
+  <div class="ctrl-row">
+    <button class="btn btn-primary" onclick="ionSimulate()">▶ Simulate</button>
+    <button class="btn btn-sec" onclick="ionReplay()">↻ Replay</button>
+    <button class="btn btn-sec" onclick="ionReset()">↺ Reset</button>
+    <button class="btn btn-sec" onclick="exportCanvas('ionCanvas')">📷 Export</button>
+  </div>
+  <div class="tiles" id="ion-tiles"></div>
+  <div class="sub-tabs">
+    <div class="sub-tab active" onclick="subTab('ion','board',this)">Board Answer</div>
+    <div class="sub-tab" onclick="subTab('ion','octet',this)">Octet Check</div>
+    <div class="sub-tab" onclick="subTab('ion','en',this)">EN Meter</div>
+  </div>
+  <div id="ion-sub-board" class="sub-panel active"><div id="ion-board-ans" class="board-ans"></div></div>
+  <div id="ion-sub-octet" class="sub-panel"><div id="ion-octet" class="octet-row"></div></div>
+  <div id="ion-sub-en" class="sub-panel"><div id="ion-en-meter" class="en-meter"></div></div>
+</div>
+
+<!-- ===== METALLIC ===== -->
+<div id="panel-metallic" class="panel">
+  <div class="metal-sel" id="met-row"></div>
+  <div class="canvas-wrap">
+    <canvas id="metCanvas"></canvas>
+  </div>
+  <div class="ctrl-row">
+    <button class="btn btn-primary" onclick="metSimulate()">▶ Simulate</button>
+    <button class="btn btn-sec" onclick="metReset()">↺ Reset</button>
+  </div>
+  <div class="tiles" id="met-tiles"></div>
+  <div class="board-ans" id="met-board" style="margin-top:10px"></div>
+</div>
+
+<!-- ===== BUILD ===== -->
+<div id="panel-build" class="panel">
+  <div class="periodic-grid" id="periodic-grid"></div>
+  <div class="build-slots">
+    <div class="slot" id="slot-a" onclick="clearSlot('a')">
+      <div class="s-label">Atom A</div>
+      <div class="s-sym" id="slot-a-sym">?</div>
+      <div class="s-name" id="slot-a-name">click element</div>
+    </div>
+    <div style="display:flex;align-items:center;font-size:1.5rem;color:#334155">+</div>
+    <div class="slot" id="slot-b" onclick="clearSlot('b')">
+      <div class="s-label">Atom B</div>
+      <div class="s-sym" id="slot-b-sym">?</div>
+      <div class="s-name" id="slot-b-name">click element</div>
+    </div>
+  </div>
+  <div class="ctrl-row">
+    <button class="btn btn-primary" onclick="buildBond()">⚡ Build Bond</button>
+    <button class="btn btn-sec" onclick="clearBuild()">↺ Clear</button>
+  </div>
+  <div class="build-result" id="build-result">
+    <div style="color:#334155;font-size:.85rem">Select two elements above, then click Build Bond</div>
+  </div>
+</div>
+
+<!-- ===== 3D SHAPES ===== -->
+<div id="panel-shapes3d" class="panel">
+  <div class="shape-grid" id="shape-grid"></div>
+  <div class="canvas-wrap" style="max-width:500px;margin:0 auto 10px">
+    <canvas id="canvas3d" width="500" height="380"></canvas>
+  </div>
+  <div class="shape-info" id="shape-info"></div>
+  <div class="ctrl-row">
+    <button class="btn btn-sec" onclick="reset3DRot()">↺ Reset View</button>
+    <button class="btn btn-sec" onclick="toggle3DAnim()">⏵ Auto Rotate</button>
+    <button class="btn btn-sec" onclick="exportCanvas('canvas3d')">📷 Export</button>
+  </div>
+  <div class="sub-tabs">
+    <div class="sub-tab active" onclick="subTab('3d','board',this)">Board Answer</div>
+    <div class="sub-tab" onclick="subTab('3d','lewis',this)">Lewis Structure</div>
+  </div>
+  <div id="3d-sub-board" class="sub-panel active"><div id="3d-board-ans" class="board-ans"></div></div>
+  <div id="3d-sub-lewis" class="sub-panel"><canvas id="lewis3dCanvas" width="460" height="180"></canvas></div>
+</div>
+
+<!-- Explain Controls (shown when explain is active) -->
+<div id="explain-controls" style="display:none" class="ctrl-row">
+  <button class="btn btn-sec" onclick="explainPrev()">◀◀ Prev</button>
+  <button class="btn btn-sec" onclick="explainPlayPause()" id="btn-exp-pp">⏸ Pause</button>
+  <button class="btn btn-sec" onclick="explainNext()">Next ▶▶</button>
+  <div class="exp-step" id="exp-step-label">Step 1 of 6</div>
+  <button class="btn btn-danger" onclick="stopExplain()">✕ Exit</button>
+</div>
+
+<script>
+// ===================== DATA =====================
+const ELEM = {
+  H:  { name:'Hydrogen',   color:'#ef4444', nGrad:['#fca5a5','#ef4444','#b91c1c'], shells:[1],     valence:1, eColor:'#fca5a5', EN:2.20, atomic:1  },
+  He: { name:'Helium',     color:'#f8fafc', nGrad:['#f8fafc','#e2e8f0','#94a3b8'], shells:[2],     valence:0, eColor:'#f1f5f9', EN:0,    atomic:2  },
+  Li: { name:'Lithium',    color:'#fb923c', nGrad:['#fed7aa','#fb923c','#c2410c'], shells:[2,1],   valence:1, eColor:'#fed7aa', EN:0.98, atomic:3  },
+  Be: { name:'Beryllium',  color:'#facc15', nGrad:['#fef9c3','#facc15','#a16207'], shells:[2,2],   valence:2, eColor:'#fef9c3', EN:1.57, atomic:4  },
+  B:  { name:'Boron',      color:'#a78bfa', nGrad:['#ede9fe','#a78bfa','#6d28d9'], shells:[2,3],   valence:3, eColor:'#ede9fe', EN:2.04, atomic:5  },
+  C:  { name:'Carbon',     color:'#3b82f6', nGrad:['#bfdbfe','#3b82f6','#1d4ed8'], shells:[2,4],  valence:4, eColor:'#bfdbfe', EN:2.55, atomic:6  },
+  N:  { name:'Nitrogen',   color:'#60a5fa', nGrad:['#dbeafe','#60a5fa','#2563eb'], shells:[2,5],  valence:5, eColor:'#dbeafe', EN:3.04, atomic:7  },
+  O:  { name:'Oxygen',     color:'#f97316', nGrad:['#fed7aa','#f97316','#c2410c'], shells:[2,6],  valence:6, eColor:'#fed7aa', EN:3.44, atomic:8  },
+  F:  { name:'Fluorine',   color:'#84cc16', nGrad:['#d9f99d','#84cc16','#4d7c0f'], shells:[2,7],  valence:7, eColor:'#d9f99d', EN:3.98, atomic:9  },
+  Ne: { name:'Neon',       color:'#f8fafc', nGrad:['#f8fafc','#e2e8f0','#94a3b8'], shells:[2,8],  valence:0, eColor:'#f1f5f9', EN:0,    atomic:10 },
+  Na: { name:'Sodium',     color:'#f59e0b', nGrad:['#fde68a','#f59e0b','#b45309'], shells:[2,8,1],valence:1, eColor:'#fde68a', EN:0.93, atomic:11 },
+  Mg: { name:'Magnesium',  color:'#fbbf24', nGrad:['#fef3c7','#fbbf24','#d97706'], shells:[2,8,2],valence:2, eColor:'#fef3c7', EN:1.31, atomic:12 },
+  Al: { name:'Aluminium',  color:'#22d3ee', nGrad:['#cffafe','#22d3ee','#0891b2'], shells:[2,8,3],valence:3, eColor:'#cffafe', EN:1.61, atomic:13 },
+  Si: { name:'Silicon',    color:'#818cf8', nGrad:['#e0e7ff','#818cf8','#4338ca'], shells:[2,8,4],valence:4, eColor:'#e0e7ff', EN:1.90, atomic:14 },
+  P:  { name:'Phosphorus', color:'#fb7185', nGrad:['#fecdd3','#fb7185','#be123c'], shells:[2,8,5],valence:5, eColor:'#fecdd3', EN:2.19, atomic:15 },
+  S:  { name:'Sulphur',    color:'#fde047', nGrad:['#fefce8','#fde047','#a16207'], shells:[2,8,6],valence:6, eColor:'#fefce8', EN:2.58, atomic:16 },
+  Cl: { name:'Chlorine',   color:'#22c55e', nGrad:['#bbf7d0','#22c55e','#15803d'], shells:[2,8,7],valence:7, eColor:'#86efac', EN:3.16, atomic:17 },
+  Ar: { name:'Argon',      color:'#f8fafc', nGrad:['#f8fafc','#e2e8f0','#94a3b8'], shells:[2,8,8],valence:0, eColor:'#f1f5f9', EN:0,    atomic:18 },
+  K:  { name:'Potassium',  color:'#f59e0b', nGrad:['#fde68a','#f59e0b','#92400e'], shells:[2,8,8,1],valence:1,eColor:'#fde68a',EN:0.82,atomic:19 },
+  Ca: { name:'Calcium',    color:'#fb923c', nGrad:['#fed7aa','#fb923c','#9a3412'], shells:[2,8,8,2],valence:2,eColor:'#fed7aa',EN:1.00,atomic:20 },
+};
+
+// Shell radii based on number of shells
+function shellRadius(nShells, idx) {
+  const bases = {1:[42], 2:[28,55], 3:[24,46,70], 4:[20,38,56,78]};
+  return bases[nShells][idx];
+}
+function nucleusRadius(sym) {
+  const n = ELEM[sym]?.atomic||1;
+  return 10 + Math.min(n*0.6, 14);
+}
+
+// ===================== COVALENT DATA =====================
+const COV_MOLS = {
+  'H₂':  { atoms:['H','H'],  bonds:1, lp:[0,0], desc:'Nonpolar covalent — equal sharing',       formula:'H₂'  },
+  'O₂':  { atoms:['O','O'],  bonds:2, lp:[2,2], desc:'Nonpolar covalent — double bond',         formula:'O₂'  },
+  'N₂':  { atoms:['N','N'],  bonds:3, lp:[1,1], desc:'Nonpolar covalent — triple bond, very strong', formula:'N₂' },
+  'HCl': { atoms:['H','Cl'], bonds:1, lp:[0,3], desc:'Polar covalent — Cl pulls electrons',     formula:'HCl' },
+  'H₂O': { atoms:['O','H'],  bonds:1, lp:[2,0], desc:'Polar covalent — bent shape, 104.5°',     formula:'H₂O', multi:2 },
+  'CO₂': { atoms:['C','O'],  bonds:2, lp:[0,2], desc:'Nonpolar (linear) — polar bonds cancel',  formula:'CO₂', multi:2 },
+  'CH₄': { atoms:['C','H'],  bonds:1, lp:[0,0], desc:'Nonpolar — tetrahedral, 109.5°',          formula:'CH₄', multi:4 },
+  'NH₃': { atoms:['N','H'],  bonds:1, lp:[1,0], desc:'Polar — pyramidal, 107°',                 formula:'NH₃', multi:3 },
+};
+
+const ION_MOLS = {
+  'NaCl':  { cation:'Na', anion:'Cl',  ratio:[1,1], desc:'Ionic bond: Na gives 1e⁻ to Cl'         },
+  'MgO':   { cation:'Mg', anion:'O',   ratio:[1,1], desc:'Ionic bond: Mg gives 2e⁻ to O'          },
+  'CaCl₂': { cation:'Ca', anion:'Cl',  ratio:[1,2], desc:'Ionic bond: Ca gives 1e⁻ to each Cl'    },
+  'MgCl₂': { cation:'Mg', anion:'Cl',  ratio:[1,2], desc:'Ionic bond: Mg gives 1e⁻ to each Cl'   },
+  'Al₂O₃': { cation:'Al', anion:'O',   ratio:[2,3], desc:'Ionic bond: Al gives 3e⁻, O takes 2e⁻' },
+  'K₂O':   { cation:'K',  anion:'O',   ratio:[2,1], desc:'Ionic bond: 2 K each give 1e⁻ to O'    },
+};
+
+const MET_MOLS = {
+  'Na': { desc:'1 delocalised e⁻ per atom, weak metallic bond',    prop:'Soft, good conductor, low melting point' },
+  'Mg': { desc:'2 delocalised e⁻ per atom, stronger metallic bond', prop:'Harder, better conductor' },
+  'Al': { desc:'3 delocalised e⁻ per atom, strong metallic bond',   prop:'Light, strong, excellent conductor' },
+};
+
+// CBSE Board Answers
+const BOARD_ANS = {
+  'H₂':  { two:'Hydrogen gas exists as H₂ because each hydrogen atom has 1 valence electron and needs 1 more to complete its duplet. Two hydrogen atoms share their electrons forming a single covalent bond.', five:'Formation of H₂ molecule: Each hydrogen atom has atomic number 1 and electronic configuration 1. It needs one more electron to attain the electronic configuration of helium (noble gas, duplet rule). When two hydrogen atoms come close, each atom contributes one electron to form a shared pair. This shared pair of electrons constitutes a single covalent bond. The bond is nonpolar because both atoms have the same electronegativity (EN = 2.20), so electrons are shared equally. The molecule is represented as H–H.' },
+  'O₂':  { two:'Each oxygen atom has 6 valence electrons and needs 2 more to complete its octet. Two oxygen atoms share 2 pairs of electrons, forming a double covalent bond (O=O).', five:'Formation of O₂ molecule: Oxygen has atomic number 8 and electronic configuration 2,6. Each oxygen atom needs 2 electrons to complete its octet. Two oxygen atoms come together and share 2 pairs of electrons — this forms a double covalent bond. The bond is represented as O=O. Each oxygen still has 2 lone pairs. The molecule is nonpolar as both atoms have the same electronegativity (EN = 3.44). Double bonds are shorter and stronger than single bonds. This explains why oxygen exists as O₂ at room temperature.' },
+  'N₂':  { two:'Each nitrogen atom has 5 valence electrons and needs 3 more. Two nitrogen atoms share 3 pairs of electrons, forming a very strong triple bond (N≡N).', five:'Formation of N₂ molecule: Nitrogen has atomic number 7 and electronic configuration 2,5. Each nitrogen atom requires 3 electrons to complete its octet. When two nitrogen atoms bond, they share 3 pairs of electrons — this creates a triple covalent bond (N≡N). Each nitrogen retains 1 lone pair. The bond energy of N≡N is very high (~941 kJ/mol), making nitrogen gas very unreactive. The molecule is nonpolar. Triple bonds are shorter and much stronger than double or single bonds.' },
+  'HCl': { two:'In HCl, hydrogen (EN=2.20) and chlorine (EN=3.16) share one pair of electrons. Due to higher EN of Cl, the shared pair shifts towards Cl, making HCl a polar covalent bond (δ+H—Clδ−).', five:'Formation of HCl molecule: Hydrogen (EN=2.20) and Chlorine (EN=3.16) each have 1 unpaired valence electron. They share this pair of electrons forming a single covalent bond. However, the electronegativity difference (3.16 − 2.20 = 0.96) causes unequal sharing — the shared pair is pulled more towards Cl. This gives Cl a partial negative charge (δ−) and H a partial positive charge (δ+). This is called a polar covalent bond. HCl is used in making plastics and medicines.' },
+  'H₂O': { two:'Each H atom shares 1e⁻ with oxygen. Oxygen (EN=3.44) pulls electrons strongly. The two O–H bonds are polar covalent; two lone pairs on O cause the bent shape (104.5°).', five:'Water (H₂O) formation: Oxygen has electronic configuration 2,6 — it needs 2 electrons to complete its octet. Two hydrogen atoms each share one electron with oxygen, forming two O–H polar covalent bonds. Oxygen retains 2 lone pairs. Due to VSEPR theory, the two lone pairs repel the bond pairs, bending the shape to 104.5°. The high electronegativity of oxygen (3.44) makes O–H bonds polar. The result is a highly polar molecule with partial negative charge on O and positive charges on H. This polarity explains water\'s high boiling point and ability to dissolve ionic compounds.' },
+  'CO₂': { two:'Carbon forms 2 double bonds with two oxygen atoms. Each C=O bond is polar (ΔEN=0.89) but the molecule is linear (180°) so the dipoles cancel — CO₂ is nonpolar overall.', five:'Formation of CO₂: Carbon has 4 valence electrons; each oxygen has 6. Carbon needs 4 electrons; each oxygen needs 2. Carbon forms 2 double bonds — one with each oxygen. The structure is O=C=O (linear, 180°). Each C=O bond is polar due to ΔEN = 3.44 − 2.55 = 0.89. However, since the two dipoles point in opposite directions along the linear axis, they cancel out, making CO₂ a nonpolar molecule overall. CO₂ is a greenhouse gas and is produced in respiration and combustion.' },
+  'CH₄': { two:'Carbon (4 valence e⁻) forms 4 single bonds with 4 hydrogen atoms. All C–H bonds have small ΔEN (0.35), making CH₄ almost nonpolar. Shape: tetrahedral, 109.5°.', five:'Formation of Methane (CH₄): Carbon (atomic no. 6, config 2,4) needs 4 electrons to complete its octet. Four hydrogen atoms, each needing 1 electron, bond with carbon. Carbon shares one pair of electrons with each H atom, forming four C–H single covalent bonds. By VSEPR theory, the 4 bond pairs arrange tetrahedrally around carbon (bond angle 109.5°) to minimize repulsion. CH₄ is almost nonpolar (ΔEN = 2.55 − 2.20 = 0.35). Methane is the main component of natural gas (CNG).' },
+  'NH₃': { two:'Nitrogen forms 3 N–H single bonds and retains 1 lone pair. The lone pair causes pyramidal shape (107°). Each N–H bond is polar (ΔEN=0.84), making NH₃ a polar molecule.', five:'Formation of Ammonia (NH₃): Nitrogen has atomic number 7 and configuration 2,5 — it needs 3 electrons. Three hydrogen atoms bond with nitrogen, sharing one electron pair each. Nitrogen retains 1 lone pair. By VSEPR, the lone pair repels bond pairs more strongly than bond pairs repel each other. This pushes the three H atoms downward, creating a trigonal pyramidal shape with bond angle 107°. NH₃ is polar. It acts as a Lewis base (donates lone pair). It is used in fertilisers, cleaning agents, and refrigerants.' },
+  'NaCl': { two:'Sodium (2,8,1) gives 1 electron to Chlorine (2,8,7). Both attain noble gas configuration. The electrostatic attraction between Na⁺ and Cl⁻ ions forms the ionic bond.', five:'Formation of NaCl: Sodium has 1 valence electron; Chlorine has 7. By the octet rule, Na tends to lose 1 electron and Cl tends to gain 1. Sodium loses 1 electron to become Na⁺ (config 2,8) with noble gas (Ne) configuration. Chlorine gains this electron to become Cl⁻ (config 2,8,8) with Ar configuration. The oppositely charged ions Na⁺ and Cl⁻ attract each other electrostatically — this is the ionic bond. NaCl forms a crystal lattice (not discrete molecules). It is soluble in water and conducts electricity when dissolved or molten.' },
+  'MgO':  { two:'Magnesium (2,8,2) gives 2 electrons to Oxygen (2,6). Mg becomes Mg²⁺ (2,8) and O becomes O²⁻ (2,8). Their electrostatic attraction forms a strong ionic bond.', five:'Formation of MgO: Magnesium (atomic no. 12, config 2,8,2) has 2 valence electrons. Oxygen (atomic no. 8, config 2,6) needs 2 electrons to complete its octet. Mg loses 2 electrons to become Mg²⁺ (2,8 — Ne configuration). O gains 2 electrons to become O²⁻ (2,8 — Ne configuration). The ionic bond between Mg²⁺ and O²⁻ is very strong due to 2+ charge. MgO has a very high melting point and is used as a refractory material and antacid.' },
+  'CaCl₂':{ two:'Calcium (2,8,8,2) gives 1e⁻ to each of 2 Chlorine atoms. Ca becomes Ca²⁺; each Cl becomes Cl⁻. The ionic bond holds the formula unit CaCl₂.', five:'Formation of CaCl₂: Calcium (config 2,8,8,2) has 2 valence electrons. It tends to lose both. Each chlorine atom (config 2,8,7) needs only 1 electron. So one Ca atom gives 1 electron to each of two Cl atoms. Ca²⁺ (config 2,8,8 — Ar) and 2 × Cl⁻ (config 2,8,8 — Ar) are formed. Electrostatic attraction between Ca²⁺ and two Cl⁻ gives the ionic compound CaCl₂. It is used as a drying agent and de-icing salt.' },
+  'MgCl₂':{ two:'Mg gives 1e⁻ to each of 2 Cl atoms by ionic bond, forming Mg²⁺ and 2 Cl⁻. Formula MgCl₂ is derived by criss-cross of valencies (Mg=2, Cl=1).', five:'Formation of MgCl₂: Magnesium (config 2,8,2) loses 2 electrons. Two chlorine atoms (each config 2,8,7) each gain 1 electron. Mg becomes Mg²⁺ (2,8) and each Cl becomes Cl⁻ (2,8,8). The ionic formula MgCl₂ shows 1 Mg²⁺ balanced by 2 Cl⁻. The criss-cross method: Mg valency=2, Cl valency=1 → formula Mg₁Cl₂ = MgCl₂. Used in tofu production and fireproofing.' },
+  'Al₂O₃':{ two:'Al (valency 3) and O (valency 2) form Al₂O₃ by criss-cross. Al³⁺ loses 3e⁻; O²⁻ gains 2e⁻. Total charge balanced: 2×(+3) = 3×(−2).', five:'Formation of Al₂O₃: Aluminium (config 2,8,3) loses 3 electrons to form Al³⁺ (2,8 — Ne). Oxygen (config 2,6) gains 2 electrons to form O²⁻ (2,8 — Ne). To balance charge: 2 Al³⁺ gives 6+ total; 3 O²⁻ gives 6− total. So formula = Al₂O₃. Criss-cross method: Al valency=3, O valency=2 → Al₂O₃. Al₂O₃ is amphoteric, occurring as bauxite and corundum (ruby, sapphire in impure form).' },
+  'K₂O':  { two:'Two K atoms (each valency 1) each give 1e⁻ to 1 O atom (valency 2). K becomes K⁺ and O becomes O²⁻. Formula K₂O by criss-cross.', five:'Formation of K₂O: Potassium (config 2,8,8,1) has 1 valence electron and loses it to form K⁺ (2,8,8 — Ar). Oxygen (config 2,6) needs 2 electrons to form O²⁻ (2,8). Two K⁺ ions are needed to balance one O²⁻, giving the formula K₂O. Criss-cross: K valency=1, O valency=2 → K₂O. Potassium oxide reacts with water to form potassium hydroxide (KOH), a strong base.' },
+  'Na':   { two:'In metallic sodium, the 1 valence electron per atom is delocalised, forming a "sea of electrons". Na⁺ cations are held together by electrostatic attraction to this electron sea.', five:'Metallic bonding in Na: Sodium (config 2,8,1) has 1 valence electron. In solid sodium, all atoms release their valence electrons. These electrons become "delocalised" — not belonging to any one atom, but free to move throughout the metal. The Na⁺ ions arrange in a crystal lattice and are held by the electrostatic attraction to the mobile electron cloud (sea of electrons). This explains sodium\'s properties: electrical conductivity (mobile electrons carry charge), malleability (layers of ions can slide past each other), and metallic lustre.' },
+  'Mg':   { two:'In metallic Mg, 2 valence electrons per atom are delocalised. The stronger electron sea and Mg²⁺ lattice result in higher melting point and better conductivity than Na.', five:'Metallic bonding in Mg: Magnesium (config 2,8,2) contributes 2 valence electrons per atom to the electron sea. The resulting electron cloud is denser than in Na. Mg²⁺ cations are held in a crystal lattice surrounded by 2 electrons per atom. The bond is stronger than in Na — higher melting point (650°C vs 98°C). The free electrons explain electrical and thermal conductivity. Mg is used in alloys, aircraft bodies and flashlights.' },
+  'Al':   { two:'In metallic Al, 3 valence electrons per atom are delocalised. The dense electron sea and Al³⁺ lattice form a strong bond — high melting point, low density, excellent conductor.', five:'Metallic bonding in Al: Aluminium (config 2,8,3) donates 3 electrons per atom to the delocalised electron pool. This creates a very dense electron sea around Al³⁺ ions. The result is strong metallic bonding — high melting point (660°C), good electrical conductivity (3rd best conductor after Ag and Cu), and mechanical strength. Despite being a metal with 3 electrons contributed, Al is surprisingly light (density 2.7 g/cm³). It is used in overhead wires, foil, aircraft and packaging.' },
+};
+
+// 3D shape data
+const SHAPES_3D = {
+  'H₂O':  { atoms:[{s:'O',xyz:[0,0,0]},{s:'H',xyz:[-0.96,0.65,0]},{s:'H',xyz:[0.96,0.65,0]}], bonds:[[0,1],[0,2]], shape:'Bent', angle:'104.5°', lp:2, hbridize:'sp³', name:'Water' },
+  'CO₂':  { atoms:[{s:'C',xyz:[0,0,0]},{s:'O',xyz:[0,0,-1.3]},{s:'O',xyz:[0,0,1.3]}], bonds:[[0,1],[0,2]], shape:'Linear', angle:'180°', lp:0, hbridize:'sp', name:'Carbon Dioxide' },
+  'CH₄':  { atoms:[{s:'C',xyz:[0,0,0]},{s:'H',xyz:[1,1,1]},{s:'H',xyz:[-1,-1,1]},{s:'H',xyz:[-1,1,-1]},{s:'H',xyz:[1,-1,-1]}], bonds:[[0,1],[0,2],[0,3],[0,4]], shape:'Tetrahedral', angle:'109.5°', lp:0, hbridize:'sp³', name:'Methane' },
+  'NH₃':  { atoms:[{s:'N',xyz:[0,0.5,0]},{s:'H',xyz:[-1,-0.3,0.6]},{s:'H',xyz:[1,-0.3,0.6]},{s:'H',xyz:[0,-0.3,-0.9]}], bonds:[[0,1],[0,2],[0,3]], shape:'Trigonal Pyramidal', angle:'107°', lp:1, hbridize:'sp³', name:'Ammonia' },
+  'BF₃':  { atoms:[{s:'B',xyz:[0,0,0]},{s:'F',xyz:[1.3,0,0]},{s:'F',xyz:[-0.65,1.12,0]},{s:'F',xyz:[-0.65,-1.12,0]}], bonds:[[0,1],[0,2],[0,3]], shape:'Trigonal Planar', angle:'120°', lp:0, hbridize:'sp²', name:'Boron Trifluoride' },
+  'H₂':   { atoms:[{s:'H',xyz:[-0.7,0,0]},{s:'H',xyz:[0.7,0,0]}], bonds:[[0,1]], shape:'Linear', angle:'N/A', lp:0, hbridize:'s', name:'Hydrogen' },
+  'N₂':   { atoms:[{s:'N',xyz:[-0.55,0,0]},{s:'N',xyz:[0.55,0,0]}], bonds:[[0,1]], shape:'Linear', angle:'N/A', lp:1, hbridize:'sp', name:'Nitrogen' },
+};
+
+// ===================== STATE =====================
+let activeTab = 'covalent';
+let covMol = 'H₂', ionMol = 'NaCl', metMol = 'Na', shape3DMol = 'H₂O';
+let covAnimProg = 0, ionAnimProg = 0;
+let covRunning = false, ionRunning = false, metRunning = false;
+let covFrozen = false;
+let time = 0;
+let explainActive = false, explainStep = 0, explainPaused = false;
+let covRAF = null, ionRAF = null, metRAF = null;
+let rot3D = {x:0.3,y:0.3}, drag3D = false, drag3DLast = {x:0,y:0};
+let anim3D = false, raf3D = null, angle3D = 0;
+let buildSlotA = null, buildSlotB = null, buildSlotFill = 'a';
+
+// ===================== UTILITY =====================
+function lerp(a,b,t){return a+(b-a)*t}
+function clamp(v,lo,hi){return Math.max(lo,Math.min(hi,v))}
+
+function drawBohrAtom(ctx, cx, cy, sym, pct=1, glowValence=false, lostShell=false) {
+  const el = ELEM[sym];
+  if(!el) return;
+  const nShells = el.shells.length - (lostShell?1:0);
+  const actualShells = lostShell ? el.shells.slice(0,-1) : el.shells;
+  const totalShells = actualShells.length;
+
+  // nucleus
+  const nr = nucleusRadius(sym);
+  const ng = ctx.createRadialGradient(cx-nr*0.3,cy-nr*0.3,nr*0.1,cx,cy,nr);
+  ng.addColorStop(0, el.nGrad[0]);
+  ng.addColorStop(0.5, el.nGrad[1]);
+  ng.addColorStop(1, el.nGrad[2]);
+  ctx.shadowBlur = 20; ctx.shadowColor = el.color;
+  ctx.beginPath(); ctx.arc(cx,cy,nr,0,Math.PI*2);
+  ctx.fillStyle=ng; ctx.fill();
+  ctx.shadowBlur=0;
+  ctx.fillStyle='#fff'; ctx.font=`bold ${Math.max(9,nr*0.75)}px sans-serif`;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(sym,cx,cy);
+
+  // orbits + electrons
+  for(let i=0;i<totalShells;i++) {
+    const r = shellRadius(totalShells,i) * pct;
+    const eCount = actualShells[i];
+    // orbit ring (dashed)
+    ctx.save(); ctx.setLineDash([4,4]);
+    ctx.strokeStyle='rgba(100,116,139,0.5)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke();
+    ctx.restore();
+    // electrons
+    const isValence = (i === totalShells-1);
+    for(let e=0;e<eCount;e++) {
+      const angle = (e/eCount)*Math.PI*2 + time*0.6*(i%2===0?1:-1);
+      const ex = cx + Math.cos(angle)*r;
+      const ey = cy + Math.sin(angle)*r;
+      const glow = isValence && glowValence;
+      if(glow){ctx.shadowBlur=12;ctx.shadowColor=el.eColor;}
+      ctx.beginPath(); ctx.arc(ex,ey,glow?4:3,0,Math.PI*2);
+      ctx.fillStyle = el.eColor;
+      ctx.fill(); ctx.shadowBlur=0;
+    }
+  }
+}
+
+function getShellOuterR(sym, lostShell=false) {
+  const el = ELEM[sym]; if(!el) return 50;
+  const n = lostShell ? el.shells.length-1 : el.shells.length;
+  const bases = {1:42,2:55,3:70,4:78};
+  return bases[n]||70;
+}
+
+function resizeCanvas(cvs) {
+  const w = cvs.parentElement.clientWidth || 500;
+  cvs.width = w; cvs.height = 380;
+  return {w, h:380};
+}
+
+// ===================== COVALENT ANIMATION =====================
+function covInit() {
+  buildMolButtons('cov-mol-row', Object.keys(COV_MOLS), covMol, k=>{covMol=k; covReset(); updateSubPanels('cov');});
+  updateSubPanels('cov');
+  covDraw(0);
+}
+
+function covSimulate() {
+  if(covRunning) return;
+  covRunning=true; covAnimProg=0; covFrozen=false;
+  document.getElementById('btn-cov-sim').textContent='▶ Running…';
+  covLoop();
+}
+function covReplay() { covAnimProg=0; covFrozen=false; covRunning=true; covLoop(); }
+function covReset() { cancelAnimationFrame(covRAF); covRunning=false; covAnimProg=0; covFrozen=false; document.getElementById('btn-cov-sim').textContent='▶ Simulate'; covDraw(0); }
+function toggleFreeze() {
+  covFrozen=!covFrozen;
+  document.getElementById('btn-freeze').textContent = covFrozen?'▶ Resume':'⏸ Freeze';
+  if(!covFrozen && covRunning) covLoop();
+}
+
+function covLoop() {
+  if(covFrozen) return;
+  time += 0.03;
+  covAnimProg = Math.min(covAnimProg+0.008, 1);
+  document.getElementById('cov-bar').style.width=(covAnimProg*100)+'%';
+  covDraw(covAnimProg);
+  if(covAnimProg<1) { covRAF=requestAnimationFrame(covLoop); }
+  else { covRunning=false; document.getElementById('btn-cov-sim').textContent='▶ Simulate'; }
+}
+
+function covDraw(prog) {
+  const cvs = document.getElementById('covCanvas');
+  const {w,h} = resizeCanvas(cvs);
+  const ctx = cvs.getContext('2d');
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle='#060b18'; ctx.fillRect(0,0,w,h);
+  drawStars(ctx,w,h);
+
+  const mol = COV_MOLS[covMol];
+  const symA = mol.atoms[0], symB = mol.atoms[1];
+  const nBonds = mol.bonds;
+  const lp = mol.lp;
+
+  const targetDist = getShellOuterR(symA)+getShellOuterR(symB)+18;
+  const startGap = w*0.3;
+  const finalGap = targetDist;
+
+  const dist = prog<0.5 ? lerp(startGap, finalGap, prog/0.5) : finalGap;
+  const cx = w/2, cy = h*0.45;
+  const lx = cx - dist/2;
+  const rx = cx + dist/2;
+
+  const atomPct = clamp(prog/0.3,0,1);
+  const valGlow = prog>0.3 && prog<0.7;
+  const bondProg = clamp((prog-0.5)/0.25,0,1);
+
+  // draw atoms
+  drawBohrAtom(ctx,lx,cy,symA,atomPct,valGlow);
+  drawBohrAtom(ctx,rx,cy,symB,atomPct,valGlow);
+
+  // draw bond(s)
+  if(bondProg>0) {
+    const len = (rx-lx);
+    const rA = getShellOuterR(symA)*0.72;
+    const rB = getShellOuterR(symB)*0.72;
+    const bx1 = lx+rA, bx2 = rx-rB;
+
+    for(let pair=0;pair<nBonds;pair++) {
+      const off = (pair-(nBonds-1)/2)*12;
+      ctx.save();
+      ctx.strokeStyle=`rgba(255,255,255,${bondProg*0.6})`;
+      ctx.lineWidth=2; ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.moveTo(bx1, cy+off); ctx.lineTo(bx1+(bx2-bx1)*bondProg, cy+off);
+      ctx.stroke();
+      ctx.restore();
+
+      // shared electrons oscillating
+      if(prog>0.75) {
+        for(let ep=0;ep<2;ep++) {
+          const osc = Math.sin(time*2.5+(ep+pair)*Math.PI)*0.3;
+          const frac = 0.5+osc;
+          const ex = lerp(bx1,bx2,frac);
+          const ey = cy+off;
+          ctx.shadowBlur=12; ctx.shadowColor='#fff';
+          ctx.beginPath(); ctx.arc(ex,ey,3.5,0,Math.PI*2);
+          ctx.fillStyle='#ffffff'; ctx.fill(); ctx.shadowBlur=0;
+        }
+      }
+    }
+  }
+
+  // molecule badge
+  if(prog>0.85) {
+    const alpha = (prog-0.85)/0.15;
+    ctx.globalAlpha=alpha;
+    ctx.fillStyle='rgba(30,58,138,0.8)';
+    roundRect(ctx, cx-50, h-55, 100, 32, 10);
+    ctx.fill();
+    ctx.fillStyle='#93c5fd'; ctx.font='bold 16px serif';
+    ctx.textAlign='center'; ctx.fillText(mol.formula, cx, h-32);
+    ctx.globalAlpha=1;
+  }
+
+  // desc
+  if(prog>0.8){
+    ctx.fillStyle='rgba(148,163,184,0.9)'; ctx.font='13px sans-serif';
+    ctx.textAlign='center'; ctx.fillText(mol.desc, cx, h-10);
+  }
+
+  // explain overlay
+  if(explainActive) drawExplain(ctx,w,h,lx,rx,cy,symA,symB);
+}
+
+function drawStars(ctx,w,h) {
+  if(!drawStars._stars || drawStars._w!==w) {
+    drawStars._stars=[]; drawStars._w=w;
+    for(let i=0;i<40;i++) drawStars._stars.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2});
+  }
+  drawStars._stars.forEach(s=>{ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba(148,163,184,0.3)';ctx.fill();});
+}
+
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+
+// ===================== EXPLAIN MODE =====================
+const EXPLAIN_STEPS = {
+  'H₂': [
+    {title:'Why is Hydrogen gas H₂?', note:'Hydrogen atoms are unstable alone — they need a partner!'},
+    {title:'1. Count outer electrons', note:'Each H has 1 valence electron (1st shell, needs 2 for duplet)'},
+    {title:'2. What do they need?', note:'Each H needs 1 more electron to complete the duplet rule'},
+    {title:'3. Solution: SHARE!', note:'Both H atoms share their electrons — a covalent bond forms'},
+    {title:'4. Bond formed → H–H', note:'Both H now count 2 electrons — duplet satisfied!'},
+    {title:'5. Polar or Nonpolar?', note:'ΔEN = 0 (same atoms) → Nonpolar covalent bond'},
+  ],
+  'O₂': [
+    {title:'Why O₂ has a double bond?', note:'Oxygen needs 2 more electrons to complete its octet (has 6)'},
+    {title:'1. Each O has 6 valence e⁻', note:'2 short of octet — needs to share 2 pairs'},
+    {title:'2. Sharing 2 pairs = double bond', note:'O=O forms — both atoms satisfy the octet rule'},
+    {title:'3. Bond energy is high', note:'Double bonds are stronger and shorter than single bonds'},
+    {title:'4. 2 lone pairs remain on each O', note:'Each O still has 2 non-bonding pairs'},
+    {title:'5. Nonpolar molecule', note:'ΔEN = 0 (same atoms) → equal sharing → nonpolar'},
+  ],
+  'N₂': [
+    {title:'N₂ has the strongest covalent bond', note:'Nitrogen has 5 valence electrons — needs 3 more'},
+    {title:'1. Each N has 5 valence e⁻', note:'N needs 3 electrons to reach octet of 8'},
+    {title:'2. Triple bond: 3 shared pairs', note:'N≡N — 6 electrons shared, octet complete'},
+    {title:'3. Each N retains 1 lone pair', note:'2 electrons non-bonding on each N'},
+    {title:'4. Strongest diatomic bond', note:'Bond energy ~941 kJ/mol — why N₂ is so unreactive!'},
+    {title:'5. Nonpolar', note:'Identical atoms — no EN difference — perfectly nonpolar'},
+  ],
+};
+// default steps for other molecules
+function getExplainSteps(mol) {
+  if(EXPLAIN_STEPS[mol]) return EXPLAIN_STEPS[mol];
+  const m = COV_MOLS[mol];
+  return [
+    {title:`Formation of ${mol}`, note:`Let's understand how ${mol} forms step by step`},
+    {title:`Count valence electrons`, note:`${m.atoms[0]}: ${ELEM[m.atoms[0]]?.valence} valence e⁻  •  ${m.atoms[1]}: ${ELEM[m.atoms[1]]?.valence} valence e⁻`},
+    {title:`Apply Octet/Duplet Rule`, note:`Each atom needs ${m.atoms[0]==='H'?'2 (duplet)':'8 (octet)'} electrons in outermost shell`},
+    {title:`Electron sharing`, note:`${m.bonds} pair(s) of electrons are shared between atoms`},
+    {title:`Bond type`, note:`${m.bonds===1?'Single':m.bonds===2?'Double':'Triple'} covalent bond formed (${m.bonds*2} electrons shared)`},
+    {title:`Polarity check`, note:`ΔEN = ${Math.abs((ELEM[m.atoms[0]]?.EN||0)-(ELEM[m.atoms[1]]?.EN||0)).toFixed(2)} → ${Math.abs((ELEM[m.atoms[0]]?.EN||0)-(ELEM[m.atoms[1]]?.EN||0))<0.5?'Nonpolar':Math.abs((ELEM[m.atoms[0]]?.EN||0)-(ELEM[m.atoms[1]]?.EN||0))<1.7?'Polar covalent':'Ionic'}`},
+  ];
+}
+
+function startExplain() {
+  explainActive=true; explainStep=0; explainPaused=false;
+  document.getElementById('explain-controls').style.display='flex';
+  updateExplainLabel();
+  covReset(); covSimulate();
+}
+function stopExplain() { explainActive=false; document.getElementById('explain-controls').style.display='none'; }
+function explainNext() { const s=getExplainSteps(covMol); explainStep=Math.min(explainStep+1,s.length-1); updateExplainLabel(); }
+function explainPrev() { explainStep=Math.max(explainStep-1,0); updateExplainLabel(); }
+function explainPlayPause() { explainPaused=!explainPaused; document.getElementById('btn-exp-pp').textContent=explainPaused?'▶ Play':'⏸ Pause'; }
+function updateExplainLabel() { document.getElementById('exp-step-label').textContent=`Step ${explainStep+1} of ${getExplainSteps(covMol).length}`; }
+
+function drawExplain(ctx,w,h,lx,rx,cy,symA,symB) {
+  const steps = getExplainSteps(covMol);
+  const step = steps[Math.min(explainStep,steps.length-1)];
+  // overlay
+  ctx.fillStyle='rgba(6,11,24,0.78)';
+  ctx.fillRect(0,0,w,70);
+  // chalk text
+  ctx.font='italic bold 15px serif'; ctx.fillStyle='#fde68a';
+  ctx.textAlign='center'; ctx.shadowBlur=8; ctx.shadowColor='#fde68a';
+  ctx.fillText(step.title,w/2,30); ctx.shadowBlur=0;
+  ctx.font='13px sans-serif'; ctx.fillStyle='#cbd5e1';
+  ctx.fillText(step.note,w/2,52);
+  // pencil pointer
+  const px = explainStep%2===0?lx:rx;
+  drawPencil(ctx,px,cy-(getShellOuterR(symA)+18));
+}
+
+function drawPencil(ctx,x,y) {
+  const poff = Math.sin(time*3)*5;
+  ctx.save(); ctx.translate(x,y+poff);
+  ctx.fillStyle='#fde68a'; ctx.strokeStyle='#92400e'; ctx.lineWidth=1.5;
+  // body
+  ctx.beginPath(); ctx.rect(-3,-18,6,16); ctx.fill(); ctx.stroke();
+  // tip
+  ctx.beginPath(); ctx.moveTo(-3,-2); ctx.lineTo(3,-2); ctx.lineTo(0,4); ctx.closePath();
+  ctx.fillStyle='#f97316'; ctx.fill(); ctx.stroke();
+  ctx.restore();
+}
+
+// ===================== IONIC ANIMATION =====================
+function ionInit() {
+  buildMolButtons('ion-mol-row', Object.keys(ION_MOLS), ionMol, k=>{ionMol=k; ionReset(); updateSubPanels('ion');});
+  updateSubPanels('ion');
+  ionDraw(0);
+}
+
+function ionSimulate() { if(ionRunning) return; ionRunning=true; ionAnimProg=0; ionLoop(); }
+function ionReplay() { ionAnimProg=0; ionRunning=true; ionLoop(); }
+function ionReset() { cancelAnimationFrame(ionRAF); ionRunning=false; ionAnimProg=0; ionDraw(0); }
+
+function ionLoop() {
+  time += 0.03; ionAnimProg = Math.min(ionAnimProg+0.007,1);
+  document.getElementById('ion-bar').style.width=(ionAnimProg*100)+'%';
+  ionDraw(ionAnimProg);
+  if(ionAnimProg<1) ionRAF=requestAnimationFrame(ionLoop);
+  else ionRunning=false;
+}
+
+function ionDraw(prog) {
+  const cvs = document.getElementById('ionCanvas');
+  const {w,h} = resizeCanvas(cvs);
+  const ctx = cvs.getContext('2d');
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle='#060b18'; ctx.fillRect(0,0,w,h);
+  drawStars(ctx,w,h);
+
+  const mol = ION_MOLS[ionMol];
+  const symC = mol.cation, symA = mol.anion;
+  const cx=w/2, cy=h*0.45;
+  const lx=cx-120, rx=cx+120;
+
+  const show = clamp(prog/0.25,0,1);
+  const valGlow = prog>0.25 && prog<0.5;
+  const arcProg = clamp((prog-0.4)/0.25,0,1);
+  const ionProg = clamp((prog-0.65)/0.15,0,1);
+  const attractProg = clamp((prog-0.8)/0.2,0,1);
+
+  const lostShell = ionProg>0.5;
+  drawBohrAtom(ctx,lx,cy,symC,show,valGlow,lostShell);
+  drawBohrAtom(ctx,rx,cy,symA,show,valGlow && prog<0.5);
+
+  // draw gained dot on anion
+  if(ionProg>0.5) {
+    const elA = ELEM[symA];
+    const r = getShellOuterR(symA)*0.98;
+    ctx.shadowBlur=14; ctx.shadowColor=elA?.eColor||'#fff';
+    ctx.beginPath(); ctx.arc(rx-r*0.7,cy-r*0.7,4,0,Math.PI*2);
+    ctx.fillStyle=elA?.eColor||'#fff'; ctx.fill(); ctx.shadowBlur=0;
+  }
+
+  // ion labels
+  if(ionProg>0.5) {
+    ctx.fillStyle='#fde68a'; ctx.font='bold 14px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(symC+'⁺',lx,cy+getShellOuterR(symC,lostShell)+22);
+    ctx.fillStyle='#86efac'; ctx.fillText(symA+'⁻',rx,cy+getShellOuterR(symA)+22);
+  }
+
+  // electron arc
+  if(arcProg>0 && prog<0.7) {
+    const elC = ELEM[symC];
+    const srcX = lx + getShellOuterR(symC)*0.5;
+    const srcY = cy - getShellOuterR(symC)*0.5;
+    const dstX = rx - getShellOuterR(symA)*0.6;
+    const dstY = cy - getShellOuterR(symA)*0.6;
+    const cpX = (srcX+dstX)/2;
+    const cpY = Math.min(srcY,dstY)-80;
+    // trail
+    ctx.save(); ctx.strokeStyle='rgba(253,230,138,0.3)'; ctx.lineWidth=1.5; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(srcX,srcY);
+    const steps=20;
+    for(let i=1;i<=steps;i++){
+      const t2=arcProg*(i/steps); const mt=1-t2;
+      ctx.lineTo(mt*mt*srcX+2*mt*t2*cpX+t2*t2*dstX, mt*mt*srcY+2*mt*t2*cpY+t2*t2*dstY);
+    }
+    ctx.stroke(); ctx.restore();
+    // electron dot
+    const mt=1-arcProg,t=arcProg;
+    const ex=mt*mt*srcX+2*mt*t*cpX+t*t*dstX;
+    const ey=mt*mt*srcY+2*mt*t*cpY+t*t*dstY;
+    ctx.shadowBlur=15; ctx.shadowColor='#fde68a';
+    ctx.beginPath(); ctx.arc(ex,ey,4,0,Math.PI*2); ctx.fillStyle='#fde68a'; ctx.fill(); ctx.shadowBlur=0;
+  }
+
+  // attraction arrows + badge
+  if(attractProg>0) {
+    ctx.globalAlpha=attractProg;
+    ctx.strokeStyle='#f97316'; ctx.lineWidth=2.5;
+    const ax1=lx+getShellOuterR(symC)+8, ax2=rx-getShellOuterR(symA)-8;
+    const amid=(ax1+ax2)/2;
+    // → left arrow
+    ctx.beginPath(); ctx.moveTo(ax1,cy); ctx.lineTo(amid-10,cy); ctx.stroke();
+    arrowHead(ctx,amid-10,cy,'right','#f97316');
+    // ← right arrow
+    ctx.beginPath(); ctx.moveTo(ax2,cy); ctx.lineTo(amid+10,cy); ctx.stroke();
+    arrowHead(ctx,amid+10,cy,'left','#f97316');
+    // label
+    ctx.fillStyle='#f97316'; ctx.font='11px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('Electrostatic Attraction',cx,cy+30);
+    // badge
+    ctx.fillStyle='rgba(30,58,138,0.85)'; roundRect(ctx,cx-55,h-55,110,30,10); ctx.fill();
+    ctx.fillStyle='#93c5fd'; ctx.font='bold 16px serif'; ctx.textAlign='center'; ctx.fillText(ionMol,cx,h-32);
+    ctx.globalAlpha=1;
+  }
+
+  updateTiles('ion-tiles', symC, symA, ionMol, 'ionic');
+}
+
+function arrowHead(ctx,x,y,dir,color){
+  ctx.save(); ctx.fillStyle=color;
+  ctx.beginPath();
+  if(dir==='right'){ctx.moveTo(x,y);ctx.lineTo(x-8,y-5);ctx.lineTo(x-8,y+5);}
+  else{ctx.moveTo(x,y);ctx.lineTo(x+8,y-5);ctx.lineTo(x+8,y+5);}
+  ctx.closePath(); ctx.fill(); ctx.restore();
+}
+
+// ===================== METALLIC ANIMATION =====================
+function metInit() {
+  const row = document.getElementById('met-row');
+  row.innerHTML='';
+  ['Na','Mg','Al'].forEach(m=>{
+    const b=document.createElement('button');
+    b.className='mol-btn'+(m===metMol?' sel':'');
+    b.textContent=m; b.onclick=()=>{metMol=m; row.querySelectorAll('.mol-btn').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); metReset(); metSimulate();};
+    row.appendChild(b);
+  });
+  updateMetBoard();
+  metSimulate();
+}
+
+function metSimulate() { cancelAnimationFrame(metRAF); metRunning=true; metLoop(); }
+function metReset() { cancelAnimationFrame(metRAF); metRunning=false; metDraw(); }
+
+function metLoop() { time+=0.025; metDraw(); metRAF=requestAnimationFrame(metLoop); }
+
+function metDraw() {
+  const cvs = document.getElementById('metCanvas');
+  const {w,h} = resizeCanvas(cvs);
+  const ctx = cvs.getContext('2d');
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle='#060b18'; ctx.fillRect(0,0,w,h);
+
+  const el = ELEM[metMol];
+  const rows=4, cols=5;
+  const gapX=w/(cols+1), gapY=h/(rows+1);
+  const ions=[];
+  for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) ions.push({x:(c+1)*gapX,y:(r+1)*gapY});
+
+  // draw ions
+  ions.forEach(({x,y})=>{
+    const nr=18;
+    const ng=ctx.createRadialGradient(x-5,y-5,2,x,y,nr);
+    ng.addColorStop(0,el.nGrad[0]); ng.addColorStop(.5,el.nGrad[1]); ng.addColorStop(1,el.nGrad[2]);
+    ctx.shadowBlur=10; ctx.shadowColor=el.color;
+    ctx.beginPath(); ctx.arc(x,y,nr,0,Math.PI*2); ctx.fillStyle=ng; ctx.fill(); ctx.shadowBlur=0;
+    ctx.fillStyle='#fff'; ctx.font='bold 10px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(metMol+'⁺',x,y);
+  });
+
+  // drifting electrons
+  const nElec = el.valence * ions.length;
+  const eCol = el.eColor;
+  for(let i=0;i<Math.min(nElec,30);i++) {
+    const seed = i*137.5;
+    const ex = ((seed*0.618+time*0.3+i*0.1)*w)%w;
+    const ey = ((seed*0.382+time*0.2+i*0.17)*h)%h;
+    ctx.shadowBlur=8; ctx.shadowColor=eCol;
+    ctx.beginPath(); ctx.arc(ex,ey,2.5,0,Math.PI*2); ctx.fillStyle=eCol; ctx.fill(); ctx.shadowBlur=0;
+  }
+
+  // labels
+  ctx.fillStyle='rgba(148,163,184,0.7)'; ctx.font='12px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('⬡ '+metMol+'⁺ ion lattice    •    ⚡ free electrons (electron sea)',w/2,h-10);
+
+  // tiles
+  updateTiles('met-tiles', metMol, null, metMol, 'metallic');
+}
+
+function updateMetBoard() {
+  const b=document.getElementById('met-board');
+  const ans=BOARD_ANS[metMol];
+  if(!ans){b.innerHTML='';return;}
+  b.innerHTML=`<h4>CBSE Board Answer</h4>
+  <p><span class="mark">2 Marks</span>${ans.two}</p>
+  <p><span class="mark">5 Marks</span>${ans.five}</p>`;
+}
+
+// ===================== TILES =====================
+function updateTiles(id, symA, symB, molKey, type) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  const eA = ELEM[symA], eB = symB?ELEM[symB]:null;
+  const mol = type==='covalent'?COV_MOLS[molKey]:type==='ionic'?ION_MOLS[molKey]:null;
+  const ENdiff = eB ? Math.abs((eA?.EN||0)-(eB?.EN||0)) : 0;
+  const bondType = type==='ionic'?'Ionic':type==='metallic'?'Metallic':ENdiff<0.5?'Nonpolar Covalent':ENdiff<1.7?'Polar Covalent':'Ionic';
+  el.innerHTML=`
+    <div class="tile"><div class="tile-label">Atom 1</div><div class="tile-val c-blue">${symA}</div></div>
+    ${eB?`<div class="tile"><div class="tile-label">Atom 2</div><div class="tile-val c-orange">${symB}</div></div>`:''}
+    <div class="tile"><div class="tile-label">Valence e⁻</div><div class="tile-val c-green">${eA?.valence||'?'}${eB?'/'+eB.valence:''}</div></div>
+    <div class="tile"><div class="tile-label">Bond Type</div><div class="tile-val c-purple" style="font-size:.78rem">${bondType}</div></div>
+    ${eB?`<div class="tile"><div class="tile-label">ΔEN</div><div class="tile-val">${ENdiff.toFixed(2)}</div></div>`:''}
+    <div class="tile"><div class="tile-label">Formula</div><div class="tile-val">${molKey}</div></div>
+  `;
+}
+
+// ===================== SUB-PANELS =====================
+function subTab(prefix, name, el) {
+  document.querySelectorAll(`[id^="${prefix}-sub-"]`).forEach(p=>p.classList.remove('active'));
+  document.getElementById(`${prefix}-sub-${name}`)?.classList.add('active');
+  el.closest('.sub-tabs').querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function updateSubPanels(prefix) {
+  const isIon = prefix==='ion';
+  const molKey = isIon?ionMol:covMol;
+  const mol = isIon?ION_MOLS[molKey]:COV_MOLS[molKey];
+  const symA = isIon?mol.cation:mol.atoms[0];
+  const symB = isIon?mol.anion:mol.atoms[1];
+
+  updateTiles(`${prefix}-tiles`, symA, symB, molKey, isIon?'ionic':'covalent');
+  updateBoardAns(`${prefix}-board-ans`, molKey);
+  updateENMeter(`${prefix}-en-meter`, symA, symB);
+  updateOctet(`${prefix}-octet`, symA, symB, isIon?'ionic':'covalent');
+  if(!isIon) drawLewis(molKey);
+}
+
+function updateBoardAns(id, molKey) {
+  const el=document.getElementById(id); if(!el) return;
+  const ans=BOARD_ANS[molKey];
+  if(!ans){el.innerHTML='<p style="color:#64748b">Board answer not available for this molecule.</p>';return;}
+  el.innerHTML=`<h4>CBSE Board Answer — ${molKey}</h4>
+  <p><span class="mark">2 Marks</span>${ans.two}</p>
+  <p><span class="mark">5 Marks</span>${ans.five}</p>`;
+}
+
+function updateENMeter(id, symA, symB) {
+  const el=document.getElementById(id); if(!el) return;
+  const eA=ELEM[symA], eB=ELEM[symB];
+  if(!eA||!eB){el.innerHTML='';return;}
+  const enA=eA.EN, enB=eB.EN, diff=Math.abs(enA-enB);
+  const zone=diff<0.5?'Nonpolar Covalent':diff<1.7?'Polar Covalent':'Ionic';
+  const zoneColor=diff<0.5?'#22c55e':diff<1.7?'#f59e0b':'#ef4444';
+  const pA=enA/4*100, pB=enB/4*100, pDiff=diff/4*100;
+  el.innerHTML=`
+    <div class="en-info">EN(${symA}) = <strong>${enA}</strong> &nbsp;|&nbsp; EN(${symB}) = <strong>${enB}</strong> &nbsp;|&nbsp; ΔEN = <strong>${diff.toFixed(2)}</strong></div>
+    <div class="en-bar-wrap">
+      <div class="en-pin" id="en-pin-a" style="left:calc(${pA}% - 1px)"></div>
+      <div class="en-pin" id="en-pin-b" style="left:calc(${pB}% - 1px);background:#60a5fa"></div>
+    </div>
+    <div class="en-label-row"><span>0 (Cs)</span><span>1</span><span>2</span><span>3</span><span>4.0 (F)</span></div>
+    <div style="text-align:center;margin-top:8px">
+      <span class="en-zone" style="background:${zoneColor}22;color:${zoneColor};border:1px solid ${zoneColor}44">${zone}</span>
+    </div>
+    <div style="text-align:center;font-size:.75rem;color:#64748b;margin-top:6px">
+      ΔEN < 0.5 → Nonpolar &nbsp;|&nbsp; 0.5–1.7 → Polar Covalent &nbsp;|&nbsp; > 1.7 → Ionic
+    </div>`;
+}
+
+function updateOctet(id, symA, symB, type) {
+  const el=document.getElementById(id); if(!el) return;
+  function card(sym, give, take, share) {
+    const e=ELEM[sym]; if(!e) return '';
+    const need = sym==='H'||sym==='He'?2:8;
+    const has=e.valence, verdict=give?`<div class="verdict verdict-give">Will GIVE ${e.valence}e⁻</div>`:take?`<div class="verdict verdict-take">Will TAKE ${need-has}e⁻</div>`:`<div class="verdict verdict-share">Will SHARE ${need-has}e⁻</div>`;
+    return `<div class="octet-card"><div class="sym" style="color:${e.color}">${sym}</div>
+      <div class="detail">Has: ${has} valence e⁻<br>Needs: ${need-has} more<br>Target: ${need} (${sym==='H'?'duplet':'octet'})</div>
+      ${verdict}</div>`;
+  }
+  const eA=ELEM[symA], eB=ELEM[symB];
+  const aGive = type==='ionic'&&eA?.valence<4;
+  const aTake = type==='ionic'&&eA?.valence>4;
+  const bGive = type==='ionic'&&eB?.valence<4;
+  const bTake = type==='ionic'&&eB?.valence>4;
+  el.innerHTML=card(symA,aGive,aTake,!aGive&&!aTake)+(symB?card(symB,bGive,bTake,!bGive&&!bTake):'');
+}
+
+// ===================== LEWIS STRUCTURES =====================
+function drawLewis(molKey) {
+  const cvs=document.getElementById('lewisCanvas'); if(!cvs) return;
+  const ctx=cvs.getContext('2d');
+  const w=cvs.width,h=cvs.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle='#060b18'; ctx.fillRect(0,0,w,h);
+
+  const mol=COV_MOLS[molKey]; if(!mol) return;
+  const symA=mol.atoms[0],symB=mol.atoms[1],nB=mol.bonds,lpA=mol.lp[0],lpB=mol.lp[1];
+  const cx=w/2,cy=h/2;
+  const ax=cx-70,bx=cx+70;
+
+  drawLewisAtom(ctx,ax,cy,symA,lpA,nB,'right');
+  drawLewisAtom(ctx,bx,cy,symB,lpB,0,'left');
+
+  // bond lines
+  for(let b=0;b<nB;b++){
+    const off=(b-(nB-1)/2)*8;
+    ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(ax+22,cy+off); ctx.lineTo(bx-22,cy+off); ctx.stroke();
+  }
+
+  // labels below
+  ctx.fillStyle='#64748b'; ctx.font='11px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('Lewis dot structure of '+mol.formula,cx,h-10);
+}
+
+function drawLewisAtom(ctx,cx,cy,sym,loneP,bondSide,side) {
+  const el=ELEM[sym]; if(!el) return;
+  ctx.fillStyle='#1e293b'; ctx.strokeStyle='rgba(100,116,139,0.5)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.arc(cx,cy,18,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle=el.color||'#e2e8f0'; ctx.font='bold 13px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(sym,cx,cy);
+
+  // lone pair dots (arranged around atom)
+  const positions=side==='left'?[[-26,-6],[-26,6],[-6,-26],[6,-26]]:[[26,-6],[26,6],[-6,26],[6,26]];
+  for(let i=0;i<loneP&&i<4;i++){
+    const [dx,dy]=positions[i%4];
+    ctx.beginPath(); ctx.arc(cx+dx-4,cy+dy,2.5,0,Math.PI*2); ctx.fillStyle=el.eColor||'#fff'; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx+dx+4,cy+dy,2.5,0,Math.PI*2); ctx.fillStyle=el.eColor||'#fff'; ctx.fill();
+  }
+}
+
+// ===================== 3D SHAPES =====================
+function shapes3DInit() {
+  const grid=document.getElementById('shape-grid');
+  grid.innerHTML='';
+  Object.keys(SHAPES_3D).forEach(k=>{
+    const b=document.createElement('button');
+    b.className='shape-btn'+(k===shape3DMol?' sel':'');
+    b.textContent=k; b.onclick=()=>{shape3DMol=k; grid.querySelectorAll('.shape-btn').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); draw3D(); update3DInfo(); update3DBoard();};
+    grid.appendChild(b);
+  });
+  setup3DInteraction();
+  draw3D(); update3DInfo(); update3DBoard();
+}
+
+function rotate3D(pt,rx,ry){
+  let {x,y,z}=pt;
+  let y2=y*Math.cos(rx)-z*Math.sin(rx),z2=y*Math.sin(rx)+z*Math.cos(rx);
+  let x2=x*Math.cos(ry)+z2*Math.sin(ry),z3=-x*Math.sin(ry)+z2*Math.cos(ry);
+  return{x:x2,y:y2,z:z3};
+}
+
+function project3D(pt,cx,cy,fov=280){
+  const r=rotate3D(pt,rot3D.x,rot3D.y);
+  const scale=fov/(fov+r.z+200);
+  return{x:cx+r.x*scale*80,y:cy+r.y*scale*80,z:r.z,scale};
+}
+
+function draw3D(){
+  const cvs=document.getElementById('canvas3d');
+  cvs.width=Math.min(500,cvs.parentElement.clientWidth||500);
+  cvs.height=380;
+  const w=cvs.width,h=cvs.height;
+  const ctx=cvs.getContext('2d');
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle='#060b18'; ctx.fillRect(0,0,w,h);
+  drawStars(ctx,w,h);
+
+  const shape=SHAPES_3D[shape3DMol]; if(!shape) return;
+  const cx=w/2,cy=h*0.47;
+
+  if(anim3D) { angle3D+=0.01; rot3D.y=angle3D; }
+
+  const pts=shape.atoms.map(a=>project3D({x:a.xyz[0],y:a.xyz[1],z:a.xyz[2]},cx,cy));
+
+  // bonds
+  shape.bonds.forEach(([i,j])=>{
+    const a=pts[i],b=pts[j];
+    const grad=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
+    grad.addColorStop(0,ELEM[shape.atoms[i].s]?.color||'#fff');
+    grad.addColorStop(1,ELEM[shape.atoms[j].s]?.color||'#fff');
+    ctx.strokeStyle=grad; ctx.lineWidth=4*(a.scale+b.scale)/2;
+    ctx.shadowBlur=6; ctx.shadowColor='rgba(255,255,255,0.3)';
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); ctx.shadowBlur=0;
+  });
+
+  // atoms
+  pts.forEach((p,i)=>{
+    const sym=shape.atoms[i].s, el=ELEM[sym];
+    const r=(sym==='H'?14:sym==='C'||sym==='N'||sym==='O'?20:18)*p.scale;
+    const ng=ctx.createRadialGradient(p.x-r*0.3,p.y-r*0.3,r*0.1,p.x,p.y,r);
+    ng.addColorStop(0,el?.nGrad[0]||'#fff'); ng.addColorStop(.5,el?.nGrad[1]||'#aaa'); ng.addColorStop(1,el?.nGrad[2]||'#333');
+    ctx.shadowBlur=16; ctx.shadowColor=el?.color||'#fff';
+    ctx.beginPath(); ctx.arc(p.x,p.y,r,0,Math.PI*2);
+    ctx.fillStyle=ng; ctx.fill(); ctx.shadowBlur=0;
+    ctx.fillStyle='#fff'; ctx.font=`bold ${Math.max(10,r*0.65)}px sans-serif`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(sym,p.x,p.y);
+  });
+
+  // angle arc (central atom to first two bonds)
+  if(shape.bonds.length>=2 && shape.angle!=='N/A') {
+    const c=pts[shape.bonds[0][0]], a=pts[shape.bonds[0][1]], b=pts[shape.bonds[1][1]];
+    ctx.strokeStyle='rgba(167,139,250,0.5)'; ctx.lineWidth=1.5; ctx.setLineDash([3,3]);
+    const d1=Math.hypot(a.x-c.x,a.y-c.y), d2=Math.hypot(b.x-c.x,b.y-c.y);
+    const r=Math.min(d1,d2)*0.4;
+    const ang1=Math.atan2(a.y-c.y,a.x-c.x), ang2=Math.atan2(b.y-c.y,b.x-c.x);
+    ctx.beginPath(); ctx.arc(c.x,c.y,r,ang1,ang2,ang2<ang1); ctx.stroke(); ctx.setLineDash([]);
+    const midAng=(ang1+ang2)/2;
+    ctx.fillStyle='#a78bfa'; ctx.font='11px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(shape.angle, c.x+Math.cos(midAng)*(r+16), c.y+Math.sin(midAng)*(r+16));
+  }
+
+  // drag hint
+  ctx.fillStyle='rgba(100,116,139,0.5)'; ctx.font='11px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('⟳ drag to rotate',w/2,h-10);
+}
+
+function update3DInfo(){
+  const s=SHAPES_3D[shape3DMol]; if(!s) return;
+  document.getElementById('shape-info').innerHTML=`<strong>${s.name}</strong> · Shape: <strong>${s.shape}</strong> · Bond angle: <strong>${s.angle}</strong> · Hybridization: <strong>${s.hbridize}</strong> · Lone pairs: <strong>${s.lp}</strong>`;
+}
+
+function update3DBoard(){
+  const el=document.getElementById('3d-board-ans'); if(!el) return;
+  const ans=BOARD_ANS[shape3DMol];
+  if(!ans){el.innerHTML='<p style="color:#64748b">Select a molecule above.</p>';return;}
+  el.innerHTML=`<h4>CBSE Board Answer — ${shape3DMol}</h4>
+  <p><span class="mark">2 Marks</span>${ans.two}</p>
+  <p><span class="mark">5 Marks</span>${ans.five}</p>`;
+  // lewis on 3D tab
+  const lc=document.getElementById('lewis3dCanvas');
+  if(lc && COV_MOLS[shape3DMol]) { lc.width=460; lc.height=180; drawLewisOn(lc,shape3DMol); }
+}
+
+function drawLewisOn(cvs,molKey) {
+  const ctx=cvs.getContext('2d');
+  const w=cvs.width,h=cvs.height;
+  ctx.clearRect(0,0,w,h); ctx.fillStyle='#060b18'; ctx.fillRect(0,0,w,h);
+  const mol=COV_MOLS[molKey]; if(!mol) return;
+  const symA=mol.atoms[0],symB=mol.atoms[1],nB=mol.bonds,lpA=mol.lp[0],lpB=mol.lp[1];
+  const cx=w/2,cy=h/2,ax=cx-70,bx=cx+70;
+  drawLewisAtom(ctx,ax,cy,symA,lpA,nB,'right');
+  drawLewisAtom(ctx,bx,cy,symB,lpB,0,'left');
+  for(let b=0;b<nB;b++){const off=(b-(nB-1)/2)*8;ctx.strokeStyle='#e2e8f0';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(ax+22,cy+off);ctx.lineTo(bx-22,cy+off);ctx.stroke();}
+  ctx.fillStyle='#64748b';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText('Lewis dot structure of '+mol.formula,cx,h-10);
+}
+
+function setup3DInteraction(){
+  const cvs=document.getElementById('canvas3d');
+  cvs.addEventListener('mousedown',e=>{drag3D=true;drag3DLast={x:e.clientX,y:e.clientY};});
+  window.addEventListener('mouseup',()=>drag3D=false);
+  window.addEventListener('mousemove',e=>{
+    if(!drag3D)return;
+    const dx=e.clientX-drag3DLast.x, dy=e.clientY-drag3DLast.y;
+    rot3D.y+=dx*0.01; rot3D.x+=dy*0.01; drag3DLast={x:e.clientX,y:e.clientY};
+    draw3D();
+  });
+  cvs.addEventListener('touchstart',e=>{drag3D=true;drag3DLast={x:e.touches[0].clientX,y:e.touches[0].clientY};},{passive:true});
+  window.addEventListener('touchend',()=>drag3D=false);
+  window.addEventListener('touchmove',e=>{
+    if(!drag3D)return;
+    const dx=e.touches[0].clientX-drag3DLast.x, dy=e.touches[0].clientY-drag3DLast.y;
+    rot3D.y+=dx*0.01; rot3D.x+=dy*0.01; drag3DLast={x:e.touches[0].clientX,y:e.touches[0].clientY};
+    draw3D();
+  },{passive:true});
+}
+
+function reset3DRot(){rot3D={x:0.3,y:0.3};angle3D=0;draw3D();}
+function toggle3DAnim(){anim3D=!anim3D;if(anim3D&&!raf3D){(function l(){draw3D();raf3D=requestAnimationFrame(l);})();}else if(!anim3D){cancelAnimationFrame(raf3D);raf3D=null;}}
+
+// ===================== BUILD TAB =====================
+const BUILD_ELEMS = ['H','He','Li','Be','B','C','N','O','F','Ne','Na','Mg','Al','Si','P','S','Cl','Ar','K','Ca'];
+
+function buildInit() {
+  const grid=document.getElementById('periodic-grid');
+  grid.innerHTML='';
+  BUILD_ELEMS.forEach(sym=>{
+    const el=ELEM[sym]; if(!el) return;
+    const cell=document.createElement('div');
+    cell.className='p-cell'; cell.innerHTML=`<div class="sym" style="color:${el.color}">${sym}</div><div class="num">${el.atomic}</div><div class="val">v=${el.valence}</div>`;
+    cell.onclick=()=>selectBuildElem(sym);
+    grid.appendChild(cell);
+  });
+}
+
+function selectBuildElem(sym){
+  const el=ELEM[sym]; if(!el) return;
+  if(buildSlotFill==='a'){
+    buildSlotA=sym; buildSlotFill='b';
+    document.getElementById('slot-a-sym').textContent=sym;
+    document.getElementById('slot-a-sym').style.color=el.color;
+    document.getElementById('slot-a-name').textContent=el.name;
+    document.getElementById('slot-a').classList.add('filled');
+  } else {
+    buildSlotB=sym; buildSlotFill='a';
+    document.getElementById('slot-b-sym').textContent=sym;
+    document.getElementById('slot-b-sym').style.color=el.color;
+    document.getElementById('slot-b-name').textContent=el.name;
+    document.getElementById('slot-b').classList.add('filled');
+  }
+  document.querySelectorAll('#periodic-grid .p-cell').forEach((c,i)=>{
+    if(BUILD_ELEMS[i]===buildSlotA||BUILD_ELEMS[i]===buildSlotB) c.classList.add('sel'); else c.classList.remove('sel');
+  });
+}
+
+function clearSlot(s){
+  if(s==='a'){buildSlotA=null;document.getElementById('slot-a-sym').textContent='?';document.getElementById('slot-a-name').textContent='click element';document.getElementById('slot-a').classList.remove('filled');}
+  else{buildSlotB=null;document.getElementById('slot-b-sym').textContent='?';document.getElementById('slot-b-name').textContent='click element';document.getElementById('slot-b').classList.remove('filled');}
+  buildSlotFill=s;
+  document.querySelectorAll('#periodic-grid .p-cell').forEach((c,i)=>{if(BUILD_ELEMS[i]===buildSlotA||BUILD_ELEMS[i]===buildSlotB)c.classList.add('sel');else c.classList.remove('sel');});
+}
+
+function clearBuild(){clearSlot('a');clearSlot('b');document.getElementById('build-result').innerHTML='<div style="color:#334155;font-size:.85rem">Select two elements above, then click Build Bond</div>';}
+
+function buildBond(){
+  if(!buildSlotA||!buildSlotB){document.getElementById('build-result').innerHTML='<div style="color:#fbbf24">⚠ Select both elements first!</div>';return;}
+  const eA=ELEM[buildSlotA],eB=ELEM[buildSlotB];
+  const ENdiff=Math.abs(eA.EN-eB.EN);
+  const bondType=ENdiff>=1.7?'Ionic':ENdiff>=0.5?'Polar Covalent':'Nonpolar Covalent';
+  const color=ENdiff>=1.7?'#f97316':ENdiff>=0.5?'#f59e0b':'#22c55e';
+  // criss-cross formula
+  const vA=eA.valence, vB=eB.valence;
+  let nA=1,nB=1;
+  if(vA>0&&vB>0){
+    const g=(a,b)=>b===0?a:g(b,a%b);
+    const gc=g(vA,vB);
+    nA=vB/gc; nB=vA/gc;
+    if(nA===nB){nA=1;nB=1;}
+  }
+  const formula=nA===1&&nB===1?buildSlotA+buildSlotB:nA===1?buildSlotA+buildSlotB+(nB>1?nB:''):buildSlotA+(nA>1?nA:'')+buildSlotB+(nB>1?nB:'');
+
+  const need=(sym)=>{const e=ELEM[sym];const target=sym==='H'||sym==='He'?2:8;return target-e.valence;};
+  const givenA=eA.valence<4?eA.valence:0;
+  const takenA=eA.valence>4?8-eA.valence:0;
+
+  document.getElementById('build-result').innerHTML=`
+    <div style="color:#94a3b8;font-size:.8rem;margin-bottom:6px">Criss-cross / Valency method result:</div>
+    <div class="formula-big">${formula}</div>
+    <div style="font-size:.82rem;margin-bottom:8px"><span style="color:${color};font-weight:700">${bondType}</span> &nbsp;|&nbsp; ΔEN = ${ENdiff.toFixed(2)}</div>
+    <div style="font-size:.78rem;color:#94a3b8;line-height:1.6">
+      ${buildSlotA} (valency ${vA}) : ${buildSlotB} (valency ${vB})<br>
+      Criss-cross: ${buildSlotA}₍${vB/Math.max(1,(()=>{const g=(a,b)=>b===0?a:g(b,a%b);return g(vA,vB);})())}₎${buildSlotB}₍${vA/Math.max(1,(()=>{const g=(a,b)=>b===0?a:g(b,a%b);return g(vA,vB);})())}₎<br>
+      ${eA.name} has ${vA} valence e⁻; ${eB.name} has ${vB} valence e⁻<br>
+      To complete octet: ${buildSlotA} ${givenA>0?'gives '+givenA:takenA>0?'takes '+takenA:'shares '+(8-vA)} e⁻ | ${buildSlotB} ${eB.valence<4?'gives '+eB.valence:eB.valence>4?'takes '+(8-eB.valence):'shares '+(8-eB.valence)} e⁻
+    </div>`;
+}
+
+// ===================== HELPERS =====================
+function buildMolButtons(rowId, keys, selKey, onClick) {
+  const row=document.getElementById(rowId); row.innerHTML='';
+  keys.forEach(k=>{
+    const b=document.createElement('button');
+    b.className='mol-btn'+(k===selKey?' sel':'');
+    b.textContent=k;
+    b.onclick=()=>{onClick(k);row.querySelectorAll('.mol-btn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');};
+    row.appendChild(b);
+  });
+}
+
+function exportCanvas(id){
+  const cvs=document.getElementById(id); if(!cvs) return;
+  const a=document.createElement('a');
+  a.download='chemical_bond_'+id+'.png';
+  a.href=cvs.toDataURL(); a.click();
+}
+
+// ===================== TAB SWITCHING =====================
+function switchTab(name, el) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  el.classList.add('active');
+  activeTab=name;
+  if(name==='covalent'){covInit();}
+  else if(name==='ionic'){ionInit();}
+  else if(name==='metallic'){metInit();}
+  else if(name==='build'){buildInit();}
+  else if(name==='shapes3d'){shapes3DInit();}
+}
+
+// ===================== CONTINUOUS IDLE LOOP =====================
+function idleLoop() {
+  time+=0.025;
+  if(activeTab==='covalent'&&!covRunning){covDraw(covAnimProg);}
+  if(activeTab==='metallic'&&metRunning){/* handled in metLoop */}
+  requestAnimationFrame(idleLoop);
+}
+
+// ===================== INIT =====================
+window.addEventListener('load',()=>{
+  covInit();
+  idleLoop();
+  // handle window resize
+  window.addEventListener('resize',()=>{
+    if(activeTab==='covalent') covDraw(covAnimProg);
+    if(activeTab==='ionic') ionDraw(ionAnimProg);
+    if(activeTab==='shapes3d') draw3D();
+  });
+});
+</script>
+</body>
+</html>
