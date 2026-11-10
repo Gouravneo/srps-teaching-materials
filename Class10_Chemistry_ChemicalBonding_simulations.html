@@ -120,6 +120,23 @@ canvas{display:block;width:100%;height:380px}
 .anim-bar-wrap{height:4px;background:#0f172a;border-radius:2px;margin-bottom:8px;overflow:hidden}
 .anim-bar{height:100%;background:linear-gradient(to right,#3b82f6,#a78bfa);border-radius:2px;transition:width .05s linear;width:0}
 
+/* explore cards */
+.explore-card{background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:16px;transition:border-color .2s}
+.explore-card:hover{border-color:#334155}
+.explore-card h3{font-size:.95rem;font-weight:700;margin-bottom:8px;color:#e2e8f0}
+.explore-card p{font-size:.8rem;color:#94a3b8;line-height:1.6;margin-bottom:8px}
+.explore-tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:.68rem;font-weight:700;margin:2px;text-transform:uppercase;letter-spacing:.5px}
+
+/* quiz */
+.quiz-q{background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:16px;margin-bottom:12px}
+.quiz-q .q-text{font-size:.9rem;color:#e2e8f0;margin-bottom:12px;font-weight:600}
+.quiz-opts{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{background:#0d1527;border:1.5px solid #1e293b;border-radius:8px;padding:9px 14px;font-size:.82rem;color:#94a3b8;cursor:pointer;text-align:left;transition:all .2s}
+.quiz-opt:hover:not(:disabled){border-color:#3b82f6;color:#bfdbfe}
+.quiz-opt.correct{border-color:#22c55e;background:#052e16;color:#86efac}
+.quiz-opt.wrong{border-color:#ef4444;background:#450a0a;color:#fca5a5}
+.quiz-score{text-align:center;font-size:1.1rem;font-weight:700;padding:16px;color:#a78bfa}
+
 /* responsive */
 @media(max-width:600px){
   h1{font-size:1.2rem}
@@ -138,6 +155,8 @@ canvas{display:block;width:100%;height:380px}
   <button class="tab" onclick="switchTab('metallic',this)">Metallic</button>
   <button class="tab" onclick="switchTab('build',this)">Build</button>
   <button class="tab" onclick="switchTab('shapes3d',this)">3D Shapes</button>
+  <button class="tab" onclick="switchTab('explore',this)">Explore</button>
+  <button class="tab" onclick="switchTab('quiz',this)">Quiz</button>
 </div>
 
 <!-- ===== COVALENT ===== -->
@@ -155,6 +174,11 @@ canvas{display:block;width:100%;height:380px}
     <button class="btn btn-sec" id="btn-freeze" onclick="toggleFreeze()">⏸ Freeze</button>
     <button class="btn btn-sec" onclick="startExplain()">💡 Explain</button>
     <button class="btn btn-sec" onclick="exportCanvas('covCanvas')">📷 Export</button>
+  </div>
+  <div class="ctrl-row" style="margin-top:-6px">
+    <button class="btn btn-sec" id="btn-val-only" onclick="toggleValenceOnly()">⚡ Valence Only</button>
+    <button class="btn btn-sec" id="btn-bond-pairs" onclick="toggleBondPairs()" style="border-color:#a78bfa;color:#c4b5fd">🔗 Bond Pairs</button>
+    <button class="btn btn-sec" id="btn-freeze" onclick="toggleFreeze()">⏸ Freeze</button>
   </div>
   <div class="tiles" id="cov-tiles"></div>
   <div class="sub-tabs">
@@ -252,6 +276,17 @@ canvas{display:block;width:100%;height:380px}
   <div id="3d-sub-lewis" class="sub-panel"><canvas id="lewis3dCanvas" width="460" height="180"></canvas></div>
 </div>
 
+<!-- ===== EXPLORE ===== -->
+<div id="panel-explore" class="panel">
+  <div id="explore-subnav" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px"></div>
+  <div id="explore-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px"></div>
+</div>
+
+<!-- ===== QUIZ ===== -->
+<div id="panel-quiz" class="panel">
+  <div id="quiz-wrap"></div>
+</div>
+
 <!-- Explain Controls (shown when explain is active) -->
 <div id="explain-controls" style="display:none" class="ctrl-row">
   <button class="btn btn-sec" onclick="explainPrev()">◀◀ Prev</button>
@@ -284,6 +319,8 @@ const ELEM = {
   Ar: { name:'Argon',      color:'#f8fafc', nGrad:['#f8fafc','#e2e8f0','#94a3b8'], shells:[2,8,8],valence:0, eColor:'#f1f5f9', EN:0,    atomic:18 },
   K:  { name:'Potassium',  color:'#f59e0b', nGrad:['#fde68a','#f59e0b','#92400e'], shells:[2,8,8,1],valence:1,eColor:'#fde68a',EN:0.82,atomic:19 },
   Ca: { name:'Calcium',    color:'#fb923c', nGrad:['#fed7aa','#fb923c','#9a3412'], shells:[2,8,8,2],valence:2,eColor:'#fed7aa',EN:1.00,atomic:20 },
+  Br: { name:'Bromine',    color:'#f97316', nGrad:['#fed7aa','#f97316','#c2410c'], shells:[2,8,18,7],valence:7,eColor:'#fed7aa',EN:2.96,atomic:35 },
+  I:  { name:'Iodine',     color:'#a78bfa', nGrad:['#ede9fe','#a78bfa','#6d28d9'], shells:[2,8,18,18,7],valence:7,eColor:'#ede9fe',EN:2.66,atomic:53 },
 };
 
 // Shell radii based on number of shells
@@ -306,6 +343,13 @@ const COV_MOLS = {
   'CO₂': { atoms:['C','O'],  bonds:2, lp:[0,2], desc:'Nonpolar (linear) — polar bonds cancel',  formula:'CO₂', multi:2 },
   'CH₄': { atoms:['C','H'],  bonds:1, lp:[0,0], desc:'Nonpolar — tetrahedral, 109.5°',          formula:'CH₄', multi:4 },
   'NH₃': { atoms:['N','H'],  bonds:1, lp:[1,0], desc:'Polar — pyramidal, 107°',                 formula:'NH₃', multi:3 },
+  'Cl₂': { atoms:['Cl','Cl'],bonds:1, lp:[3,3], desc:'Nonpolar covalent — equal sharing, yellow-green gas', formula:'Cl₂' },
+  'HF':  { atoms:['H','F'],  bonds:1, lp:[0,3], desc:'Strongest polar covalent — F has highest EN (3.98)', formula:'HF'  },
+  'H₂S': { atoms:['S','H'],  bonds:1, lp:[2,0], desc:'Polar covalent — bent shape, H₂S smells like rotten egg', formula:'H₂S', multi:2 },
+  'F₂':  { atoms:['F','F'],  bonds:1, lp:[3,3], desc:'Nonpolar covalent — most reactive nonmetal', formula:'F₂' },
+  'CCl₄':{ atoms:['C','Cl'], bonds:1, lp:[0,3], desc:'Nonpolar — tetrahedral, 109.5°, 4 C–Cl bonds', formula:'CCl₄', multi:4 },
+  'Br₂': { atoms:['Br','Br'],bonds:1, lp:[3,3], desc:'Nonpolar covalent — brown/red liquid halogen', formula:'Br₂' },
+  'I₂':  { atoms:['I','I'],  bonds:1, lp:[3,3], desc:'Nonpolar covalent — solid purple-black halogen', formula:'I₂' },
 };
 
 const ION_MOLS = {
@@ -333,6 +377,10 @@ const BOARD_ANS = {
   'CO₂': { two:'Carbon forms 2 double bonds with two oxygen atoms. Each C=O bond is polar (ΔEN=0.89) but the molecule is linear (180°) so the dipoles cancel — CO₂ is nonpolar overall.', five:'Formation of CO₂: Carbon has 4 valence electrons; each oxygen has 6. Carbon needs 4 electrons; each oxygen needs 2. Carbon forms 2 double bonds — one with each oxygen. The structure is O=C=O (linear, 180°). Each C=O bond is polar due to ΔEN = 3.44 − 2.55 = 0.89. However, since the two dipoles point in opposite directions along the linear axis, they cancel out, making CO₂ a nonpolar molecule overall. CO₂ is a greenhouse gas and is produced in respiration and combustion.' },
   'CH₄': { two:'Carbon (4 valence e⁻) forms 4 single bonds with 4 hydrogen atoms. All C–H bonds have small ΔEN (0.35), making CH₄ almost nonpolar. Shape: tetrahedral, 109.5°.', five:'Formation of Methane (CH₄): Carbon (atomic no. 6, config 2,4) needs 4 electrons to complete its octet. Four hydrogen atoms, each needing 1 electron, bond with carbon. Carbon shares one pair of electrons with each H atom, forming four C–H single covalent bonds. By VSEPR theory, the 4 bond pairs arrange tetrahedrally around carbon (bond angle 109.5°) to minimize repulsion. CH₄ is almost nonpolar (ΔEN = 2.55 − 2.20 = 0.35). Methane is the main component of natural gas (CNG).' },
   'NH₃': { two:'Nitrogen forms 3 N–H single bonds and retains 1 lone pair. The lone pair causes pyramidal shape (107°). Each N–H bond is polar (ΔEN=0.84), making NH₃ a polar molecule.', five:'Formation of Ammonia (NH₃): Nitrogen has atomic number 7 and configuration 2,5 — it needs 3 electrons. Three hydrogen atoms bond with nitrogen, sharing one electron pair each. Nitrogen retains 1 lone pair. By VSEPR, the lone pair repels bond pairs more strongly than bond pairs repel each other. This pushes the three H atoms downward, creating a trigonal pyramidal shape with bond angle 107°. NH₃ is polar. It acts as a Lewis base (donates lone pair). It is used in fertilisers, cleaning agents, and refrigerants.' },
+  'Cl₂': { two:'Each chlorine atom (2,8,7) has 7 valence electrons and needs 1 more. Two Cl atoms share 1 pair of electrons, forming a Cl–Cl single covalent bond. ΔEN = 0, so Cl₂ is nonpolar.', five:'Formation of Cl₂: Chlorine has atomic number 17 and electronic configuration 2,8,7. It needs 1 electron to complete its octet. Two Cl atoms each contribute 1 electron to form a single covalent bond. Each Cl retains 3 lone pairs. ΔEN = 0 (same atoms), so Cl₂ is a nonpolar covalent molecule. Cl₂ is a yellow-green gas used in water purification and as a bleaching agent. Its bond is weaker than N≡N or O=O, making it more reactive.' },
+  'HF':  { two:'Hydrogen (EN=2.20) and Fluorine (EN=3.98) share 1 pair of electrons. ΔEN = 1.78 — the highest of any covalent bond, making H–F very strongly polar. F carries δ− and H carries δ+.', five:'Formation of HF: Fluorine (config 2,7) has the highest electronegativity (3.98). Hydrogen (EN 2.20) has 1 valence electron. They share 1 pair of electrons forming a single covalent bond. The ΔEN = 1.78 (borderline ionic) means electrons are strongly pulled towards F. Fluorine acquires partial negative charge (δ−) and hydrogen acquires partial positive charge (δ+). Despite being covalent, HF has a very high boiling point (19.5°C) due to strong hydrogen bonding. F retains 3 lone pairs.' },
+  'H₂S': { two:'Sulphur (config 2,8,6) needs 2 electrons. Two hydrogen atoms each share 1 electron with S, forming 2 S–H covalent bonds. ΔEN=0.38 — slightly polar. Bent shape, angle ~92°.', five:'Formation of H₂S: Sulphur (atomic no. 16, config 2,8,6) has 6 valence electrons and needs 2 to complete its octet. Two hydrogen atoms each bond with sulphur, sharing one electron pair per bond. Sulphur retains 2 lone pairs. By VSEPR, the shape is bent (bond angle ~92°, narrower than H₂O because S is a larger atom with less repulsion). The S–H bond has ΔEN = 2.58−2.20 = 0.38 — weakly polar. H₂S is a toxic gas with a rotten-egg smell, produced in volcanic emissions and by bacteria.' },
+  'F₂':  { two:'Each fluorine atom (2,7) needs 1 more electron. Two F atoms share 1 pair of electrons. ΔEN = 0, so F₂ is nonpolar. F₂ is the most reactive nonmetal, used in uranium enrichment.', five:'Formation of F₂: Fluorine has atomic number 9 and configuration 2,7. Each F needs 1 electron to complete its octet. Two F atoms share 1 electron pair forming a single covalent bond F–F. Each F retains 3 lone pairs. ΔEN = 0 (identical atoms) → nonpolar molecule. Despite sharing only 1 pair, F₂ is surprisingly reactive because the F–F bond is weak (lone pair repulsion between adjacent F atoms). Fluorine is used in Teflon (polytetrafluoroethylene), toothpaste (fluoride) and uranium hexafluoride.' },
   'NaCl': { two:'Sodium (2,8,1) gives 1 electron to Chlorine (2,8,7). Both attain noble gas configuration. The electrostatic attraction between Na⁺ and Cl⁻ ions forms the ionic bond.', five:'Formation of NaCl: Sodium has 1 valence electron; Chlorine has 7. By the octet rule, Na tends to lose 1 electron and Cl tends to gain 1. Sodium loses 1 electron to become Na⁺ (config 2,8) with noble gas (Ne) configuration. Chlorine gains this electron to become Cl⁻ (config 2,8,8) with Ar configuration. The oppositely charged ions Na⁺ and Cl⁻ attract each other electrostatically — this is the ionic bond. NaCl forms a crystal lattice (not discrete molecules). It is soluble in water and conducts electricity when dissolved or molten.' },
   'MgO':  { two:'Magnesium (2,8,2) gives 2 electrons to Oxygen (2,6). Mg becomes Mg²⁺ (2,8) and O becomes O²⁻ (2,8). Their electrostatic attraction forms a strong ionic bond.', five:'Formation of MgO: Magnesium (atomic no. 12, config 2,8,2) has 2 valence electrons. Oxygen (atomic no. 8, config 2,6) needs 2 electrons to complete its octet. Mg loses 2 electrons to become Mg²⁺ (2,8 — Ne configuration). O gains 2 electrons to become O²⁻ (2,8 — Ne configuration). The ionic bond between Mg²⁺ and O²⁻ is very strong due to 2+ charge. MgO has a very high melting point and is used as a refractory material and antacid.' },
   'CaCl₂':{ two:'Calcium (2,8,8,2) gives 1e⁻ to each of 2 Chlorine atoms. Ca becomes Ca²⁺; each Cl becomes Cl⁻. The ionic bond holds the formula unit CaCl₂.', five:'Formation of CaCl₂: Calcium (config 2,8,8,2) has 2 valence electrons. It tends to lose both. Each chlorine atom (config 2,8,7) needs only 1 electron. So one Ca atom gives 1 electron to each of two Cl atoms. Ca²⁺ (config 2,8,8 — Ar) and 2 × Cl⁻ (config 2,8,8 — Ar) are formed. Electrostatic attraction between Ca²⁺ and two Cl⁻ gives the ionic compound CaCl₂. It is used as a drying agent and de-icing salt.' },
@@ -367,15 +415,15 @@ let covRAF = null, ionRAF = null, metRAF = null;
 let rot3D = {x:0.3,y:0.3}, drag3D = false, drag3DLast = {x:0,y:0};
 let anim3D = false, raf3D = null, angle3D = 0;
 let buildSlotA = null, buildSlotB = null, buildSlotFill = 'a';
+let valenceOnly = false, showBondPairs = true;
 
 // ===================== UTILITY =====================
 function lerp(a,b,t){return a+(b-a)*t}
 function clamp(v,lo,hi){return Math.max(lo,Math.min(hi,v))}
 
-function drawBohrAtom(ctx, cx, cy, sym, pct=1, glowValence=false, lostShell=false) {
+function drawBohrAtom(ctx, cx, cy, sym, pct=1, glowValence=false, lostShell=false, vOnly=false) {
   const el = ELEM[sym];
   if(!el) return;
-  const nShells = el.shells.length - (lostShell?1:0);
   const actualShells = lostShell ? el.shells.slice(0,-1) : el.shells;
   const totalShells = actualShells.length;
 
@@ -395,22 +443,31 @@ function drawBohrAtom(ctx, cx, cy, sym, pct=1, glowValence=false, lostShell=fals
 
   // orbits + electrons
   for(let i=0;i<totalShells;i++) {
+    const isValence = (i === totalShells-1);
+    if(vOnly && !isValence) continue; // valence-only mode skips inner shells
     const r = shellRadius(totalShells,i) * pct;
     const eCount = actualShells[i];
     // orbit ring (dashed)
     ctx.save(); ctx.setLineDash([4,4]);
-    ctx.strokeStyle='rgba(100,116,139,0.5)'; ctx.lineWidth=1;
+    ctx.strokeStyle = isValence ? 'rgba(148,163,184,0.7)' : 'rgba(100,116,139,0.3)';
+    ctx.lineWidth=1;
     ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke();
     ctx.restore();
+    // n= label on ring (top-right of orbit)
+    if(!vOnly || isValence) {
+      ctx.fillStyle='rgba(100,116,139,0.6)'; ctx.font='9px sans-serif';
+      ctx.textAlign='left'; ctx.textBaseline='middle';
+      ctx.fillText(`n=${i+1}`, cx+r*0.72+2, cy-r*0.72);
+    }
     // electrons
-    const isValence = (i === totalShells-1);
     for(let e=0;e<eCount;e++) {
       const angle = (e/eCount)*Math.PI*2 + time*0.6*(i%2===0?1:-1);
       const ex = cx + Math.cos(angle)*r;
       const ey = cy + Math.sin(angle)*r;
       const glow = isValence && glowValence;
       if(glow){ctx.shadowBlur=12;ctx.shadowColor=el.eColor;}
-      ctx.beginPath(); ctx.arc(ex,ey,glow?4:3,0,Math.PI*2);
+      const eDot = isValence ? (vOnly?4:3.5) : 2.5;
+      ctx.beginPath(); ctx.arc(ex,ey,glow?4.5:eDot,0,Math.PI*2);
       ctx.fillStyle = el.eColor;
       ctx.fill(); ctx.shadowBlur=0;
     }
@@ -435,6 +492,9 @@ function covInit() {
   buildMolButtons('cov-mol-row', Object.keys(COV_MOLS), covMol, k=>{covMol=k; covReset(); updateSubPanels('cov');});
   updateSubPanels('cov');
   covDraw(0);
+  const cvs=document.getElementById('covCanvas');
+  cvs.onclick=handleCanvasClick;
+  cvs.style.cursor='pointer';
 }
 
 function covSimulate() {
@@ -447,8 +507,43 @@ function covReplay() { covAnimProg=0; covFrozen=false; covRunning=true; covLoop(
 function covReset() { cancelAnimationFrame(covRAF); covRunning=false; covAnimProg=0; covFrozen=false; document.getElementById('btn-cov-sim').textContent='▶ Simulate'; covDraw(0); }
 function toggleFreeze() {
   covFrozen=!covFrozen;
-  document.getElementById('btn-freeze').textContent = covFrozen?'▶ Resume':'⏸ Freeze';
+  const fb=document.getElementById('btn-freeze');
+  if(fb){fb.textContent=covFrozen?'▶ Resume':'⏸ Freeze';fb.style.borderColor=covFrozen?'#38bdf8':'';fb.style.color=covFrozen?'#7dd3fc':'';}
   if(!covFrozen && covRunning) covLoop();
+}
+function toggleValenceOnly() {
+  valenceOnly=!valenceOnly;
+  const b=document.getElementById('btn-val-only');
+  if(b) b.style.borderColor=valenceOnly?'#f59e0b':'';
+  b && (b.style.color=valenceOnly?'#fbbf24':'');
+  covDraw(covAnimProg);
+}
+function toggleBondPairs() {
+  showBondPairs=!showBondPairs;
+  const b=document.getElementById('btn-bond-pairs');
+  if(b) b.style.borderColor=showBondPairs?'#a78bfa':'';
+  b && (b.style.color=showBondPairs?'#c4b5fd':'');
+  covDraw(covAnimProg);
+}
+function handleCanvasClick(e) {
+  if(covAnimProg<1) return;
+  const cvs=document.getElementById('covCanvas');
+  const rect=cvs.getBoundingClientRect();
+  const scaleX=cvs.width/rect.width;
+  const mx=(e.clientX-rect.left)*scaleX;
+  const my=(e.clientY-rect.top)*(cvs.height/rect.height);
+  // Explain button: x=8-98, y=8-38
+  if(mx>=8&&mx<=98&&my>=8&&my<=38){startExplain();}
+  // 3D View button: x=106-186, y=8-38
+  if(mx>=106&&mx<=186&&my>=8&&my<=38){
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    const t3d=document.querySelector('.tab:last-child');if(t3d){t3d.classList.add('active');}
+    document.getElementById('panel-shapes3d').classList.add('active');
+    activeTab='shapes3d'; shapes3DInit();
+    // try to match molecule
+    if(SHAPES_3D[covMol]){shape3DMol=covMol;shapes3DInit();}
+  }
 }
 
 function covLoop() {
@@ -486,14 +581,40 @@ function covDraw(prog) {
   const atomPct = clamp(prog/0.3,0,1);
   const valGlow = prog>0.3 && prog<0.7;
   const bondProg = clamp((prog-0.5)/0.25,0,1);
+  const eA = ELEM[symA], eB = ELEM[symB];
+  const ENdiff = Math.abs((eA?.EN||0)-(eB?.EN||0));
+  const bondName = nBonds===1?'Single Bond':nBonds===2?'Double Bond':'Triple Bond';
+  const polarType = ENdiff<0.5?'Nonpolar Covalent':ENdiff<1.7?'Polar Covalent':'Ionic Character';
 
   // draw atoms
-  drawBohrAtom(ctx,lx,cy,symA,atomPct,valGlow);
-  drawBohrAtom(ctx,rx,cy,symB,atomPct,valGlow);
+  drawBohrAtom(ctx,lx,cy,symA,atomPct,valGlow,false,valenceOnly);
+  drawBohrAtom(ctx,rx,cy,symB,atomPct,valGlow,false,valenceOnly);
+
+  // atom name labels below atoms
+  if(atomPct>0.5) {
+    const alpha2 = clamp((atomPct-0.5)/0.5,0,1);
+    ctx.globalAlpha=alpha2;
+    const rA = getShellOuterR(symA), rB = getShellOuterR(symB);
+    // left atom label
+    ctx.fillStyle=eA?.color||'#e2e8f0'; ctx.font='bold 12px sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='top';
+    ctx.fillText(eA?.name||symA, lx, cy+rA+6);
+    ctx.fillStyle='rgba(148,163,184,0.8)'; ctx.font='10px sans-serif';
+    ctx.fillText(`Valence: ${eA?.valence}e⁻  |  Z = ${eA?.atomic}`, lx, cy+rA+20);
+    ctx.fillStyle='rgba(100,116,139,0.7)'; ctx.font='9px sans-serif';
+    ctx.fillText(`Config: ${(eA?.shells||[]).join(', ')}`, lx, cy+rA+32);
+    // right atom label
+    ctx.fillStyle=eB?.color||'#e2e8f0'; ctx.font='bold 12px sans-serif';
+    ctx.fillText(eB?.name||symB, rx, cy+rB+6);
+    ctx.fillStyle='rgba(148,163,184,0.8)'; ctx.font='10px sans-serif';
+    ctx.fillText(`Valence: ${eB?.valence}e⁻  |  Z = ${eB?.atomic}`, rx, cy+rB+20);
+    ctx.fillStyle='rgba(100,116,139,0.7)'; ctx.font='9px sans-serif';
+    ctx.fillText(`Config: ${(eB?.shells||[]).join(', ')}`, rx, cy+rB+32);
+    ctx.globalAlpha=1;
+  }
 
   // draw bond(s)
   if(bondProg>0) {
-    const len = (rx-lx);
     const rA = getShellOuterR(symA)*0.72;
     const rB = getShellOuterR(symB)*0.72;
     const bx1 = lx+rA, bx2 = rx-rB;
@@ -501,15 +622,15 @@ function covDraw(prog) {
     for(let pair=0;pair<nBonds;pair++) {
       const off = (pair-(nBonds-1)/2)*12;
       ctx.save();
-      ctx.strokeStyle=`rgba(255,255,255,${bondProg*0.6})`;
-      ctx.lineWidth=2; ctx.setLineDash([]);
+      ctx.strokeStyle=`rgba(255,255,255,${bondProg*0.65})`;
+      ctx.lineWidth=2.5; ctx.setLineDash([]);
       ctx.beginPath();
       ctx.moveTo(bx1, cy+off); ctx.lineTo(bx1+(bx2-bx1)*bondProg, cy+off);
       ctx.stroke();
       ctx.restore();
 
       // shared electrons oscillating
-      if(prog>0.75) {
+      if(prog>0.75 && showBondPairs) {
         for(let ep=0;ep<2;ep++) {
           const osc = Math.sin(time*2.5+(ep+pair)*Math.PI)*0.3;
           const frac = 0.5+osc;
@@ -521,24 +642,62 @@ function covDraw(prog) {
         }
       }
     }
+
+    // bond label header on canvas
+    if(bondProg>0.5) {
+      const alpha3 = clamp((bondProg-0.5)/0.5,0,1);
+      ctx.globalAlpha=alpha3;
+      ctx.fillStyle='rgba(6,11,24,0.6)';
+      roundRect(ctx, cx-115, 8, 230, 28, 8); ctx.fill();
+      ctx.fillStyle='#e2e8f0'; ctx.font='bold 12px sans-serif'; ctx.textAlign='center';
+      ctx.fillText(`${bondName} — ${nBonds} shared pair${nBonds>1?'s':''}`, cx, 26);
+      ctx.globalAlpha=1;
+    }
   }
 
-  // molecule badge
+  // molecule badge + polarity + post-sim buttons
   if(prog>0.85) {
-    const alpha = (prog-0.85)/0.15;
+    const alpha = clamp((prog-0.85)/0.15,0,1);
     ctx.globalAlpha=alpha;
-    ctx.fillStyle='rgba(30,58,138,0.8)';
-    roundRect(ctx, cx-50, h-55, 100, 32, 10);
-    ctx.fill();
-    ctx.fillStyle='#93c5fd'; ctx.font='bold 16px serif';
-    ctx.textAlign='center'; ctx.fillText(mol.formula, cx, h-32);
+    // compound badge
+    ctx.fillStyle='rgba(30,58,138,0.85)';
+    roundRect(ctx, cx-70, h-62, 140, 26, 8); ctx.fill();
+    ctx.fillStyle='#93c5fd'; ctx.font='bold 15px serif';
+    ctx.textAlign='center'; ctx.fillText(mol.formula+' — Covalent compound', cx, h-43);
+    // polarity type badge
+    const pColor = ENdiff<0.5?'#22c55e':ENdiff<1.7?'#f59e0b':'#ef4444';
+    ctx.fillStyle='rgba(0,0,0,0.5)';
+    roundRect(ctx, cx-60, h-32, 120, 20, 6); ctx.fill();
+    ctx.fillStyle=pColor; ctx.font='bold 11px sans-serif';
+    ctx.fillText(polarType+` (ΔEN=${ENdiff.toFixed(2)})`, cx, h-18);
+    // partial charges for polar
+    if(ENdiff>=0.5 && ENdiff<1.7 && prog>=1) {
+      const loEN = eA.EN > eB.EN ? symA : symB;
+      const lox = eA.EN > eB.EN ? lx : rx;
+      const hix = eA.EN > eB.EN ? rx : lx;
+      ctx.fillStyle='#60a5fa'; ctx.font='bold 14px serif';
+      ctx.fillText('δ+', lox, cy - getShellOuterR(loEN===symA?symA:symB) - 20);
+      ctx.fillStyle='#f97316';
+      ctx.fillText('δ−', hix, cy - getShellOuterR(loEN===symA?symB:symA) - 20);
+    }
     ctx.globalAlpha=1;
   }
 
+  // inline Explain + 3D buttons on canvas after simulation completes
+  if(prog>=1 && !explainActive) {
+    // Explain button
+    ctx.fillStyle='rgba(217,119,6,0.9)'; roundRect(ctx,8,8,90,30,8); ctx.fill();
+    ctx.fillStyle='#fff'; ctx.font='bold 12px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('💡 Explain',53,27);
+    // 3D view badge
+    ctx.fillStyle='rgba(14,116,144,0.9)'; roundRect(ctx,106,8,80,30,8); ctx.fill();
+    ctx.fillStyle='#fff'; ctx.fillText('⬡ 3D View',146,27);
+  }
+
   // desc
-  if(prog>0.8){
-    ctx.fillStyle='rgba(148,163,184,0.9)'; ctx.font='13px sans-serif';
-    ctx.textAlign='center'; ctx.fillText(mol.desc, cx, h-10);
+  if(prog>0.8 && !explainActive){
+    ctx.fillStyle='rgba(148,163,184,0.7)'; ctx.font='11px sans-serif';
+    ctx.textAlign='center'; ctx.fillText(mol.desc, cx, h-70);
   }
 
   // explain overlay
@@ -676,8 +835,36 @@ function ionDraw(prog) {
   const attractProg = clamp((prog-0.8)/0.2,0,1);
 
   const lostShell = ionProg>0.5;
-  drawBohrAtom(ctx,lx,cy,symC,show,valGlow,lostShell);
-  drawBohrAtom(ctx,rx,cy,symA,show,valGlow && prog<0.5);
+  drawBohrAtom(ctx,lx,cy,symC,show,valGlow,lostShell,false);
+  drawBohrAtom(ctx,rx,cy,symA,show,valGlow && prog<0.5,false,false);
+
+  // atom name labels (shown below atom, above the ion charge label)
+  if(show>0.4) {
+    const al=clamp((show-0.4)/0.6,0,1);
+    ctx.globalAlpha=al;
+    const elC=ELEM[symC],elA2=ELEM[symA];
+    // below each atom: name on first line, valence/Z on second
+    const rC=getShellOuterR(symC), rAn=getShellOuterR(symA);
+    ctx.textAlign='center'; ctx.textBaseline='top';
+    ctx.fillStyle=elC?.color||'#e2e8f0'; ctx.font='bold 11px sans-serif';
+    ctx.fillText(elC?.name||symC, lx, cy+rC+36);
+    ctx.fillStyle='rgba(148,163,184,0.75)'; ctx.font='9px sans-serif';
+    ctx.fillText(`Valence: ${elC?.valence}e⁻  |  Z=${elC?.atomic}`, lx, cy+rC+49);
+    ctx.fillStyle=elA2?.color||'#e2e8f0'; ctx.font='bold 11px sans-serif';
+    ctx.fillText(elA2?.name||symA, rx, cy+rAn+36);
+    ctx.fillStyle='rgba(148,163,184,0.75)'; ctx.font='9px sans-serif';
+    ctx.fillText(`Valence: ${elA2?.valence}e⁻  |  Z=${elA2?.atomic}`, rx, cy+rAn+49);
+    ctx.globalAlpha=1;
+  }
+  // bond type header on canvas
+  if(show>0.5){
+    const al=clamp((show-0.5)/0.5,0,1); ctx.globalAlpha=al;
+    ctx.fillStyle='rgba(6,11,24,0.6)';
+    roundRect(ctx,w/2-110,8,220,28,8); ctx.fill();
+    ctx.fillStyle='#f97316'; ctx.font='bold 12px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('⚡ Ionic Bond — Electron Transfer', w/2, 26);
+    ctx.globalAlpha=1;
+  }
 
   // draw gained dot on anion
   if(ionProg>0.5) {
@@ -1194,6 +1381,148 @@ function exportCanvas(id){
   a.href=cvs.toDataURL(); a.click();
 }
 
+// ===================== EXPLORE =====================
+const EXPLORE_CARDS = [
+  { title:'What is a Chemical Bond?', tag:'Concept', tagColor:'#3b82f6', text:'A chemical bond is the force of attraction between atoms that holds them together in a compound. Atoms bond to attain the stable electronic configuration of the nearest noble gas (octet/duplet rule). There are three main types: covalent, ionic, and metallic.' },
+  { title:'Covalent Bond — Sharing Electrons', tag:'Covalent', tagColor:'#a78bfa', text:'Atoms with similar electronegativities share electron pairs. Each shared pair is one bond. Single (H₂), Double (O₂) and Triple (N₂) bonds contain 1, 2 or 3 shared pairs. Covalent compounds are usually gases or liquids with low melting points.' },
+  { title:'Polarity — ΔEN decides the type', tag:'Polarity', tagColor:'#f59e0b', text:'ΔEN < 0.5 → Nonpolar covalent (e.g. H₂, Cl₂). ΔEN 0.5–1.7 → Polar covalent (e.g. HCl, H₂O, HF). ΔEN > 1.7 → Ionic (e.g. NaCl, MgO). The atom with higher EN pulls shared electrons and becomes δ−.' },
+  { title:'Ionic Bond — Electron Transfer', tag:'Ionic', tagColor:'#f97316', text:'Metals (low EN) lose electrons to form cations (+). Non-metals (high EN) gain electrons to form anions (−). The electrostatic attraction between oppositely charged ions is the ionic bond. Ionic compounds have high melting points and conduct electricity when dissolved or molten.' },
+  { title:'Metallic Bond — Electron Sea', tag:'Metallic', tagColor:'#22d3ee', text:'Metal atoms lose valence electrons into a "sea" of delocalized electrons. Metal cations (ions) are held in a lattice by attraction to this electron sea. This explains electrical conductivity, thermal conductivity, malleability, and metallic lustre.' },
+  { title:'Octet Rule & Duplet Rule', tag:'Rule', tagColor:'#22c55e', text:'Atoms react to achieve 8 electrons in their outermost shell (octet) — same as noble gases Ne, Ar, Kr. Hydrogen and Helium follow the duplet rule (2 electrons). Exceptions exist: BF₃ (6e, incomplete), PCl₅ (10e, expanded octet).' },
+  { title:'Criss-Cross Method for Ionic Formulas', tag:'Formula', tagColor:'#60a5fa', text:'To write an ionic formula: write each ion with its valency. Criss-cross the valencies as subscripts. Simplify the ratio if possible. Example: Al³⁺ + O²⁻ → Al₂O₃. Ca²⁺ + Cl⁻ → CaCl₂. This balances the total positive and negative charges.' },
+  { title:'Lewis Dot Structures', tag:'Lewis', tagColor:'#84cc16', text:'Lewis structures show valence electrons as dots around the chemical symbol. Each dot = 1 valence electron. Pairs of dots between atoms = shared (bond) pairs. Remaining dot pairs = lone pairs. E.g. H:H is H–H single bond. :Ö: has 2 lone pairs.' },
+  { title:'VSEPR — 3D Molecular Shapes', tag:'3D Shape', tagColor:'#f472b6', text:'VSEPR: Valence Shell Electron Pair Repulsion. Bond pairs and lone pairs repel each other and arrange to be as far apart as possible. H₂O: 2 bonds + 2 lone pairs → bent 104.5°. NH₃: 3 bonds + 1 lone pair → pyramidal 107°. CH₄: 4 bonds → tetrahedral 109.5°. CO₂: 2 double bonds → linear 180°.' },
+  { title:'Electronegativity Trend', tag:'EN', tagColor:'#ef4444', text:'Electronegativity increases across a period (left → right) and decreases down a group. Fluorine (F) is the most electronegative element (EN=3.98). Caesium (Cs) is the least (EN=0.79). EN values: F(3.98) > O(3.44) > N(3.04) > Cl(3.16) > C(2.55) > H(2.20) > Na(0.93).' },
+  { title:'Properties: Covalent vs Ionic', tag:'Compare', tagColor:'#8b5cf6', text:'Covalent: low MP/BP, usually gas/liquid, non-conductor (usually), soluble in non-polar solvents. Ionic: high MP/BP, solid crystal lattice, conducts when dissolved or molten, soluble in water. Metallic: variable MP, solid, excellent conductor, malleable, lustrous.' },
+  { title:'CBSE Important — 1 Mark Facts', tag:'CBSE', tagColor:'#f43f5e', text:'• Shared pair = covalent bond, transferred pair = ionic bond • Noble gases do not form bonds normally • Bond angle of H₂O = 104.5°, NH₃ = 107°, CH₄ = 109.5°, CO₂ = 180° • Electronegativity of F is highest • NaCl is ionic, H₂ is covalent • Na is metallic' },
+];
+
+const EXPLORE_SECTIONS = [
+  { key:'Overview',   label:'Overview',    tags:['Concept','Rule','EN','Compare','CBSE'] },
+  { key:'Covalent',   label:'Covalent',    tags:['Covalent','Polarity','Lewis','3D Shape','Formula'] },
+  { key:'Ionic',      label:'Ionic',       tags:['Ionic','Formula'] },
+  { key:'Metallic',   label:'Metallic',    tags:['Metallic'] },
+  { key:'Comparison', label:'Comparison',  tags:['Compare','CBSE','EN','Rule'] },
+];
+let exploreSection='Overview';
+
+function exploreInit() {
+  // build sub-nav
+  const nav=document.getElementById('explore-subnav'); nav.innerHTML='';
+  EXPLORE_SECTIONS.forEach(s=>{
+    const b=document.createElement('button');
+    b.className='btn '+(s.key===exploreSection?'btn-primary':'btn-sec');
+    b.style.cssText='padding:5px 14px;font-size:.8rem';
+    b.textContent=s.label;
+    b.onclick=()=>{exploreSection=s.key;exploreInit();};
+    nav.appendChild(b);
+  });
+  // filter cards
+  const sec=EXPLORE_SECTIONS.find(s=>s.key===exploreSection);
+  const filtered=sec?EXPLORE_CARDS.filter(c=>sec.tags.includes(c.tag)):EXPLORE_CARDS;
+  const wrap=document.getElementById('explore-cards'); wrap.innerHTML='';
+  filtered.forEach(c=>{
+    const d=document.createElement('div'); d.className='explore-card';
+    d.innerHTML=`<h3><span class="explore-tag" style="background:${c.tagColor}22;color:${c.tagColor};border:1px solid ${c.tagColor}44">${c.tag}</span> ${c.title}</h3><p>${c.text}</p>`;
+    wrap.appendChild(d);
+  });
+  // if empty (Ionic/Metallic only have certain tags), show all matching loosely
+  if(filtered.length===0){
+    EXPLORE_CARDS.forEach(c=>{
+      const d=document.createElement('div'); d.className='explore-card';
+      d.innerHTML=`<h3><span class="explore-tag" style="background:${c.tagColor}22;color:${c.tagColor};border:1px solid ${c.tagColor}44">${c.tag}</span> ${c.title}</h3><p>${c.text}</p>`;
+      wrap.appendChild(d);
+    });
+  }
+}
+
+// ===================== QUIZ =====================
+const QUIZ_QS = [
+  { q:'Which bond is formed when electrons are SHARED between atoms?', opts:['Ionic bond','Covalent bond','Metallic bond','Hydrogen bond'], ans:1, exp:'Covalent bonds involve sharing of electron pairs between atoms.' },
+  { q:'What is the bond angle in a water molecule (H₂O)?', opts:['90°','109.5°','104.5°','120°'], ans:2, exp:'H₂O has a bent shape with 2 lone pairs on O, giving a bond angle of 104.5°.' },
+  { q:'Which element has the highest electronegativity?', opts:['Oxygen','Chlorine','Fluorine','Nitrogen'], ans:2, exp:'Fluorine (F) has EN = 3.98, the highest of all elements.' },
+  { q:'NaCl is an example of which type of bond?', opts:['Covalent bond','Polar covalent bond','Ionic bond','Metallic bond'], ans:2, exp:'Na loses 1e⁻ to Cl. The electrostatic attraction between Na⁺ and Cl⁻ is an ionic bond.' },
+  { q:'The "sea of electrons" model describes which type of bonding?', opts:['Ionic','Covalent','Metallic','Hydrogen'], ans:2, exp:'Metallic bonding: valence electrons are delocalized into a sea, holding metal cations together.' },
+  { q:'How many shared pairs are in a triple bond (e.g. N₂)?', opts:['1','2','3','6'], ans:2, exp:'A triple bond has 3 shared pairs = 6 electrons shared total (N≡N).' },
+  { q:'Which of the following is a nonpolar covalent molecule?', opts:['HCl','H₂O','H₂','NH₃'], ans:2, exp:'H₂ is nonpolar because both atoms are identical (ΔEN = 0).' },
+  { q:'The criss-cross method is used to find the formula of:', opts:['Covalent compounds','Ionic compounds','Metallic alloys','All of the above'], ans:1, exp:'The criss-cross method uses valencies of ions to write the correct formula of ionic compounds.' },
+  { q:'What shape is a methane (CH₄) molecule?', opts:['Linear','Bent','Trigonal planar','Tetrahedral'], ans:3, exp:'CH₄ has 4 bond pairs and no lone pairs → tetrahedral (109.5°).' },
+  { q:'Which property of metals is BEST explained by the electron sea model?', opts:['High melting point','Electrical conductivity','Brittleness','Transparency'], ans:1, exp:'Mobile delocalized electrons in metals carry electric current, explaining electrical conductivity.' },
+  { q:'What is the ΔEN range for POLAR COVALENT bonds?', opts:['0 – 0.5','0.5 – 1.7','1.7 – 3.5','Above 3.5'], ans:1, exp:'ΔEN between 0.5 and 1.7 gives polar covalent bonds (e.g. H–Cl: ΔEN = 0.96).' },
+  { q:'CO₂ is a polar molecule (C=O bonds are polar), yet CO₂ is overall:', opts:['Polar','Nonpolar','Ionic','Metallic'], ans:1, exp:'CO₂ is linear. The two C=O dipoles are equal and opposite, so they cancel — CO₂ is nonpolar.' },
+  { q:'Which ion does Magnesium form when it loses its valence electrons?', opts:['Mg⁺','Mg²⁺','Mg⁻','Mg³⁺'], ans:1, exp:'Mg has 2 valence electrons (config 2,8,2). It loses both to form Mg²⁺.' },
+  { q:'The bond angle in ammonia (NH₃) is 107° because:', opts:['The molecule is linear','A lone pair repels the bond pairs more','The atoms are too big','The electrons are shared equally'], ans:1, exp:'The lone pair on N repels bond pairs more strongly than bond pairs repel each other, reducing the angle from 109.5° to 107°.' },
+  { q:'Which of these is NOT a property of ionic compounds?', opts:['High melting point','Conducts electricity when dissolved in water','Low boiling point','Forms crystal lattice'], ans:2, exp:'Ionic compounds have HIGH boiling points due to strong electrostatic forces in the lattice.' },
+];
+
+let quizAnswered=[], quizOrder=[], quizCurrent=0, quizScore=0;
+function quizInit() {
+  quizOrder=[...Array(QUIZ_QS.length).keys()].sort(()=>Math.random()-0.5).slice(0,10);
+  quizAnswered=Array(QUIZ_QS.length).fill(null);
+  quizCurrent=0; quizScore=0;
+  renderQuiz();
+}
+function renderQuiz() {
+  const wrap=document.getElementById('quiz-wrap'); wrap.innerHTML='';
+  if(quizCurrent>=quizOrder.length) {
+    // final score screen
+    const done=quizOrder.length;
+    const correct=quizOrder.filter(qi=>quizAnswered[qi]===QUIZ_QS[qi].ans).length;
+    const pct=Math.round(correct/done*100);
+    const msg=correct>=8?'🎉 Excellent!':correct>=6?'👍 Good work!':correct>=4?'📖 Keep revising':'💪 More practice needed';
+    wrap.innerHTML=`<div class="quiz-score" style="font-size:1.3rem">${msg}</div>
+      <div class="quiz-score">Final Score: ${correct} / ${done} &nbsp;(${pct}%)</div>
+      <div style="text-align:center;margin:8px 0">
+        <button class="btn btn-primary" onclick="quizInit()">🔁 New Quiz</button>
+        <button class="btn btn-sec" style="margin-left:8px" onclick="quizReview()">📋 Review Answers</button>
+      </div>`;
+    return;
+  }
+  const qi=quizOrder[quizCurrent];
+  const q=QUIZ_QS[qi];
+  const ans=quizAnswered[qi];
+  const done=quizOrder.filter(i=>quizAnswered[i]!==null).length;
+  // score bar
+  const bar=document.createElement('div');
+  bar.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:.82rem;color:#94a3b8';
+  bar.innerHTML=`<span>Question ${quizCurrent+1} of ${quizOrder.length}</span><span class="quiz-score" style="padding:0;font-size:.88rem">Score: ${quizScore} / ${done}</span>`;
+  wrap.appendChild(bar);
+  // progress bar
+  const pb=document.createElement('div');
+  pb.style.cssText='height:4px;background:#1e293b;border-radius:2px;margin-bottom:14px;overflow:hidden';
+  pb.innerHTML=`<div style="height:100%;width:${(quizCurrent/quizOrder.length)*100}%;background:linear-gradient(to right,#3b82f6,#a78bfa);border-radius:2px"></div>`;
+  wrap.appendChild(pb);
+  const qcard=document.createElement('div'); qcard.className='quiz-q';
+  qcard.innerHTML=`<div class="q-text">${q.q}</div>
+    <div class="quiz-opts">${q.opts.map((o,oi)=>`<button class="quiz-opt${ans!==null?oi===q.ans?' correct':oi===ans?' wrong':'':''}" ${ans!==null?'disabled':''} onclick="answerQuiz(${qi},${oi})">${o}</button>`).join('')}</div>
+    ${ans!==null?`<div style="font-size:.78rem;color:#94a3b8;margin-top:10px;padding:8px 12px;background:#0d1527;border-radius:6px">💡 ${q.exp}</div>`:''}`;
+  wrap.appendChild(qcard);
+  if(ans!==null){
+    const nb=document.createElement('button');nb.className='btn btn-primary';nb.style.cssText='margin:10px auto;display:block';
+    nb.textContent=quizCurrent<quizOrder.length-1?'Next Question →':'See Results';
+    nb.onclick=()=>{quizCurrent++;renderQuiz();};
+    wrap.appendChild(nb);
+  }
+}
+function answerQuiz(qi,oi){
+  quizAnswered[qi]=oi;
+  if(oi===QUIZ_QS[qi].ans) quizScore++;
+  renderQuiz();
+}
+function quizReview(){
+  const wrap=document.getElementById('quiz-wrap'); wrap.innerHTML='';
+  quizOrder.forEach((qi,idx)=>{
+    const q=QUIZ_QS[qi],ans=quizAnswered[qi];
+    const div=document.createElement('div');div.className='quiz-q';
+    div.innerHTML=`<div class="q-text" style="font-size:.82rem">${idx+1}. ${q.q}</div>
+      <div class="quiz-opts">${q.opts.map((o,oi)=>`<button class="quiz-opt${oi===q.ans?' correct':oi===ans&&oi!==q.ans?' wrong':''}" disabled>${o}</button>`).join('')}</div>
+      <div style="font-size:.75rem;color:#94a3b8;margin-top:6px;padding:5px 10px;background:#0d1527;border-radius:6px">💡 ${q.exp}</div>`;
+    wrap.appendChild(div);
+  });
+  const btn=document.createElement('button');btn.className='btn btn-primary';btn.style.cssText='margin:10px auto;display:block';
+  btn.textContent='🔁 New Quiz';btn.onclick=quizInit;wrap.appendChild(btn);
+}
+
 // ===================== TAB SWITCHING =====================
 function switchTab(name, el) {
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
@@ -1206,6 +1535,8 @@ function switchTab(name, el) {
   else if(name==='metallic'){metInit();}
   else if(name==='build'){buildInit();}
   else if(name==='shapes3d'){shapes3DInit();}
+  else if(name==='explore'){exploreInit();}
+  else if(name==='quiz'){quizInit();}
 }
 
 // ===================== CONTINUOUS IDLE LOOP =====================
